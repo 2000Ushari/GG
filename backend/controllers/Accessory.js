@@ -1,291 +1,279 @@
 import connection from "../dbConnection.js";
+import { AccessoryService } from "../services/AccessoryService.js";
 
-const getAccessory = (req, res) => {
-    const query = "SELECT * FROM accessory";
-    connection.query(query, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-};
-
-const getAccessoryById = (req, res) => {
-  console.log("getAccessoryById");
-    const id = req.params.id;
-    console.log(id);
-    const query = "SELECT * FROM accessory WHERE accessoryId = ?";
-    connection.query(query, [id], (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(result[0]);        }
-    });
-};
-
-// export const addAccessory = (req, res) => {
-//     const query = "INSERT INTO accessory (accessoryName, accessoryDescription, accessoryColor, accessoryPrice, categoryId, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, NOW(), NOW()); "
-//     connection.query(query, [req.body], (err, result) => {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.send(result);
-//         }
-//     });
-// };  
-
-const addAccessory = (req, res) => {
-  const { accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId } = req.body;
-
-  // Validation
-  if (!accessoryName || !accessoryDescription || !accessoryColor || !accessoryQuantity || !accessoryPrice || !categoryId) {
-    return res.status(400).json({ error: 'Please provide name, description, color, quantity, price, and categoryId.' });
-  }
-
-  // Additional Validation
-  if (accessoryPrice < 0 || accessoryQuantity < 0) {
-    return res.status(400).json({ error: 'Price and quantity must be non-negative.' });
-  }
-
-  // Insert the new accessory into the database
-  const query = `
-    INSERT INTO accessory (accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `;
-  connection.query(query, [accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId], (err, result) => {
-    if (err) {
-      console.error('Error adding accessory:', err);
-      return res.status(500).json({ error: 'Error adding accessory.' });
+const getAccessory = async (req, res) => {
+  try {
+    const accessories = await AccessoryService.getAccessories();
+    if (accessories) {
+      res.status(200).json(accessories[0]);
     }
-
-    // Return the newly created accessory ID
-    const accessoryId = result.insertId;
-    res.status(201).json({ id: accessoryId, accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId });
-  });
+  } catch (error) {
+    console.error("Error fetching accessories:", error);
+    res.status(500).json({ error: error.message });
+  }
 };
 
-
-  const updateAccessory = (req, res) => {
-    const accessoryId = req.params.id;
-    const { accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId } = req.body;
-    const query = `
-      UPDATE accessory
-      SET
-        accessoryName = ?,
-        accessoryDescription = ?,
-        accessoryColor = ?,
-        accessoryQuantity = ?,
-        accessoryPrice = ?,
-        categoryId = ?
-      WHERE accessoryID = ?
-    `;
-    connection.query(query, [accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId, accessoryId], (err, result) => {
-        if (err) {
-            console.error('Error updating accessory:', err);
-            res.status(500).json({ error: 'Error updating accessory' });
-            return;
-        }
-        if (result.affectedRows === 0) {
-            res.status(404).json({ error: 'Accessory not found' });
-            return;
-        }
-        res.status(200).json({ message: 'Accessory updated successfully' });
-    });
+const getAccessoryById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const accessory = await AccessoryService.getAccessoryById(id);
+    if (accessory && accessory[0].length > 0) {
+      res.status(200).json(accessory[0][0]);
+    } else {
+      res.status(400).json({ error: "Accessory not found" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
 };
-  
 
-const deleteAccessory = (req, res) => {
-    try {
-      const accessoryId = req.params.id;
-  
-      if (!accessoryId) {
-        return res.status(400).json({ error: "Accessory ID is required." });
-      }
-  
-      const query = "DELETE FROM accessory WHERE accessoryId = ?";
-      connection.query(query, [accessoryId], (err, result) => {
-        if (err) {
-          console.error("Error deleting accessory:", err);
-          return res.status(500).json({ error: "Failed to delete accessory." });
-        }
-  
-        if (result.affectedRows === 0) {
-          return res.status(404).json({ error: "Accessory not found." });
-        }
-  
-        res.json({ message: "Accessory deleted successfully." });
+const addAccessory = async (req, res) => {
+  try {
+    const result = await AccessoryService.addAccessory(req.body);
+    if (result) {
+      console.log("Accessory added successfully", {
+        id: result[0][0].insertId,
+        ...req.body,
       });
-    } catch (error) {
-      console.error("Error in deleteAccessory function:", error);
-      res.status(500).json({ error: "Internal server error." });
+      res.status(201).json({
+        message: "Accessory added successfully",
+        id: result[0][0].insertId,
+        ...req.body,
+      });
+    } else {
+      res.status(400).json({ error: "Error adding accessory" });
     }
-  };
-  
-// const getSizeId = (req, res) => {
-//     const query = "SELECT * FROM sizesaccessories WHERE accessoryId";
-//     connection.query(query, (err, result) => {
-//         if (err) {
-//             console.log(err);
-//         } else {
-//             res.send(result);
-//         }
-//     });
-// };
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
 
-// const getSizes = (req, res) => {
-//   // Get sizeIds from the request body
-//   const { sizeIds } = req.body; // Assuming you're sending the array of sizeIds in the request body
+const updateAccessory = async (req, res) => {
+  try {
+    const result = await AccessoryService.updateAccessory(
+      req.params.id,
+      req.body
+    );
+    if (result && result[0][0].affectedRows > 0) {
+      res.status(200).json({ message: "Accessory updated successfully" });
+    } else {
+      res.status(400).json({ error: "Error updating accessory" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//   // Check if sizeIds is provided and is an array
-//   if (!sizeIds || !Array.isArray(sizeIds) || sizeIds.length === 0) {
-//       return res.status(400).json({ message: 'No sizeIds provided' });
-//   }
-
-//   // Create SQL query to fetch sizes based on multiple sizeIds using IN clause
-//   const query = `SELECT * FROM sizesaccessories WHERE sizeId IN (?)`;
-
-//   // Execute the query with sizeIds as the parameter
-//   connection.query(query, [sizeIds], (err, result) => {
-//       if (err) {
-//           console.log(err);
-//           return res.status(500).json({ message: 'Error fetching sizes' });
-//       } else {
-//           res.send(result); // Send the result back to the client
-//       }
-//   });
-// };
-
-
-// Modified getSizeId API to fetch sizeIds based on accessoryId
-// const getSizeId = (req, res) => {
-//   const accessoryId = req.params.accessoryId; // Get accessoryId from the request parameters
-//   const query = "SELECT sizeId FROM sizesaccessories WHERE accessoryId = ?";
-
-//   connection.query(query, [accessoryId], (err, result) => {
-//       if (err) {
-//           console.log(err);
-//           return res.status(500).json({ message: 'Error fetching sizeIds' });
-//       } else {
-//           // Extract sizeIds into an array from the result
-//           const sizeIds = result.map(row => row.sizeId);
-//           res.send(sizeIds); // Send the array of sizeIds to the client
-//       }
-//   });
-// };
+const deleteAccessory = async (req, res) => {
+  try {
+    const result = await AccessoryService.deleteAccessory(req.params.id);
+    if (result && result[0][0].affectedRows > 0) {
+      res.status(200).json({ message: "Accessory deleted successfully" });
+    } else {
+      res.status(400).json({ error: "Error deleting accessory" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
 
 const getSizeId = (req, res) => {
   const accessoryId = req.params.id;
-  console.log("Accessory ID received:", accessoryId); // Debugging log
-  
-  const query = "SELECT sizeId FROM sizesaccessories WHERE accessoryId = ?";
-
+  const query = "SELECT sizeId FROM stock WHERE accessoryId = ?";
   connection.query(query, [accessoryId], (err, result) => {
     if (err) {
       console.error("Error fetching sizeIds:", err);
-      return res.status(500).json({ message: 'Error fetching sizeIds' });
+      return res.status(500).json({ message: "Error fetching sizeIds" });
     } else {
       if (result.length > 0) {
-        const sizeIds = result.map(row => row.sizeId);
-        res.json(sizeIds);
+        const sizeIds = result.map((row) => row.sizeId);
+        res.status(200).json(sizeIds);
       } else {
-        res.json([]); 
+        res.status(400).json({ message: "No items found" });
       }
     }
   });
 };
-
 
 const getSizes = (req, res) => {
   const query = "SELECT * FROM sizes";
   connection.query(query, (err, result) => {
     if (err) {
       console.error("Error fetching sizes:", err);
-      return res.status(500).json({ message: 'Error fetching sizes' });
+      return res.status(500).json({ message: "Error fetching sizes" });
     } else {
-      console.log(result);
-      res.send(result);
+      res.status(200).send(result);
     }
   });
 };
 
+const addToFavorites = async (req, res) => {
+  const { aid: accessoryId, cid: customerId } = req.params; // Get accessoryId and customerId from URL
 
-  const addToFavorites = async (req, res) => {
-    const { aid: accessoryId, cid: customerId } = req.params; // Get accessoryId and customerId from URL
-  
-      // // Validation
+  // // Validation
   // if (!customerId || !accessoryId) {
   //   return res.status(400).json({ message: 'Please provide both customerId and accessoryId.' });
   // }
 
-    try {
-      // Insert the favorite into your database
-      await connection.query('INSERT INTO favourites (customerId, accessoryId) VALUES (?, ?)', [customerId, accessoryId]);
-  
-      res.status(200).json({ message: 'Favorite added successfully!' });
-    } catch (error) {
-      console.error('Error adding favorite:', error);
-      res.status(500).json({ message: 'Failed to add favorite' });
-    }
-  };
-  
+  try {
+    // Insert the favorite into your database
+    await connection.query(
+      "INSERT INTO favourites (customerId, accessoryId) VALUES (?, ?)",
+      [customerId, accessoryId]
+    );
+
+    res.status(200).json({ message: "Favorite added successfully!" });
+  } catch (error) {
+    console.error("Error adding favorite:", error);
+    res.status(500).json({ message: "Failed to add favorite" });
+  }
+};
 
 const removeFromFavorites = async (req, res) => {
   const { customerId, accessoryId } = req.body;
 
-  try { deleteAccessory(customerId, accessoryId); }
-  catch (error) {
-    console.error('Error removing favorite:', error);
-    res.status(500).json({ message: 'Failed to remove favorite' });
+  try {
+    deleteAccessory(customerId, accessoryId);
+  } catch (error) {
+    console.error("Error removing favorite:", error);
+    res.status(500).json({ message: "Failed to remove favorite" });
   }
 };
 
-
 const addAccessoryToMyGiftbox = async (req, res) => {
-  const { giftboxId, accessoryId, qty = 1 } = req.body;
-
-  // check if the product has enough quantity for the accessory
-  const accessory = await connection.promise().query('SELECT * FROM accessory WHERE accessoryId = ?', [accessoryId]);
-  if(accessory.accessoryQuantity < qty && qty >= 1) {
-    return res.status(400).json({ message: 'Not enough quantity of accessory available' });
+  const { giftboxId, accessoryId, quantity, sizeId } = req.body;
+  if (!quantity || quantity < 1) {
+    return res.status(400).json({ message: "Quantity is required" });
   }
 
   if (!giftboxId || !accessoryId) {
-    return res.status(400).json({ message: 'Giftbox ID and Accessory ID are required' });
+    return res
+      .status(400)
+      .json({ message: "Giftbox ID and Accessory ID are required" });
+  }
+
+  if (!sizeId) {
+    sizeId = 1;
+  }
+
+  // check if the product has enough quantity for the accessory
+  const query = "SELECT * FROM stock WHERE accessoryId = ? AND sizeId = ?";
+  const [stock] = await connection
+    .promise()
+    .query(query, [accessoryId, sizeId]);
+  if (stock.length === 0 || stock[0].stockQuantity < quantity) {
+    return res
+      .status(400)
+      .json({ message: "Not enough stock for the accessory" });
   }
 
   try {
     // Check if the giftbox exists
-    const giftboxQuery = 'SELECT * FROM giftbox WHERE giftboxId = ?';
-    const [giftbox] = await connection.promise().query(giftboxQuery, [giftboxId]);
+    const giftboxQuery = "SELECT * FROM giftbox WHERE giftboxId = ?";
+    const [giftbox] = await connection
+      .promise()
+      .query(giftboxQuery, [giftboxId]);
 
     if (giftbox.length === 0) {
-      return res.status(404).json({ message: 'Giftbox not found' });
+      return res.status(404).json({ message: "Giftbox not found" });
     }
 
-    // Check if the accessory exists
-    const accessoryQuery = 'SELECT * FROM accessory WHERE accessoryId = ?';
-    const [accessory] = await connection.promise().query(accessoryQuery, [accessoryId]);
+    // Check if the accessory, giftbox combination already exists, if so, update the quantity
+    const checkQuery = `SELECT * FROM giftboxaccessories WHERE giftboxId = ? AND accessoryId = ? AND sizeId = ?`;
+    const [checkResult] = await connection
+      .promise()
+      .query(checkQuery, [giftboxId, accessoryId, sizeId]);
 
-    if (accessory.length === 0) {
-      return res.status(404).json({ message: 'Accessory not found' });
+    if (checkResult.length > 0) {
+      // True if the accessory is already in the giftbox, then update the quantity
+
+      const updateQuery = `UPDATE giftboxaccessories SET quantity = quantity + ? WHERE giftboxId = ? AND accessoryId = ? AND sizeId = ?`;
+
+      const updateResult = await connection
+        .promise()
+        .query(updateQuery, [quantity, giftboxId, accessoryId, sizeId]);
+
+      if (updateResult[0].affectedRows === 0) {
+        return res
+          .status(400)
+          .json({ message: "Error updating accessory quantity in giftbox" });
+      } else {
+        // Reduce the quantity from the stock
+        const stockQuery = `UPDATE stock SET quantity = quantity - ? WHERE accessoryId = ? AND sizeId = ?`;
+        await connection
+          .promise()
+          .query(stockQuery, [quantity, accessoryId, sizeId]);
+        res.status(200).json({
+          message: "Accessory quantity updated in giftbox successfully",
+          ...req.body,
+        });
+        console.log("Accessory quantity updated in giftbox successfully", {
+          ...req.body,
+        });
+      }
+    } else {
+      const insertQuery = `INSERT INTO giftboxaccessories (giftboxId, accessoryId, quantity,sizeId) VALUES (?, ?, ?,?)`;
+
+      // Insert the accessory into the giftbox
+      const result = await connection
+        .promise()
+        .query(insertQuery, [giftboxId, accessoryId, quantity,sizeId]);
+
+      if (result[0].affectedRows === 0) {
+        return res
+          .status(400)
+          .json({ message: "Error adding accessory to giftbox" });
+      } else {
+        // Reduce the quantity from the stock
+        const stockQuery = `UPDATE stock SET quantity = quantity - ? WHERE accessoryId = ? AND sizeId = ?`;
+        await connection
+          .promise()
+          .query(stockQuery, [quantity, accessoryId, sizeId]);
+        res.status(200).json({
+          message: "Accessory added to giftbox successfully",
+          id: result[0].insertId,
+          ...req.body,
+        });
+        console.log("Accessory added to giftbox successfully", {
+          id: result[0].insertId,
+          ...req.body,
+        });
+      }
     }
-
-    // Log SQL insert query for debugging
-    const insertQuery = `INSERT INTO giftboxaccessories (giftboxId, accessoryId) VALUES (?, ?)`;
-    console.log("Insert Query:", insertQuery, [giftboxId, accessoryId]);
-
-    // Insert the accessory into the giftbox
-    await connection.promise().query(insertQuery, [giftboxId, accessoryId]);
-
-    res.status(200).json({ message: 'Accessory added to giftbox successfully' });
   } catch (error) {
-    console.error('Error adding accessory to giftbox:', error); // Detailed error logging
-    res.status(500).json({ message: 'Internal server error', error: error.message });
+    console.error("Error adding accessory to giftbox:", error); // Detailed error logging
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
+const getSizeBySizeId = async (req, res) => {
+  try {
+    const result = await AccessoryService.getSizeBySizeId(req.params.id);
+    if (accessories) {
+      res.status(200).json(accessories[0]);
+    }
+  } catch (error) {
+    console.error("Error fetching accessories:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
-
-
-export { getAccessory, getAccessoryById, addAccessory, updateAccessory, deleteAccessory, getSizeId, getSizes, addToFavorites, removeFromFavorites, addAccessoryToMyGiftbox };
+export {
+  getAccessory,
+  getAccessoryById,
+  addAccessory,
+  updateAccessory,
+  deleteAccessory,
+  getSizeId,
+  getSizes,
+  addToFavorites,
+  removeFromFavorites,
+  addAccessoryToMyGiftbox,
+  getSizeBySizeId,
+};

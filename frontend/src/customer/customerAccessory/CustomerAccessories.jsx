@@ -161,6 +161,7 @@ const CustomerAccessories = () => {
   }, []);
 
   const getRandomAccessories = (accessories, count) => {
+    // Shuffle the array
     const shuffled = accessories.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };

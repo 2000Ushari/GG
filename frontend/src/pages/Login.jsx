@@ -120,18 +120,32 @@ export default function Login() {
     password: "",
   });
 
+  const roleAuth = (userRole) => {
+    switch (userRole) {
+      case "admin":
+        navigate("/admin/home");//from app.js
+        break;
+      case "customer":
+        navigate("/customer/home");
+        break; //add employee here
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/auth/authenticated")
       .then((res) => {
         if (res.data.authenticated) {
-          
           setUserRole(res.data.user.role);
+          roleAuth(res.data.user.role); // Since user is already authenticated, navigate to respective page
         }
       })
       .catch((err) => {
         console.log(err);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   axios.defaults.withCredentials = true;
@@ -151,28 +165,6 @@ export default function Login() {
       .catch((error) => {
         console.error(error);
       });
-  };
-  
-  const roleAuth = (userRole) => {
-    switch (userRole) {
-      case "admin":
-        navigate("/admin/home");//from app.js
-        break;
-      case "customer":
-        navigate("/customer/home");
-        break; //add employee here
-      // case "supplier": 
-      //   navigate("/supplier/home");
-      //   break;
-      // case "bailer":
-      //   navigate("/bailer/home");
-      //   break;
-      // case "driver":
-      //   navigate("/driver/home");
-      //   break;
-      default:
-        break;
-    }
   };
   
   const handleChange = (prop) => (event) => {
@@ -224,10 +216,6 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
               onChange={handleChange("password")}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"

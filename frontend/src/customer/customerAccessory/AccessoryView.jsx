@@ -364,9 +364,11 @@ import AccessorySizes from "./AccessorySizes"
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 function AccessoryView() {
-  const { navigate } = useNavigate();
+  const {navigate } = useNavigate();
   const [customerId, setCustomerId] = useState(null);
-  const { accessoryId } = useParams();
+  const {accessoryId } = useParams();
+  const [quantity, setQuantity] = React.useState(1);
+  const [selectedSizeId, setSelectedSizeId] = React.useState(null); // State to hold the selected sizeId
   const [value, setValue] = React.useState(2);
   const [accessory, setAccessory] = useState(null); // Ensure null as initial state to check loading
   const [tabValue, setTabValue] = React.useState(0);
@@ -379,11 +381,11 @@ function AccessoryView() {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
-          // setUser(res.data.user); // Set user data if authenticated
-          setCustomerId(res.data.user.id);
-        } else {
-          navigate("/login"); // Redirect to login if not authenticated
+        console.log(res.data);
+        if (res.data.authenticated) {
+          if(res.data.user.role === "customer"){
+            setCustomerId(res.data.user.id);
+          }
         }
       })
       .catch((err) => {
@@ -402,7 +404,7 @@ function AccessoryView() {
           throw new Error("Failed to fetch accessory details");
         }
         const data = await response.json();
-        setAccessory(data); // Update the state with fetched data
+        setAccessory(data);
       } catch (error) {
         console.error("Error fetching accessory details:", error);
       }
@@ -421,6 +423,11 @@ function AccessoryView() {
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const handleSizeClick = (sizeId) => {
+    setSelectedSizeId(sizeId);
+    console.log('Selected Size ID:', sizeId);
   };
 
   return (
@@ -474,7 +481,13 @@ function AccessoryView() {
                         >
                           {accessory.accessoryDescription}
                         </Typography>
-                        <AccessorySizes accessoryId={accessory.accessoryId} />
+
+                        {/* Pass the handleSizeSelect function to AccessorySizes */}
+                        <AccessorySizes
+                          accessoryId={accessory.accessoryId}
+                          onSizeClick={handleSizeClick}
+                        />
+                        
                         <Stack direction="row" spacing={3}>
                           <TextField
                             id="outlined-number"
@@ -485,6 +498,7 @@ function AccessoryView() {
                               shrink: true,
                             }}
                             defaultValue={1}
+                            onChange={(e) => setQuantity(e.target.value)}
                             InputProps={{ inputProps: { min: 1 } }}
                           />
                           <IconButton aria-label="add to favorites">
@@ -509,6 +523,8 @@ function AccessoryView() {
                             closeEvent={handleCloseAddToGiftboxModal}
                             customerId={customerId}
                             accessoryId={accessoryId}
+                            quantity={quantity}
+                            sizeId={selectedSizeId}
                           />
                         </Stack>
                       </Stack>

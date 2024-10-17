@@ -371,7 +371,7 @@ export default function CustomerHome() {
       .then((res) => {
         if (res.data.authenticated && res.data.user.role === "customer") {
           setUser(res.data.user); // Set user data if authenticated
-          customerId(res.data.user.id);
+          setCustomerId(res.data.user.id);
         } else {
           navigate("/login"); // Redirect to login if not authenticated
         }
@@ -384,7 +384,6 @@ export default function CustomerHome() {
   // Fetch user details based on customerId
   useEffect(() => {
     if (customerId) {
-      console.log("Badu ganna yanwaaa");
       const fetchUserDetails = async () => {
         try {
           const response = await axios.get(
@@ -395,7 +394,6 @@ export default function CustomerHome() {
             throw new Error("Failed to fetch user details");
           }
           const data = await response.json();
-          console.log("Badu awaaaa");
           setUserDetails(data);
           setUserDetails(response.data);
         } catch (error) {
@@ -405,7 +403,7 @@ export default function CustomerHome() {
 
       fetchUserDetails();
     }
-  }, []);
+  }, [customerId]);
 
   // Logout function
   const handleLogout = () => {
@@ -441,17 +439,17 @@ export default function CustomerHome() {
         <Box sx={{ display: "flex" }}>
           <CustomerSidenav />
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <Grid container spacing={1}>
-              <Box sx={{ display: "flex" }}>
-                <Grid item xs={8}>
+            <Grid container spacing={1} sx={{justifyContent: "center"}}>
+              <Box sx={{ display: "flex"}}>
+                <Grid item xs={12}>
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <CustomerCarousal />
                   </Box>
                   <br />
                 </Grid>
-                <Grid item xs={4}>
+                {/* <Grid item xs={4}>
                   <AccordianDash />
-                </Grid>
+                </Grid> */}
               </Box>
               <Grid item xs={12}>
                 <CategoryTiles />

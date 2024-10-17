@@ -472,7 +472,7 @@ import Stack from "@mui/material/Stack";
 import axios from "axios";
 import ShowMyGiftboxCard from "./ShowMyGiftboxCard";
 
-function AddToGiftbox({ open, closeEvent, customerId, accessoryId }) {  
+function AddToGiftbox({ open, closeEvent, customerId, accessoryId, quantity, sizeId }) {  
   const navigate = useNavigate();
   const [myGiftboxes, setMyGiftboxes] = useState([]);
 
@@ -486,16 +486,13 @@ function AddToGiftbox({ open, closeEvent, customerId, accessoryId }) {
           );
   
           if (response.status === 200) {
-            console.log("Giftboxes fetched successfully:", response.data);
-            setMyGiftboxes(response.data); // Update the state with fetched data
+            setMyGiftboxes(response.data);
           } else {
             console.error("Failed to fetch giftbox details:", response);
           }
         } catch (error) {
           console.error("Error fetching giftbox details:", error);
         }
-      } else {
-        console.log("customerId is not available yet.");
       }
     };
   
@@ -546,11 +543,13 @@ function AddToGiftbox({ open, closeEvent, customerId, accessoryId }) {
           My Gift Boxes
         </Typography>
 
-        {/* Pass accessoryId as a prop to ShowMyGiftboxCard */}
         <ShowMyGiftboxCard 
-          key={myGiftboxes.giftboxId} 
-          giftboxDetails={myGiftboxes} 
+          key={myGiftboxes.giftboxId}
+          // get the giftbox details by the giftboxId
+          giftboxDetails={myGiftboxes}
           selectedAccessory={accessoryId}  // Pass accessoryId as selectedAccessory
+          selectedQuantity={quantity} // Pass quantity as selectedQuantity
+          selectedSizeId={sizeId} // Pass sizeId as selectedSizeId
         />
 
         <Grid item xs={12}>

@@ -464,7 +464,7 @@
 import React, { useState, useEffect } from 'react';
 import { RadioGroup, Radio, FormControl, FormControlLabel, FormLabel } from '@mui/material';
 
-function AccessorySizes({ accessoryId, onAccessoryClick }) {  // Added onAccessoryClick for handling click event
+function AccessorySizes({ accessoryId, onSizeClick }) {  // Added onSizeClick for handling click event
   const [sizeIds, setSizeIds] = useState([]);  // To store sizeIds fetched from accessory
   const [sizes, setSizes] = useState([]);      // To store size details fetched using sizeIds
   const [loading, setLoading] = useState(true);
@@ -473,13 +473,13 @@ function AccessorySizes({ accessoryId, onAccessoryClick }) {  // Added onAccesso
   // Step 1: Fetch the sizeIds for the selected accessory
   useEffect(() => {
     const fetchSizeIds = async () => {
+      setLoading(true);
       try {
         const response = await fetch(`http://localhost:3001/api/accessory/getSizeId/${accessoryId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch accessory size IDs");
         }
         const data = await response.json();
-        console.log("Fetched size IDs:", data);  // Check if the correct array is being fetched
         setSizeIds(data);  // Store the sizeIds
         setLoading(false);
       } catch (err) {
@@ -495,7 +495,7 @@ function AccessorySizes({ accessoryId, onAccessoryClick }) {  // Added onAccesso
   // Step 2: Fetch the actual sizes from the Sizes table based on the sizeIds
   useEffect(() => {
     if (sizeIds.length === 0) return;  // Avoid fetching if no sizeIds
-
+    setLoading(true);
     const fetchSizes = async () => {
       try {
         const response = await fetch(`http://localhost:3001/api/accessory/getSizes/all`);
@@ -504,22 +504,16 @@ function AccessorySizes({ accessoryId, onAccessoryClick }) {  // Added onAccesso
         }
 
         const allSizes = await response.json();
-        console.log("All sizes:", allSizes);  // Debug all sizes
-
         // Filter the sizes to include only those with IDs in sizeIds
         const availableSizes = allSizes.filter(size => sizeIds.includes(size.sizeId));
-        console.log("Filtered available sizes:", availableSizes);  // Debug filtered sizes
-
         setSizes(availableSizes);  // Store the filtered sizes
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching sizes:", error);
         setError(error.message);
-        setLoading(false);
       }
     };
-
     fetchSizes();
+    setLoading(false);
   }, [sizeIds]);  // Re-fetch sizes whenever sizeIds are updated
 
   // Loading or Error state handling
@@ -536,26 +530,33 @@ function AccessorySizes({ accessoryId, onAccessoryClick }) {  // Added onAccesso
     return(null);
   }
 
+
+
   // Step 4: Render the available sizes as radio buttons
   return (
     <FormControl>
       <FormLabel id="size-radio-buttons-group-label">
         Choose Size
       </FormLabel>
+      {!sizeIds.includes(1)?
       <RadioGroup
         row
         aria-labelledby="size-radio-buttons-group-label"
         name="size-radio-buttons-group"
       >
+        
         {sizes.map((size) => (
           <FormControlLabel
             key={size.sizeId}  // Ensure you have a unique key for each size
             value={size.size}  // Use the actual size value from the API response
             control={<Radio />}
             label={size.size}  // Display the size (e.g., 'XS', 'S', 'M', etc.)
+            //when selected on one size,the selected sizeId will be passed to the parent component
+            onClick={() => onSizeClick(size.sizeId)}
           />
         ))}
       </RadioGroup>
+      :"N/A"}
     </FormControl>
   );
 }

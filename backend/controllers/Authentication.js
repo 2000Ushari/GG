@@ -47,8 +47,6 @@ export const initialRegister = (req, res) => {
     });
   };
 
-
-
   export const login = (req, res) => {
     const sql = "SELECT * FROM users WHERE userEmail = ?";
     connection.query(sql, [req.body.email], (err, data) => {
@@ -91,36 +89,9 @@ export const initialRegister = (req, res) => {
       return res.json({ logout: true });
     });
   };
-  
-  // export const getUserDetails = (req, res) => {
-  //   const userId = req.params.id; // Get user ID from request parameters
-  //   // Fetch user details from the database
-  //   User.findById(userId, (err, user) => {
-  //     if (err) {
-  //       return res.status(500).json({ error: 'Failed to fetch user details' });
-  //     }
-  //     return res.json(user);
-  //   });
-  // };
-
-  // const getUserDetails = (req, res) => {
-  //   console.log("getUserDetails");
-  //     const id = req.params.id;
-  //     console.log(id);
-  //     const query = "SELECT * FROM user WHERE userId = ?";
-  //     connection.query(query, [id], (err, result) => {
-  //         if (err) {
-  //             console.log(err);
-  //         } else {
-  //             res.json(result[0]);        }
-  //     });
-  // };
 
   export const getUserDetails = (req, res) => {
-    console.log("getUserDetails");
     const id = req.params.id;
-    console.log(id);
-  
     const userQuery = "SELECT * FROM users WHERE userId = ?";
     connection.query(userQuery, [id], (err, userResult) => {
       if (err) {
