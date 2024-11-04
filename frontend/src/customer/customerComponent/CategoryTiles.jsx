@@ -351,8 +351,8 @@ const CustomerOrders = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
-    slidesToShow: 5,
+    speed: 400,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
@@ -437,9 +437,9 @@ const CustomerOrders = () => {
 
   return (
     <>
-      <Box maxWidth={1300} mx="auto">
-        <Typography variant="h4" align="center" gutterBottom>
-          Carousel
+      <Box maxWidth={1200} mx="auto">
+        <Typography variant="h5" align="center" gutterBottom backgroundColor="lightgrey" padding ="10px" borderRadius={2}>
+          Categories
         </Typography>
         <Slider {...settings}>
           {images.map((image) => (

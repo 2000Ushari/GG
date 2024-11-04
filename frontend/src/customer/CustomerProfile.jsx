@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button } from '@mui/material';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Box, TextField, Button } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import NavbarCustomerAfterSignedIn from "./customerComponent/NavbarCustomerAfterSignedIn";
+import CustomerSidenav from "./customerComponent/CustomerSidenav";
 
 const CustomerProfile = ({ userDetails, onSave }) => {
-  const [customerDetails, setCustomerDetails] = useState(userDetails.roleDetails);
+  const [customerDetails, setCustomerDetails] = useState(
+    userDetails.roleDetails
+  );
   const navigate = useNavigate();
 
   // Authentication check
@@ -36,61 +40,71 @@ const CustomerProfile = ({ userDetails, onSave }) => {
   };
 
   return (
-    <Box>
-      <h3>Your Details</h3>
-      <TextField
-        label="First Name"
-        name="customerFirstName"
-        value={customerDetails.customerFirstName}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      <TextField
-        label="Last Name"
-        name="customerLastName"
-        value={customerDetails.customerLastName}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      <TextField
-        label="Date of Birth"
-        name="customerDob"
-        value={customerDetails.customerDob || ''}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      <TextField
-        label="Contact"
-        name="customerContact"
-        value={customerDetails.customerContact || ''}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      <TextField
-        label="Address"
-        name="customerAddress"
-        value={customerDetails.customerAddress || ''}
-        onChange={handleChange}
-        sx={{ width: '82.5%', m: 2 }}
-      />
-      <TextField
-        label="City"
-        name="customerAddressCity"
-        value={customerDetails.customerAddressCity || ''}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      {/* This should be a dropdown, at should be retrieved from the delivery_district table in DB*/}
-      <TextField
-        label="District"
-        name="customerAddressDistrict"
-        value={customerDetails.deliveryDistrictId|| ''}
-        onChange={handleChange}
-        sx={{ width: '40%', m: 2 }}
-      />
-      <br/>
-      <Button sx ={ { m: 2 } } variant="contained" onClick={handleSave}>Save</Button>
-    </Box>
+    <>
+      <NavbarCustomerAfterSignedIn />
+      <Box height={30} />
+      <Box>
+        <CustomerSidenav />
+        <Box marginLeft={50}></Box>
+        <Box>
+          <h3>Your Details</h3>
+          <TextField
+            label="First Name"
+            name="customerFirstName"
+            value={customerDetails.customerFirstName}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          <TextField
+            label="Last Name"
+            name="customerLastName"
+            value={customerDetails.customerLastName}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          <TextField
+            label="Date of Birth"
+            name="customerDob"
+            value={customerDetails.customerDob || ""}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          <TextField
+            label="Contact"
+            name="customerContact"
+            value={customerDetails.customerContact || ""}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          <TextField
+            label="Address"
+            name="customerAddress"
+            value={customerDetails.customerAddress || ""}
+            onChange={handleChange}
+            sx={{ width: "82.5%", m: 2 }}
+          />
+          <TextField
+            label="City"
+            name="customerAddressCity"
+            value={customerDetails.customerAddressCity || ""}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          {/* This should be a dropdown, at should be retrieved from the delivery_district table in DB*/}
+          <TextField
+            label="District"
+            name="customerAddressDistrict"
+            value={customerDetails.deliveryDistrictId || ""}
+            onChange={handleChange}
+            sx={{ width: "40%", m: 2 }}
+          />
+          <br />
+          <Button sx={{ m: 2 }} variant="contained" onClick={handleSave}>
+            Save
+          </Button>
+        </Box>
+      </Box>
+    </>
   );
 };
 

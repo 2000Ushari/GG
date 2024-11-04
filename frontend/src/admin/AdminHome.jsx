@@ -17,6 +17,8 @@ import AdminSidenav from "./adminComponents/AdminSidenav";
 import AdminNavbar from "./adminComponents/AdminNavbar";
 import AccordianDash from "../components/AccordianDash";
 import "../Dash.css";
+import FigureCards from "./adminComponents/FigureCards";
+import Chart from "./adminDashboard/Chart";
 
 
 
@@ -50,114 +52,14 @@ export default function AdminHome() {
         <Box sx={{ display: "flex" }}>
           <AdminSidenav />
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={8}>
-                <Card sx={{ height: 100 + "vh", flexGrow: 1 }}>
-                  <CardContent>
-
-                  </CardContent>
-                </Card>
-                <br />
-
-                <Stack spacing={2} direction={"row"}>
-                  <Card
-                    sx={{ minWidth: 49 + "%", height: 200 }}
-                    className="gradient"
-                  >
-                    <CardContent>
-                      <div className="iconstyle">
-                        <CreditCardIcon />
-                      </div>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{ color: "#ffffff" }}
-                      >
-                        $500.00
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="div"
-                        sx={{ color: "#ccd1d1" }}
-                      >
-                        Total Earning
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Share</Button>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
-                  </Card>
-                  <Card
-                    sx={{ minWidth: 49 + "%", height: 200 }}
-                    className="gradientlight"
-                  >
-                    <CardContent>
-                      <div className="iconstyle">
-                        <ShoppingBagIcon />
-                      </div>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{ color: "#ffffff" }}
-                      >
-                        $900.00
-                      </Typography>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="div"
-                        sx={{ color: "#ccd1d1" }}
-                      >
-                        Total Order
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Share</Button>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
-                  </Card>
-                </Stack>
-              </Grid>
-
-              <Grid item xs={4}>
-                <Stack spacing={2}>
-                  <Card className="gradientlight">
-                    <Stack spacing={2} direction="row">
-                      <div className="iconstyle">
-                        <StorefrontIcon />
-                      </div>
-                      <div className="paddingall">
-                        <span className="pricetitle">$203K</span>
-                        <br />
-                        <span className="pricesubtitle">Total Income</span>
-                      </div>
-                    </Stack>
-                  </Card>
-                  <Card sx={{ maxWidth: 345 }}>
-                    <Stack spacing={2} direction="row">
-                      <div className="iconstyleblack">
-                        <StorefrontIcon />
-                      </div>
-                      <div className="paddingall">
-                        <span className="pricetitle">$203K</span>
-                        <br />
-                        <span className="pricesubtitle">Total Income</span>
-                      </div>
-                    </Stack>
-                  </Card>
-                </Stack>
-              </Grid>
-            </Grid>
+            
+          <FigureCards/>
             <Box height={20} />
             <Grid container spacing={2}>
               <Grid item xs={8}>
                 <Card sx={{ height: 200 + "vh" }}>
                   <CardContent>
-    
+    <Chart />
                   </CardContent>
                 </Card>
               </Grid>

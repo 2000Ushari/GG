@@ -128,7 +128,10 @@ export default function Login() {
       case "customer":
         navigate("/customer/home");
         break; //add employee here
-      default:
+        case "employee":
+          navigate("/employee/home");
+          break;
+      default: 
         break;
     }
   };

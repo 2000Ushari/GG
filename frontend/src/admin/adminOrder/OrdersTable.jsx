@@ -11,13 +11,6 @@ import TableRow from "@mui/material/TableRow";
 import { Divider, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Modal from "@mui/material/Modal";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import DoneIcon from '@mui/icons-material/Done';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -36,7 +29,7 @@ const style = {
   p: 4,
 };
 
-export default function OrderList( closeEvent) {
+export default function OrderTable( closeEvent) {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

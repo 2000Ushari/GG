@@ -442,9 +442,13 @@ export default function CustomerHome() {
             <Grid container spacing={1} sx={{justifyContent: "center"}}>
               <Box sx={{ display: "flex"}}>
                 <Grid item xs={12}>
-                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+ 
+                  <Card sx={{ height: 85 + "vh", flexGrow: 1 }}>
+                  <CardContent align="center"  >
                     <CustomerCarousal />
-                  </Box>
+                    </CardContent>
+                </Card>
+     
                   <br />
                 </Grid>
                 {/* <Grid item xs={4}>

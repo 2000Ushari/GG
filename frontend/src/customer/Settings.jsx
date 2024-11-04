@@ -13,7 +13,9 @@ function Settings() {
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <h1>Settings</h1>
-
+<h6>Payment methods</h6>
+<h6>shipping addresses</h6>
+<h6>other settings</h6>
         </Box>
       </Box>
     </>

@@ -333,9 +333,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
+import {Card,CardMedia} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
@@ -352,6 +350,8 @@ import TextField from "@mui/material/TextField";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 
 import CustomerAccessories from "../customerAccessory/CustomerAccessories";
 import AddToGiftbox from "../customerGiftbox/AddToGiftbox";
@@ -373,19 +373,23 @@ function AccessoryView() {
   const [accessory, setAccessory] = useState(null); // Ensure null as initial state to check loading
   const [tabValue, setTabValue] = React.useState(0);
   const [openAddToGiftboxModal, setOpenAddToGiftboxModal] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [customerIdToCheckFav, setCustomerIdToCheckFav] = useState(null);
 
-   // Authentication check
-   useEffect(() => {
+
+  // Authentication check
+  useEffect(() => {
     axios
       .get("http://localhost:3001/api/auth/authenticated", {
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.authenticated) {
-          if(res.data.user.role === "customer"){
-            setCustomerId(res.data.user.id);
-          }
+        if (res.data.authenticated && res.data.user.role === "customer") {
+          setCustomerId(res.data.user.id); // Set user ID if authenticated
+          setUserId(res.data.user.id);//to check if favorite onlu. don't use this for other purposes
+        } else {
+          navigate("/login"); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -393,12 +397,108 @@ function AccessoryView() {
       });
   }, [navigate]);
 
+  // Fetch customerId using userId to check whether the selected accessory is a favorite. Do not do anything other than that from this function
+  useEffect(() => {
+    if (userId) {
+      getCustomerIdByUserId(userId);
+    }
+  }, [userId]);
+
+  // Fetch customerId by userId
+  const getCustomerIdByUserId = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/user/getCustomerIdByUserId/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch customer ID");
+      }
+      const data = await response.json();
+      setCustomerIdToCheckFav(data.customerId); // Set customerId state
+      console.log("Customer ID to check Fav:", data.customerIdToCheckFav);
+    } catch (error) {
+      console.error("Error fetching customer ID:", error);
+    }
+  };
+  useEffect(() => {
+    if (customerIdToCheckFav) {
+      getCustomerIdByUserId(customerIdToCheckFav);
+    }
+  }, [customerIdToCheckFav]);
+
+  useEffect(() => {
+    // Check if the accessory is already in the user's favorites when the component loads
+    const checkIfFavorite = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/accessory/checkIfFavorite/${customerIdToCheckFav}/${accessoryId}`,
+          { method: 'GET' }
+        );
+        console.log('Response:', response);
+        const data = await response.json();
+        setIsFavorite(data.isFavorite); // Assuming the API returns { isFavorite: true/false }
+      } catch (error) {
+        console.error('Error checking if accessory is favorite:', error);
+      }
+    };
+
+    checkIfFavorite();
+  }, [customerIdToCheckFav, accessoryId]);
+
+  
+  const handleAddOrRemoveFromFavorites = async () => {
+    try {
+      const action = isFavorite ? 'remove from' : 'add to';
+      const result = await Swal.fire({
+        title: `${isFavorite ? 'Remove from Favorites?' : 'Add to Favorites?'}`,
+        text: `Do you want to ${action} favorites?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: `Yes, ${isFavorite ? 'remove' : 'add'} it!`,
+        cancelButtonText: 'No, cancel',
+      });
+  
+      if (result.isConfirmed) {
+        const endpoint = isFavorite
+          ? 'http://localhost:3001/api/accessory/removeFromFavorites'
+          : 'http://localhost:3001/api/accessory/addToFavorites';
+  
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerId: customerIdToCheckFav,
+            accessoryId: accessoryId,
+          }),
+        });
+  
+        // Check if the response is ok
+        if (!response.ok) {
+          const errorMessage = await response.text(); // Or response.json() depending on your API response
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+        }
+  
+        Swal.fire(
+          `${isFavorite ? 'Removed!' : 'Added!'}`,
+          `This accessory has been ${isFavorite ? 'removed from' : 'added to'} your favorites.`,
+          'success'
+        );
+  
+        setIsFavorite(!isFavorite);
+      }
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+      Swal.fire('Error!', `Could not ${isFavorite ? 'remove' : 'add'} the accessory to favorites. ${error.message}`, 'error');
+    }
+  };
 
   useEffect(() => {
     const fetchAccessory = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3001/api/accessory/${accessoryId}`
+          `http://localhost:3001/api/accessory/getAccessoryById/${accessoryId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch accessory details");
@@ -417,6 +517,8 @@ function AccessoryView() {
   if (!accessory) {
     return <div>Loading...</div>; // Show a loading state while data is being fetched
   }
+
+
 
   const handleOpenAddToGiftboxModal = () => setOpenAddToGiftboxModal(true);
   const handleCloseAddToGiftboxModal = () => setOpenAddToGiftboxModal(false);
@@ -473,7 +575,7 @@ function AccessoryView() {
                         <Typography variant="h6" color="text.secondary">
                           Rs. {accessory.accessoryPrice}
                         </Typography>
-                        <Rating name="read-only" value={value} readOnly />
+                        <Rating value={accessory.averageRating || 0} readOnly />
                         <Typography
                           variant="body2"
                           color="text.secondary"
@@ -501,13 +603,26 @@ function AccessoryView() {
                             onChange={(e) => setQuantity(e.target.value)}
                             InputProps={{ inputProps: { min: 1 } }}
                           />
-                          <IconButton aria-label="add to favorites">
+                          {/* <IconButton aria-label="add to favorites">
                             <Checkbox
                               {...label}
                               icon={<FavoriteBorder />}
                               checkedIcon={<Favorite color="error" />}
                             />
-                          </IconButton>
+                          </IconButton> */}
+                          <IconButton
+          aria-label="add to favorites"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddOrRemoveFromFavorites();
+          }}
+        >
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite color="error" />}
+            checked={isFavorite} // Check state to show favorite or not
+          />
+        </IconButton>
                         </Stack>
                         <Stack direction="column" spacing={5}>
                           <Button

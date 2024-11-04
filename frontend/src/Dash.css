@@ -21,14 +21,24 @@
     padding-left: 20px;
 }
 
-.gradient {
+.gradientbluish {
     background:rgb(40,34,70);
     background: linear-gradient(158deg, rgba(40,34,70,1) 0%, rgba(30,47,141,1) 100%);
 }
 
-.gradientlight {
+.gradientgreenish {
     background:rgb(40,34,70);
     background: linear-gradient(158deg, rgba(53,138,148,1) 0%, rgba(91,180,96,1) 100%);
+}
+
+.gradientyellowish {
+    background:rgb(40,34,70);
+    background: linear-gradient(158deg, rgb(46, 148, 42) 0%, rgb(148, 128, 42) 100%);
+}
+
+.gradientpurpleish {
+    background:rgb(40,34,70);
+    background: linear-gradient(158deg, rgb(42, 76, 148) 0%, rgb(114, 28, 163) 100%);
 }
 
 .bgcolor {
@@ -42,4 +52,75 @@
     z-index: 2000 !important; /* Ensure it's higher than Material-UI modal */
   }
 
+
+/* payment  */
+/* #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
   
+  .payment-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .form-row {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    color: #424770;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  button {
+    background: #5469d4;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 4px;
+    border: 0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  button:disabled {
+    background-color: #879fff;
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    background-color: #4a5fc1;
+  }
+  
+  .error {
+    color: #df1b41;
+    text-align: left;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+   */

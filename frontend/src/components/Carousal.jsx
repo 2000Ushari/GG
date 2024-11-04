@@ -205,7 +205,7 @@ function Carousal() {
   };
 
   return (
-    <Box sx={{ minWidth: 300, maxWidth: 720, minHeight: 200,maxHeight: 600, flexGrow: 1 }}>
+    <Box sx={{ minWidth: 400, maxWidth:1000, minHeight: 400,maxHeight: 800, flexGrow: 1 }}>
       <Paper
         square
         elevation={0}
@@ -231,7 +231,7 @@ function Carousal() {
               <Box
                 component="img"
                 sx={{
-                  height: 460,
+                  height: 600,
                   display: 'block',
                   minWidth: 500,
                   overflow: 'hidden',

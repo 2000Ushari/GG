@@ -20,31 +20,35 @@ import Images from "../components/Images";
 import Carousal from "../components/Carousal";
 import Countup from "react-countup";
 import NavbarCustomer from "../customer/customerComponent/Navbar";
+import CategoryTiles from "../customer/customerComponent/CategoryTiles";
+import CustomerFooter from "../customer/customerComponent/CustomerFooter";
 
 export default function Home() {
   return (
     <>
       <div className="bgcolor">
-        {/* <Navbar /> */}
         <NavbarCustomer />
-        <Box height={60} />
+        <Box height={50} />
         <Box sx={{ display: "flex" }}>
-          {/* <Sidenav /> */}
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={8}>
-
-                <Card sx={{ height: 100 + "vh", flexGrow: 1 }}>
-                  <CardContent>
+              <Grid item xs={12}>
+                <Card sx={{ height: 92 + "vh", flexGrow: 1 }}>
+                  <CardContent align="center">
                     <Carousal />
                   </CardContent>
                 </Card>
-                <br />
+              </Grid>
+              <br />
+              <Grid item xs={12}>
+                <CategoryTiles />
+              </Grid>
 
+              <Grid item xs={12}>
                 <Stack spacing={2} direction={"row"}>
                   <Card
                     sx={{ minWidth: 49 + "%", height: 200 }}
-                    className="gradient"
+                    className="gradientyellowish"
                   >
                     <CardContent>
                       <div className="iconstyle">
@@ -56,7 +60,7 @@ export default function Home() {
                         component="div"
                         sx={{ color: "#ffffff" }}
                       >
-                        $ <Countup delay ={0.4} end={500} duration={0.6}/>
+                        $ <Countup delay={0.4} end={500} duration={0.6} />
                       </Typography>
                       <Typography
                         gutterBottom
@@ -74,7 +78,7 @@ export default function Home() {
                   </Card>
                   <Card
                     sx={{ minWidth: 49 + "%", height: 200 }}
-                    className="gradientlight"
+                    className="gradientpurpleish"
                   >
                     <CardContent>
                       <div className="iconstyle">
@@ -87,7 +91,7 @@ export default function Home() {
                         sx={{ color: "#ffffff" }}
                       >
                         {/* $900.00 */}
-                        $ <Countup delay ={0.4} end={900} duration={0.6}/>
+                        $ <Countup delay={0.4} end={900} duration={0.6} />
                       </Typography>
                       <Typography
                         gutterBottom
@@ -105,10 +109,9 @@ export default function Home() {
                   </Card>
                 </Stack>
               </Grid>
-
               <Grid item xs={4}>
                 <Stack spacing={2}>
-                  <Card className="gradientlight">
+                  <Card className="gradientpurpleish">
                     <Stack spacing={2} direction="row">
                       <div className="iconstyle">
                         <StorefrontIcon />
@@ -178,8 +181,11 @@ export default function Home() {
                     </CardActions>
                   </Card>
                 </Box>
-                {/* ------------ */}
+                
               </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <CustomerFooter />
             </Grid>
           </Box>
         </Box>

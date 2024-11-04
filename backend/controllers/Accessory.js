@@ -14,7 +14,7 @@ const getAccessory = async (req, res) => {
 };
 
 const getAccessoryById = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.aid;
   try {
     const accessory = await AccessoryService.getAccessoryById(id);
     if (accessory && accessory[0].length > 0) {
@@ -30,15 +30,14 @@ const getAccessoryById = async (req, res) => {
 
 const addAccessory = async (req, res) => {
   try {
+    console.log("Adding accessory:", req.body);
     const result = await AccessoryService.addAccessory(req.body);
     if (result) {
       console.log("Accessory added successfully", {
-        id: result[0][0].insertId,
         ...req.body,
       });
       res.status(201).json({
         message: "Accessory added successfully",
-        id: result[0][0].insertId,
         ...req.body,
       });
     } else {
@@ -111,38 +110,106 @@ const getSizes = (req, res) => {
   });
 };
 
-const addToFavorites = async (req, res) => {
-  const { aid: accessoryId, cid: customerId } = req.params; // Get accessoryId and customerId from URL
-
-  // // Validation
-  // if (!customerId || !accessoryId) {
-  //   return res.status(400).json({ message: 'Please provide both customerId and accessoryId.' });
-  // }
-
+const addFavorites = async (req, res) => {
   try {
-    // Insert the favorite into your database
-    await connection.query(
-      "INSERT INTO favourites (customerId, accessoryId) VALUES (?, ?)",
-      [customerId, accessoryId]
-    );
-
-    res.status(200).json({ message: "Favorite added successfully!" });
+    console.log("Adding favorite:", req.body);
+    const result = await AccessoryService.addToFavorites(req.body);
+    if (result) {
+      console.log("favorite added successfully", {
+        ...req.body,
+      });
+      res.status(201).json({
+        message: "favorite added successfully",
+        ...req.body,
+      });
+    } else {
+      res.status(400).json({ error: "Error adding favorite" });
+    }
   } catch (error) {
-    console.error("Error adding favorite:", error);
-    res.status(500).json({ message: "Failed to add favorite" });
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
   }
 };
 
+// const removeFromFavorites = async (req, res) => {
+//   const { customerId, accessoryId } = req.params;
+
+//   try {
+//     // Check if customerId and accessoryId are provided
+//     if (!customerId || !accessoryId) {
+//       return res.status(400).json({ error: "Customer ID and Accessory ID are required." });
+//     }
+
+//     // Call the service function to remove the accessory from favorites
+//     const result = await AccessoryService.removeFromFavorites({ customerId, accessoryId });
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ message: "Favorite not found or already removed." });
+//     }
+
+//     res.status(200).json({ message: "Accessory successfully removed from favorites." });
+//   } catch (error) {
+//     console.error("Error removing accessory from favorites:", error);
+//     res.status(500).json({ error: "An error occurred while removing the accessory from favorites." });
+//   }
+// };
+
+// AccessoryController.js
 const removeFromFavorites = async (req, res) => {
-  const { customerId, accessoryId } = req.body;
+  const { customerId, accessoryId } = req.body; // Now retrieving from req.body for POST
 
   try {
-    deleteAccessory(customerId, accessoryId);
+    if (!customerId || !accessoryId) {
+      return res
+        .status(400)
+        .json({ error: "Customer ID and Accessory ID are required." });
+    }
+
+    // Call the service function to remove the accessory from favorites
+    const result = await AccessoryService.removeFromFavorites({
+      customerId,
+      accessoryId,
+    });
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Favorite not found or already removed." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Accessory successfully removed from favorites." });
   } catch (error) {
-    console.error("Error removing favorite:", error);
-    res.status(500).json({ message: "Failed to remove favorite" });
+    console.error("Error removing accessory from favorites:", error);
+    res.status(500).json({
+      error: "An error occurred while removing the accessory from favorites.",
+    });
   }
 };
+
+// async function checkCapacity(giftbox, accessoryId, quantity) {
+//   // Check if the giftbox' capacity of 10000 units is exceeded with the new accessory unit * quantity added
+//   const currentCapacity = [giftbox][0].giftboxCapacity ?? 0;
+//   const newUnitCapacity =
+//     quantity * (await AccessoryServicegetAccessoryById(accessoryId).units);
+//   const isGiftBoxCapacityExceeded = currentCapacity + newUnitCapacity > 10000;
+
+//   return isGiftBoxCapacityExceeded;
+// }
+
+async function checkCapacity(giftbox, accessoryId, quantity) {
+  // Check if the giftbox's capacity of 10,000 units is exceeded with the new accessory unit * quantity added
+  const currentCapacity = giftbox[0]?.giftboxCapacity ?? 0;
+
+  // Ensure `AccessoryService.getAccessoryById` is awaited to get the correct units
+  const accessoryData = await AccessoryService.getAccessoryById(accessoryId);
+  const newUnitCapacity = quantity * (accessoryData[0][0]?.units || 0);
+
+  const isGiftBoxCapacityExceeded = currentCapacity + newUnitCapacity > 10000;
+
+  return isGiftBoxCapacityExceeded;
+}
 
 const addAccessoryToMyGiftbox = async (req, res) => {
   const { giftboxId, accessoryId, quantity, sizeId } = req.body;
@@ -182,6 +249,21 @@ const addAccessoryToMyGiftbox = async (req, res) => {
       return res.status(404).json({ message: "Giftbox not found" });
     }
 
+    // Check if the giftbox is full
+    const isGiftBoxCapacityExceeded = await checkCapacity(
+      giftbox,
+      accessoryId,
+      quantity
+    );
+    if (isGiftBoxCapacityExceeded) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "Giftbox capacity exceeded (10,000 units), Please create a new giftbox!",
+        });
+    }
+
     // Check if the accessory, giftbox combination already exists, if so, update the quantity
     const checkQuery = `SELECT * FROM giftboxaccessories WHERE giftboxId = ? AND accessoryId = ? AND sizeId = ?`;
     const [checkResult] = await connection
@@ -190,7 +272,6 @@ const addAccessoryToMyGiftbox = async (req, res) => {
 
     if (checkResult.length > 0) {
       // True if the accessory is already in the giftbox, then update the quantity
-
       const updateQuery = `UPDATE giftboxaccessories SET quantity = quantity + ? WHERE giftboxId = ? AND accessoryId = ? AND sizeId = ?`;
 
       const updateResult = await connection
@@ -207,6 +288,19 @@ const addAccessoryToMyGiftbox = async (req, res) => {
         await connection
           .promise()
           .query(stockQuery, [quantity, accessoryId, sizeId]);
+
+          const accessoryDetails = await AccessoryService.getAccessoryById(accessoryId);
+          console.log("Accessory details", accessoryDetails[0][0]);
+        // update the giftbox capacity
+        const updateCapacityQuery = `UPDATE giftbox SET giftboxCapacity = giftboxCapacity + ? WHERE giftboxId = ?`;
+        await connection
+          .promise()
+          .query(updateCapacityQuery, [
+             (quantity * accessoryDetails[0][0].units),
+            giftboxId,
+          ]);
+        console.log("Accessory capacity updated in giftbox");
+
         res.status(200).json({
           message: "Accessory quantity updated in giftbox successfully",
           ...req.body,
@@ -216,12 +310,12 @@ const addAccessoryToMyGiftbox = async (req, res) => {
         });
       }
     } else {
-      const insertQuery = `INSERT INTO giftboxaccessories (giftboxId, accessoryId, quantity,sizeId) VALUES (?, ?, ?,?)`;
+      const insertQuery = `INSERT INTO giftboxaccessories (giftboxId, accessoryId, quantity, sizeId) VALUES (?, ?, ?,?)`;
 
       // Insert the accessory into the giftbox
       const result = await connection
         .promise()
-        .query(insertQuery, [giftboxId, accessoryId, quantity,sizeId]);
+        .query(insertQuery, [giftboxId, accessoryId, quantity, sizeId]);
 
       if (result[0].affectedRows === 0) {
         return res
@@ -233,6 +327,17 @@ const addAccessoryToMyGiftbox = async (req, res) => {
         await connection
           .promise()
           .query(stockQuery, [quantity, accessoryId, sizeId]);
+
+        // update the giftbox capacity
+        const updateCapacityQuery = `UPDATE giftbox SET giftboxCapacity = giftboxCapacity + ? WHERE giftboxId = ?`;
+        await connection
+          .promise()
+          .query(updateCapacityQuery, [
+            quantity * (await AccessoryService.getAccessoryById(accessoryId).units),
+            giftboxId,
+          ]);
+        console.log("Accessory capacity updated in giftbox");
+
         res.status(200).json({
           message: "Accessory added to giftbox successfully",
           id: result[0].insertId,
@@ -252,14 +357,102 @@ const addAccessoryToMyGiftbox = async (req, res) => {
   }
 };
 
-const getSizeBySizeId = async (req, res) => {
+const checkIfFavorite = async (req, res) => {
+  const { customerId, accessoryId } = req.params;
+
   try {
-    const result = await AccessoryService.getSizeBySizeId(req.params.id);
-    if (accessories) {
-      res.status(200).json(accessories[0]);
+    // Ensure both customerId and accessoryId are provided
+    if (!customerId || !accessoryId) {
+      return res
+        .status(400)
+        .json({ error: "customerId and accessoryId are required." });
+    }
+
+    // Use the service to check if the accessory is in favorites
+    const isFavorite = await AccessoryService.checkIfFavorite({
+      customerId,
+      accessoryId,
+    });
+
+    res.status(200).json({ isFavorite });
+  } catch (error) {
+    console.error("Error checking if accessory is favorite:", error);
+    res.status(500).json({
+      error: "Internal server error. Could not check favorite status.",
+    });
+  }
+};
+
+// const getSizeBySizeId = async (req, res) => {
+//   const sizeId = req.params.id;
+//   try {
+//     const result = await AccessoryService.getSizeBySizeId(sizeId);
+//     if (accessories) {
+//       res.status(200).json(accessories[0]);
+//     }
+//   } catch (error) {
+//     console.error("Error fetching accessories:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+const getSizeBySizeId = async (req, res) => {
+  const sizeId = req.params.id;
+  try {
+    const result = await AccessoryService.getSizeBySizeId(sizeId);
+
+    if (result && result.length > 0) {
+      // Return the size details
+      res.status(200).json(result[0][0]);
+    } else {
+      // If no size is found for the given sizeId
+      res.status(404).json({ error: "Size not found" });
     }
   } catch (error) {
-    console.error("Error fetching accessories:", error);
+    console.error("Error fetching size details:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const addToStock = async (req, res) => {
+  try {
+    const result = await AccessoryService.addStock(req.body);
+    if (result) {
+      console.log("Stock added successfully", {
+        ...req.body,
+      });
+      res.status(201).json({
+        message: "Stock added successfully",
+        ...req.body,
+      });
+    } else {
+      res.status(400).json({ error: "Error adding stock" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getFavorites = async (req, res) => {
+  const customerId = req.params.customerId;
+
+  try {
+    if (!customerId) {
+      throw new Error("Please provide a valid customer ID.");
+    }
+
+    const favorites = await AccessoryService.getFavorites(customerId);
+
+    if (favorites.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No favorites found for this customer." });
+    }
+
+    res.status(200).json(favorites);
+  } catch (error) {
+    console.error("Error fetching favorites:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -272,8 +465,11 @@ export {
   deleteAccessory,
   getSizeId,
   getSizes,
-  addToFavorites,
+  addFavorites,
   removeFromFavorites,
   addAccessoryToMyGiftbox,
   getSizeBySizeId,
+  addToStock,
+  checkIfFavorite,
+  getFavorites,
 };

@@ -265,8 +265,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 // Components
-import CustomerSidenav from "../customer/customerComponent/CustomerSidenav";
-import NavbarCustomerAfterSignedIn from "../customer/customerComponent/NavbarCustomerAfterSignedIn";
 import CustomerProfile from "../customer/CustomerProfile";
 import AdminProfile from "../admin/AdminProfile";
 import EmployeeProfile from "../employee/EmployeeProfile";
@@ -349,11 +347,6 @@ export default function Profile() {
 
   return (
     <>
-      <NavbarCustomerAfterSignedIn />
-      <Box height={30} />
-      <Box>
-        <CustomerSidenav />
-        <Box marginLeft={50}>
           {/* <h1>My Profile</h1> */}
           {userDetails ? (
             <Box>
@@ -372,8 +365,7 @@ export default function Profile() {
           ) : (
             <Typography variant="h6">Loading user details...</Typography>
           )}
-        </Box>
-      </Box>
+
     </>
   );
 }

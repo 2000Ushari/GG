@@ -12,7 +12,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import HomeIcon from '@mui/icons-material/HomeOutlined';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasketOutlined';
+import GridViewIcon from '@mui/icons-material/GridView';
+import AccessoryIcon from '@mui/icons-material/CategoryOutlined';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import BadgeIcon from '@mui/icons-material/BadgeOutlined';
+import CustomerIcon from '@mui/icons-material/FaceRetouchingNaturalOutlined';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccountsOutlined';
 import { useNavigate } from "react-router-dom";
 import { useAppStore } from '../../appStore';
 
@@ -104,7 +111,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -124,7 +131,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <ShoppingBasketIcon />
               </ListItemIcon>
               <ListItemText primary="Orders" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -145,7 +152,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <GridViewIcon />
               </ListItemIcon>
               <ListItemText primary="Categories" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -166,7 +173,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <AccessoryIcon />
               </ListItemIcon>
               <ListItemText primary="Accessories" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -187,7 +194,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <CardGiftcardIcon />
               </ListItemIcon>
               <ListItemText primary="Gift Boxes" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -209,7 +216,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <BadgeIcon />
               </ListItemIcon>
               <ListItemText primary="Employees" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -230,7 +237,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <CustomerIcon />
               </ListItemIcon>
               <ListItemText primary="Customers" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
@@ -252,7 +259,7 @@ export default function AdminSidenav() {
                   justifyContent: "center",
                 }}
               >
-                <InboxIcon />
+                <ManageAccountsIcon />
               </ListItemIcon>
               <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>

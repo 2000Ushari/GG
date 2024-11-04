@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import CustomerTabs from './CustomerTabs';
 
 function CustomerOrders() {
 
@@ -28,6 +29,7 @@ function CustomerOrders() {
 
   return (
     <div>CustomerOrders</div>
+
   )
 }
 

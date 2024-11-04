@@ -28,19 +28,16 @@
 //     backgroundColor: 'rgba(0, 0, 0, 0.6)',
 //   };
 
-
 //   const [giftboxName, setGiftboxName] = useState("");
 //   const [giftboxPrice, setGiftboxPrice] = useState("");
 //   const [giftboxDescription, setGiftboxDescription] = useState("");
 //   const [giftboxQuantity, setGiftboxQuantity] = useState("");
 //   const [giftboxColor, setGiftboxColor] = useState("");
 
-
 //   const [error, setError] = useState("");
 
 //   const [selectedCategory, setSelectedCategory] = useState(null);
 //   const [accessories, setAccessories ] = useState([]);
-
 
 //   const handleNameChange = (event) => {
 //     setGiftboxName(event.target.value);
@@ -117,7 +114,6 @@
 //   }, []);
 
 //   return (
-    
 
 // <Modal
 //       open={open}
@@ -136,7 +132,7 @@
 //         <Typography variant="h5" align="center" id="add-giftbox-modal-title">
 //           Create Gift Box
 //         </Typography>
-      
+
 //       <Box height={20}></Box>
 //       <Grid container spacing={2} >
 //       <Grid item xs={12}>
@@ -195,8 +191,6 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
-        
 
 //         <Grid item xs={6}>
 //           <TextField
@@ -213,7 +207,7 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
+
 //         <Grid item xs={12}>
 //           <TextField
 //             id="color"
@@ -247,9 +241,9 @@
 // }
 
 // export default CreateGiftbox;
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   Modal,
   Box,
@@ -259,24 +253,31 @@ import {
   IconButton,
   Grid,
   Autocomplete,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const AddGiftbox = ({ open, closeEvent }) => {
   const [giftboxData, setGiftboxData] = useState({
-    giftboxName: '',
-    giftboxPrice: '',
-    noteContent: '',
-    giftboxColor: '',
+    giftboxName: "",
+    giftboxPrice: "",
+    noteContent: "",
+    boxColorId: "",
     accessories: [{ accessory: null, quantity: 1, price: 0 }],
   });
   const [accessoriesList, setAccessoriesList] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [boxColors, setBoxColors] = useState([]);
 
-  const boxColorOptions = ["Black", "Maroon", "Red", "Brown", "Dark Blue", "White"];
+  // const boxColorOptions = [
+  //   "Black",
+  //   "Maroon",
+  //   "Red",
+  //   "Brown",
+  //   "Dark Blue",
+  //   "White",
+  // ];
 
   const navigate = useNavigate();
 
@@ -303,12 +304,14 @@ const AddGiftbox = ({ open, closeEvent }) => {
     // Fetch available accessories from the server
     const fetchAccessories = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/accessory/getAccessory');
-        if (!response.ok) throw new Error('Failed to fetch accessories');
+        const response = await fetch(
+          "http://localhost:3001/api/accessory/getAccessory"
+        );
+        if (!response.ok) throw new Error("Failed to fetch accessories");
         const data = await response.json();
         setAccessoriesList(data);
       } catch (error) {
-        console.error('Error fetching accessories:', error);
+        console.error("Error fetching accessories:", error);
       }
     };
     fetchAccessories();
@@ -322,7 +325,9 @@ const AddGiftbox = ({ open, closeEvent }) => {
   const handleAccessoryChange = (index, newValue) => {
     const newAccessories = [...giftboxData.accessories];
     newAccessories[index].accessory = newValue;
-    newAccessories[index].price = newValue ? newValue.accessoryPrice * newAccessories[index].quantity : 0;
+    newAccessories[index].price = newValue
+      ? newValue.accessoryPrice * newAccessories[index].quantity
+      : 0;
     setGiftboxData({ ...giftboxData, accessories: newAccessories });
     updateTotalPrice(newAccessories);
   };
@@ -332,7 +337,9 @@ const AddGiftbox = ({ open, closeEvent }) => {
     const newQuantity = Math.max(1, value); // Ensure the quantity is at least 1
     const newAccessories = [...giftboxData.accessories];
     newAccessories[index].quantity = newQuantity;
-    newAccessories[index].price = newAccessories[index].accessory ? newAccessories[index].accessory.accessoryPrice * newQuantity : 0;
+    newAccessories[index].price = newAccessories[index].accessory
+      ? newAccessories[index].accessory.accessoryPrice * newQuantity
+      : 0;
     setGiftboxData({ ...giftboxData, accessories: newAccessories });
     updateTotalPrice(newAccessories);
   };
@@ -340,28 +347,36 @@ const AddGiftbox = ({ open, closeEvent }) => {
   const handleAddAccessory = () => {
     setGiftboxData({
       ...giftboxData,
-      accessories: [...giftboxData.accessories, { accessory: null, quantity: 1, price: 0 }],
+      accessories: [
+        ...giftboxData.accessories,
+        { accessory: null, quantity: 1, price: 0 },
+      ],
     });
   };
 
   const handleRemoveAccessory = (index) => {
-    const newAccessories = giftboxData.accessories.filter((_, i) => i !== index);
+    const newAccessories = giftboxData.accessories.filter(
+      (_, i) => i !== index
+    );
     setGiftboxData({ ...giftboxData, accessories: newAccessories });
     updateTotalPrice(newAccessories);
   };
 
   const updateTotalPrice = (accessories) => {
-    const newTotalPrice = accessories.reduce((total, item) => total + (item.price || 0), 0);
+    const newTotalPrice = accessories.reduce(
+      (total, item) => total + (item.price || 0),
+      0
+    );
     setTotalPrice(newTotalPrice);
   };
 
   const validateForm = () => {
     if (!giftboxData.giftboxName.trim()) {
-      alert('Gift box name is required');
+      alert("Gift box name is required");
       return false;
     }
     if (isNaN(giftboxData.giftboxPrice) || giftboxData.giftboxPrice <= 0) {
-      alert('Gift box price must be a valid number greater than 0');
+      alert("Gift box price must be a valid number greater than 0");
       return false;
     }
     return true;
@@ -369,22 +384,43 @@ const AddGiftbox = ({ open, closeEvent }) => {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
+    console.log('Giftbox Data to Submit:', giftboxData);  // Check boxColorId here
 
     try {
-      const response = await fetch('http://localhost:3001/api/giftbox/addGiftbox', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(giftboxData),
-      });
-      if (!response.ok) throw new Error('Failed to create giftbox');
+      const response = await fetch(
+        "http://localhost:3001/api/giftbox/addGiftbox",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(giftboxData),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to create giftbox");
       closeEvent();
       window.location.reload();
     } catch (error) {
-      console.error('Error creating giftbox:', error);
+      console.error("Error creating giftbox:", error);
     }
   };
+
+  // get boxColors
+  const fetchBoxColors = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/giftbox/getBoxColors"
+      );
+      if (!response.ok) throw new Error("Failed to fetch box colors");
+      const data = await response.json();
+      setBoxColors(data);
+    } catch (error) {
+      console.error("Error fetching box colors:", error);
+    }
+  };
+  useEffect(() => {
+    fetchBoxColors();
+  }, []);
 
   return (
     <Modal
@@ -392,10 +428,16 @@ const AddGiftbox = ({ open, closeEvent }) => {
       onClose={closeEvent}
       aria-labelledby="create-giftbox-modal-title"
       aria-describedby="create-giftbox-modal-description"
-      style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+      style={{
+        backdropFilter: "blur(3px)",
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+      }}
     >
       <Box sx={{ ...modalStyle }}>
-        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
+        <IconButton
+          style={{ position: "absolute", top: 10, right: 10 }}
+          onClick={closeEvent}
+        >
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="create-giftbox-modal-title">
@@ -433,8 +475,9 @@ const AddGiftbox = ({ open, closeEvent }) => {
           fullWidth
           sx={{ mt: 1.5 }}
         /> */}
-        <Autocomplete
-          options={boxColorOptions}
+        {/* <Autocomplete
+          options={boxColors}
+          getOptionLabel={(option) => option.color}
           value={giftboxData.giftboxColor}
           onChange={(event, newValue) => setGiftboxData({ ...giftboxData, giftboxColor: newValue })}
           renderInput={(params) => (
@@ -448,28 +491,56 @@ const AddGiftbox = ({ open, closeEvent }) => {
             />
         
           )}
-        />
+        /> */}
 
-        
-        <Typography variant="h6" sx={{ mt: 1 }}>Accessories</Typography>
-        
+<Autocomplete
+  options={boxColors}
+  getOptionLabel={(option) => option.color}
+  onChange={(event, newValue) => {
+    setGiftboxData({
+      ...giftboxData,
+      boxColorId: newValue ? newValue.boxColorId : '',  // setting boxColorId here
+    });
+    console.log('Selected boxColorId:', newValue ? newValue.boxColorId : '');  // log boxColorId
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label="Box Color"
+      variant="outlined"
+      size="small"
+      fullWidth
+      sx={{ mt: 1.5 }}
+    />
+  )}
+/>
+
+        <Typography variant="h6" sx={{ mt: 1 }}>
+          Accessories
+        </Typography>
+
         {giftboxData.accessories.map((accessoryItem, index) => (
           <Grid container spacing={2} key={index} alignItems="center">
-            
             <Grid item xs={5}>
-              
               <Autocomplete
                 value={accessoryItem.accessory}
-                onChange={(event, newValue) => handleAccessoryChange(index, newValue)}
+                onChange={(event, newValue) =>
+                  handleAccessoryChange(index, newValue)
+                }
                 options={accessoriesList}
                 getOptionLabel={(option) => option.accessoryName}
-                renderInput={(params) => <TextField {...params} label="Accessory" variant="outlined" size="small" 
-                sx={{ mt: 1 }} />}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Accessory"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  />
+                )}
               />
-              
             </Grid>
             <Grid item xs={3}>
-
               <TextField
                 label="Quantity"
                 variant="outlined"
@@ -479,10 +550,9 @@ const AddGiftbox = ({ open, closeEvent }) => {
                 onChange={(event) => handleQuantityChange(index, event)}
                 InputProps={{
                   endAdornment: "units",
-                  inputProps: { min: 1 } // Add min attribute to ensure at least 1
+                  inputProps: { min: 1 }, // Add min attribute to ensure at least 1
                 }}
                 fullWidth
-                
               />
             </Grid>
             <Grid item xs={3}>
@@ -492,7 +562,7 @@ const AddGiftbox = ({ open, closeEvent }) => {
                 size="small"
                 type="number"
                 value={accessoryItem.price}
-                InputProps={{ readOnly: true , startAdornment: "Rs.", }}
+                InputProps={{ readOnly: true, startAdornment: "Rs." }}
                 fullWidth
               />
             </Grid>
@@ -508,8 +578,8 @@ const AddGiftbox = ({ open, closeEvent }) => {
           startIcon={<AddIcon />}
           onClick={handleAddAccessory}
           sx={{ mt: 2 }}
-          size='small'
-          color='success'
+          size="small"
+          color="success"
         >
           Add Accessory
         </Button>
@@ -519,7 +589,18 @@ const AddGiftbox = ({ open, closeEvent }) => {
           variant="outlined"
           size="small"
           value={totalPrice}
-          InputProps={{ readOnly: true, startAdornment: "Rs.", }}
+          InputProps={{ readOnly: true, startAdornment: "Rs." }}
+          fullWidth
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Gift Box Price"
+          variant="outlined"
+          size="small"
+          name="giftboxPrice"
+          value={giftboxData.giftboxPrice}
+          onChange={handleInputChange}
+          InputProps={{ startAdornment: "Rs." }}
           fullWidth
           sx={{ mb: 2 }}
         />
@@ -532,17 +613,17 @@ const AddGiftbox = ({ open, closeEvent }) => {
 };
 
 const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '50%',
-  maxHeight: '80%',
-  bgcolor: 'background.paper',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "50%",
+  maxHeight: "80%",
+  bgcolor: "background.paper",
   borderRadius: 4,
   boxShadow: 24,
   p: 4,
-  overflowY: 'auto',
+  overflowY: "auto",
 };
 
 export default AddGiftbox;

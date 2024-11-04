@@ -551,7 +551,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
@@ -564,6 +564,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../appStore';
 import UserAvatar from './UserAvatar';
+
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -737,14 +738,21 @@ export default function NavbarCustomerAfterSignedIn() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block', fontSize: 30, fontWeight: 500, fontFamily: 'fantasy' } }}
-          >
-            The Glitter Gallery
-          </Typography>
+          <Button
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                fontSize: 30,
+                fontWeight: 500,
+                fontFamily: "fantasy",
+              }}
+              onClick={() => navigate("/customer/home")} // Correct path to home
+              
+            >
+              The Glitter Gallery
+            </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

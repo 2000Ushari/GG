@@ -14,12 +14,11 @@ export default function AccordionDash() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <Typography>Accordion 1</Typography>
+          <Typography>Most Popular Accessory</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Ratings wadima accessory ek
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -29,12 +28,11 @@ export default function AccordionDash() {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <Typography>Accordion 2</Typography>
+          <Typography>No. 1 Customer</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            \orders wadima ekkena
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -45,12 +43,11 @@ export default function AccordionDash() {
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          <Typography>Accordion 1</Typography>
+          <Typography>Best Selling Giftbox</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            most sold gb ek
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -60,12 +57,11 @@ export default function AccordionDash() {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          <Typography>Accordion 2</Typography>
+          <Typography>Glitter Gallery Service Rate</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+            Overall service rate ek
           </Typography>
         </AccordionDetails>
       </Accordion>
