@@ -73,14 +73,7 @@ export default function Register() {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
+              <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -105,24 +98,10 @@ export default function Register() {
               />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                required
-                fullWidth
-                id="city"
-                label="City"
-                name="city"
-                autoComplete="address-level2"
-              />
+              <TextField required fullWidth id="city" label="City" name="city" autoComplete="address-level2" />
             </Grid>
             <Grid item xs={12} sm={5}>
-              <TextField
-                required
-                fullWidth
-                id="street"
-                label="Street"
-                name="street"
-                autoComplete="address-line1"
-              />
+              <TextField required fullWidth id="street" label="Street" name="street" autoComplete="address-line1" />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
@@ -135,12 +114,7 @@ export default function Register() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Register
           </Button>
         </Box>

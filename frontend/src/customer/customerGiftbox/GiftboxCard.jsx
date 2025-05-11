@@ -16,7 +16,6 @@
 // import Swal from "sweetalert2";
 // import { useNavigate } from "react-router-dom";
 
-
 // const CustomCard = styled(Card)({
 //   position: 'relative',
 //   minWidth: 180,
@@ -29,8 +28,6 @@
 //   },
 // });
 
-
-
 // const GiftboxCard = ({ giftbox }) => {
 //     const navigate = useNavigate(); // Navigation object to redirect to another page
 
@@ -38,12 +35,10 @@
 //         console.log("giftbox details:",giftbox);
 //       }, [giftbox]);
 
-      
 //     const handleClickMyGB = () => {
 //       // Navigate to the detailed view of the selected giftbox
 //       navigate(`/customer/giftboxes/view/${giftbox.giftboxId}`);
 //     };
-
 
 //   return (
 //     <Card
@@ -100,14 +95,13 @@
 
 // export default GiftboxCard;
 
-
-import React, { useEffect } from "react";
-import {Card,CardActions,CardContent,CardMedia,Button,Typography,Stack,CardActionArea} from "@mui/material";
+import React, { useEffect } from 'react';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Stack, CardActionArea } from '@mui/material';
 import EditIcon from '@mui/icons-material/ModeEdit';
-import DeleteIcon from "@mui/icons-material/Delete";
-import GiftboxImage from "../../images/giftboxes/giftbox1.jpg"; // Ensure this image path is correct
+import DeleteIcon from '@mui/icons-material/Delete';
+import GiftboxImage from '../../images/giftboxes/giftbox1.jpg'; // Ensure this image path is correct
 import { styled } from '@mui/material/styles';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const CustomCard = styled(Card)({
   position: 'relative',
@@ -135,32 +129,20 @@ const GiftboxCard = ({ giftbox }) => {
   // }
 
   return (
-   
     <CustomCard key={giftbox.giftboxId}>
       <CardActionArea>
-        <CardMedia
-          component="img"
-          alt={giftbox.giftboxName || "Giftbox"}
-          height="200"
-          image={GiftboxImage}
-
-        />
-        <CardContent sx={{ textAlign: "left" }}>
+        <CardMedia component="img" alt={giftbox.giftboxName || 'Giftbox'} height="200" image={GiftboxImage} />
+        <CardContent sx={{ textAlign: 'left' }}>
           <Typography gutterBottom variant="h6" component="div">
-            {giftbox.giftboxName || "No Name"}
+            {giftbox.giftboxName || 'No Name'}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rs.{giftbox.giftboxPrice || "Price Unavailable"}
+            Rs.{giftbox.giftboxPrice || 'Price Unavailable'}
           </Typography>
         </CardContent>
-        <CardActions sx={{ justifyContent: "center" }}>
+        <CardActions sx={{ justifyContent: 'center' }}>
           <Stack direction="row" spacing={1} justifyContent="center">
-            <Button
-              variant="contained"
-              startIcon={<EditIcon />}
-              color="secondary"
-              onClick={handleClickMyGB} 
-            >
+            <Button variant="contained" startIcon={<EditIcon />} color="secondary" onClick={handleClickMyGB}>
               Edit Giftbox
             </Button>
             <Button
@@ -177,7 +159,6 @@ const GiftboxCard = ({ giftbox }) => {
         </CardActions>
       </CardActionArea>
     </CustomCard>
-
   );
 };
 

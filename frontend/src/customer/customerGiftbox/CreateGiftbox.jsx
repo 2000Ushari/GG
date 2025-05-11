@@ -9,7 +9,6 @@
 // import Modal from "@mui/material/Modal";
 // import axios from "axios";
 
-
 // function AddToGiftbox({ open, closeEvent }) {
 //   const navigate = useNavigate();
 
@@ -32,7 +31,6 @@
 //       });
 //   }, [navigate]);
 
-
 //   const modalStyle = {
 //     position: 'absolute',
 //     top: '50%',
@@ -50,19 +48,16 @@
 //     backgroundColor: 'rgba(0, 0, 0, 0.6)',
 //   };
 
-
 //   const [accessoryName, setAccessoryName] = useState("");
 //   const [accessoryPrice, setAccessoryPrice] = useState("");
 //   const [accessoryDescription, setAccessoryDescription] = useState("");
 //   const [accessoryQuantity, setAccessoryQuantity] = useState("");
 //   const [accessoryColor, setAccessoryColor] = useState("");
 
-
 //   const [error, setError] = useState("");
 
 //   const [selectedCategory, setSelectedCategory] = useState(null);
 //   const [categories, setCategories] = useState([]);
-
 
 //   const handleNameChange = (event) => {
 //     setAccessoryName(event.target.value);
@@ -139,7 +134,6 @@
 //   }, []);
 
 //   return (
-    
 
 // <Modal
 //       open={open}
@@ -158,7 +152,7 @@
 //         <Typography variant="h5" align="center" id="add-accessory-modal-title">
 //           My Gift Boxes
 //         </Typography>
-      
+
 //       <Box height={20}></Box>
 //       <Grid container spacing={2} >
 //       <Grid item xs={12}>
@@ -217,8 +211,6 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
-        
 
 //         <Grid item xs={6}>
 //           <TextField
@@ -235,7 +227,7 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
+
 //         <Grid item xs={12}>
 //           <TextField
 //             id="color"

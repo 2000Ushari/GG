@@ -92,23 +92,23 @@
 //   );
 // }
 
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function validateInputs(inputs) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -127,12 +127,12 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const [inputs, setInputs] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "",
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: '',
   });
 
   const [error, setError] = useState(null);
@@ -143,23 +143,20 @@ export default function SignUp() {
 
     // Check if passwords match
     if (inputs.password !== inputs.confirmPassword) {
-      setError("Passwords do NOT match!");
+      setError('Passwords do NOT match!');
       return; // Stop the function if passwords don't match
     }
 
     // Validate inputs before submitting
     if (!validateInputs(inputs)) {
-      setError("Invalid input. Please check your entries and try again.");
+      setError('Invalid input. Please check your entries and try again.');
       return; // Stop the function if validation fails
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/authentication/initialRegister",
-        inputs
-      );
+      const response = await axios.post('http://localhost:3001/api/authentication/initialRegister', inputs);
       setError(null);
-      navigate("/login"); // Navigate only if the signup is successful
+      navigate('/login'); // Navigate only if the signup is successful
     } catch (error) {
       console.error(error);
       setError(error.response.data);
@@ -182,29 +179,36 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             {error && (
-              <Typography color="error" component="p" sx={{ p: 2, mb: 2, backgroundColor: "red", color: "white", borderRadius: 4, fontSize: 15, textAlign: "center" }}>
+              <Typography
+                color="error"
+                component="p"
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  backgroundColor: 'red',
+                  color: 'white',
+                  borderRadius: 4,
+                  fontSize: 15,
+                  textAlign: 'center',
+                }}
+              >
                 {error}
               </Typography>
             )}
-            
+
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -265,31 +269,16 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="role"
-                  label="Role"
-                  type="text"
-                  id="role"
-                  onChange={handleChange}
-                />
+                <TextField required fullWidth name="role" label="Role" type="text" id="role" onChange={handleChange} />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
+                  control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">

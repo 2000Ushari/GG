@@ -437,8 +437,6 @@
 //     fetchDistricts();
 //   }, []);
 
-  
-
 //   // Calculate subtotal and total
 //   const subtotal = giftboxAccessories.reduce(
 //     (sum, accessory) => sum + accessory.accessoryPrice * accessory.quantity,
@@ -628,10 +626,9 @@
 
 // export default BuyGiftbox;
 
-
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import Box from "@mui/material/Box";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import Box from '@mui/material/Box';
 import {
   Card,
   Typography,
@@ -646,21 +643,21 @@ import {
   TextField,
   Autocomplete,
   Button,
-} from "@mui/material";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+} from '@mui/material';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { differenceInHours, set } from 'date-fns';
 import Swal from 'sweetalert2';
 
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
-import Payment from "./Payment";
+import NavbarCustomerAfterSignedIn from '../customerComponent/NavbarCustomerAfterSignedIn';
+import CustomerSidenav from '../customerComponent/CustomerSidenav';
+import Payment from './Payment';
 
 function BuyGiftbox() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { giftboxId } =  useParams() || location.state || {};
+  const { giftboxId } = useParams() || location.state || {};
   const [userId, setUserId] = useState(null);
   const [customerId, setCustomerId] = useState(null);
   const [giftbox, setGiftbox] = useState(null);
@@ -671,23 +668,22 @@ function BuyGiftbox() {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [wrappingFee, setWrappingFee] = useState(0); //to format into float
   const [otherFee, setOtherFee] = useState(0); //to format into float
-  const [dueDate, setDueDate] = useState(""); 
+  const [dueDate, setDueDate] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [shippingAddress, setShippingAddress] = useState("");
+  const [shippingAddress, setShippingAddress] = useState('');
   const [showPayment, setShowPayment] = useState(false);
-
 
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setUserId(res.data.user.id);
         } else {
-          navigate("/login");
+          navigate('/login');
         }
       })
       .catch((err) => {
@@ -695,40 +691,38 @@ function BuyGiftbox() {
       });
   }, [navigate]);
 
-// Fetch customer ID based on user ID
-const getCustomerIdByUserId = async (userId) => {
-  try {
-    const response = await fetch(`http://localhost:3001/api/user/getCustomerIdByUserId/${userId}`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch customer ID");
+  // Fetch customer ID based on user ID
+  const getCustomerIdByUserId = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/user/getCustomerIdByUserId/${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch customer ID');
+      }
+      const data = await response.json();
+      setCustomerId(data.customerId); // Set customerId state correctly here
+    } catch (error) {
+      console.error('Error fetching customer ID:', error);
     }
-    const data = await response.json();
-    setCustomerId(data.customerId); // Set customerId state correctly here
-  } catch (error) {
-    console.error("Error fetching customer ID:", error);
-  }
-};
-// Trigger getCustomerIdByUserId when userId is set
-useEffect(() => {
-  if (userId) {
-    getCustomerIdByUserId(userId);
-  }
-}, [userId]);
+  };
+  // Trigger getCustomerIdByUserId when userId is set
+  useEffect(() => {
+    if (userId) {
+      getCustomerIdByUserId(userId);
+    }
+  }, [userId]);
 
   useEffect(() => {
     if (giftboxId) {
-      console.log("Received giftboxId:", giftboxId);
+      console.log('Received giftboxId:', giftboxId);
     }
   }, [giftboxId]);
 
   const fetchGiftbox = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/api/giftbox/getGiftboxById/${giftboxId}`
-      );
+      const response = await axios.get(`http://localhost:3001/api/giftbox/getGiftboxById/${giftboxId}`);
       setGiftbox(response.data[0]);
     } catch (error) {
-      console.error("Error fetching gift box:", error);
+      console.error('Error fetching gift box:', error);
     } finally {
       setLoading(false);
     }
@@ -736,13 +730,11 @@ useEffect(() => {
 
   const fetchGiftboxAccessories = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/api/giftbox/getGiftboxAccessories/${giftboxId}`
-      );
+      const response = await axios.get(`http://localhost:3001/api/giftbox/getGiftboxAccessories/${giftboxId}`);
       setGiftboxAccessories(response.data);
-      console.log("Gift box accessories:", response.data);
+      console.log('Gift box accessories:', response.data);
     } catch (error) {
-      console.error("Error fetching gift box accessories:", error);
+      console.error('Error fetching gift box accessories:', error);
     }
   };
 
@@ -753,12 +745,10 @@ useEffect(() => {
 
   const fetchDistricts = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/api/order/getDistricts`
-      );
+      const response = await axios.get(`http://localhost:3001/api/order/getDistricts`);
       setDistricts(response.data);
     } catch (error) {
-      console.error("Error fetching districts:", error);
+      console.error('Error fetching districts:', error);
     }
   };
 
@@ -768,32 +758,37 @@ useEffect(() => {
 
   // Calculate subtotal and total
   const subtotal = giftboxAccessories.reduce(
-    (sum, accessory) => sum + accessory.accessoryPrice * accessory.quantity,0
+    (sum, accessory) => sum + accessory.accessoryPrice * accessory.quantity,
+    0
   );
 
   const formattedSubTotal = parseFloat(subtotal).toFixed(2);
 
-  const total = (parseFloat(subtotal) + parseFloat(deliveryFee || 0) + parseFloat(wrappingFee || 0) + parseFloat(otherFee || 0)).toFixed(2);
-
+  const total = (
+    parseFloat(subtotal) +
+    parseFloat(deliveryFee || 0) +
+    parseFloat(wrappingFee || 0) +
+    parseFloat(otherFee || 0)
+  ).toFixed(2);
 
   const fetchDeliveryFee = async () => {
     try {
       if (!selectedDistrict || !selectedDistrict.deliveryDistrictName) {
-        console.error("Selected district is invalid or missing");
+        console.error('Selected district is invalid or missing');
         return;
       }
-  
+
       const response = await axios.get(
         `http://localhost:3001/api/order/getDeliveryFee/${selectedDistrict.deliveryDistrictName}`
       );
-  
+
       if (response.data && response.data.deliveryFee) {
         setDeliveryFee(response.data.deliveryFee);
       } else {
-        console.error("Unexpected response format:", response.data);
+        console.error('Unexpected response format:', response.data);
       }
     } catch (error) {
-      console.error("Error fetching delivery fee:", error);
+      console.error('Error fetching delivery fee:', error);
     }
   };
   useEffect(() => {
@@ -802,53 +797,50 @@ useEffect(() => {
     }
   }, [selectedDistrict]);
 
-
-
   const fetchWrappingFee = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/api/order/getWrappingFee/${giftboxId}`);
       setWrappingFee(response.data.wrappingFee);
     } catch (error) {
-      console.error("Error fetching wrapping fee:", error);
+      console.error('Error fetching wrapping fee:', error);
     }
   };
- useEffect(() => {
+  useEffect(() => {
     fetchWrappingFee();
   }, []);
-    
+
   // First, add this helper function at the top of your component
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-const tomorrowString = tomorrow.toISOString().split('T')[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowString = tomorrow.toISOString().split('T')[0];
 
   const handleDueDateChange = async (event) => {
     const newDueDate = event.target.value;
     setDueDate(newDueDate);
-  
+
     const today = new Date();
     const selectedDate = new Date(newDueDate);
-  
+
     // Calculate the difference in hours
     const hoursDifference = differenceInHours(selectedDate, today);
-  
+
     let calculatedOtherFees = 0;
-  
+
     if (hoursDifference <= 24) {
       calculatedOtherFees = subtotal * 0.25; // 25% charge for less than 24 hours
     } else if (hoursDifference < 48) {
-      calculatedOtherFees = subtotal * 0.10; // 10% charge for less than 48 hours
+      calculatedOtherFees = subtotal * 0.1; // 10% charge for less than 48 hours
     } else if (hoursDifference < 96) {
       calculatedOtherFees = subtotal * 0.05; // 5% charge for less than 96 hours
     }
-    
+
     setOtherFee(calculatedOtherFees);
   };
-  
 
   const handleQuantityInput = (event) => {
     const newQuantity = event.target.value;
     setQuantity(newQuantity);
-  }
+  };
 
   // const handleOrder = async () => {
 
@@ -856,9 +848,9 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
   //     console.error("Selected district, shipping address, or due date is missing");
   //     return;
   //   } else{
-    
+
   //   const orderDate = new Date().toISOString().slice(0, 10); // Current date in YYYY-MM-DD format
-  
+
   //   // Prepare the order data to send to the backend
   //   const orderData = {
   //     giftboxId,
@@ -873,7 +865,6 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
 
   //   };
 
-  
   //   // Confirm with SweetAlert before proceeding with the order
   //   Swal.fire({
   //     title: 'Confirm Payment',
@@ -888,7 +879,7 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
   //       try {
   //         // POST request to the backend
   //         const response = await axios.post('http://localhost:3001/api/order/placeOrder', orderData);
-          
+
   //         if (response.status === 201) { // Assuming 201 status for successful creation
   //           const { orderId } = response.data; // Access orderId from response
   //           console.log("Order created successfully with ID:", orderId);
@@ -912,26 +903,26 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
         title: 'Missing Information',
         text: 'Please fill in the delivery district, shipping address, and due date.',
         icon: 'warning',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
       return; // Exit function if required fields are missing
     }
-  
+
     const orderDate = new Date().toISOString().slice(0, 10); // Current date in YYYY-MM-DD format
-    
+
     // Prepare the order data to send to the backend
     const orderData = {
       giftboxId,
       quantity: quantity,
       price: totalPrice,
       orderDate,
-      orderStatus: "Payment Pending",
+      orderStatus: 'Payment Pending',
       dueDate,
       customerId: customerId,
       shippingAddress: shippingAddress,
       deliveryDistrictId: selectedDistrict?.deliveryDistrictId,
     };
-  
+
     // Confirm with SweetAlert before proceeding with the order
     Swal.fire({
       title: 'Confirm Payment',
@@ -939,34 +930,35 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
       icon: 'info',
       showCancelButton: true,
       confirmButtonText: 'Yes',
-      cancelButtonText: 'Cancel'
+      cancelButtonText: 'Cancel',
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
           // POST request to the backend
           const response = await axios.post('http://localhost:3001/api/order/placeOrder', orderData);
-          
-          if (response.status === 201) { // Assuming 201 status for successful creation
+
+          if (response.status === 201) {
+            // Assuming 201 status for successful creation
             const { orderId } = response.data; // Access orderId from response
-            console.log("Order created successfully with ID:", orderId);
+            console.log('Order created successfully with ID:', orderId);
             Swal.fire('Order Placed', 'Your order has been successfully placed!', 'success');
             navigate(`/customer/order/orderPayment/${orderId}`);
             setShowPayment(true); // Show Payment component if order creation is successful
           }
         } catch (error) {
-          console.error("Error creating order:", error);
+          console.error('Error creating order:', error);
           Swal.fire('Error', 'There was an error placing your order. Please try again.', 'error');
         }
       }
     });
   };
 
-  const totalPrice = (parseFloat(((wrappingFee+otherFee+subtotal)*quantity)+deliveryFee)).toFixed(2);
-  
+  const totalPrice = parseFloat((wrappingFee + otherFee + subtotal) * quantity + deliveryFee).toFixed(2);
+
   return (
     <div className="bgcolor">
       <NavbarCustomerAfterSignedIn />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Box height={60} />
@@ -979,12 +971,8 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                   Price : {giftbox?.giftboxPrice}
                 </Typography>
-                <Typography variant="body2">
-                  Note Content : {giftbox?.noteContent}
-                </Typography>
-                <Typography variant="body2">
-                  Description : {giftbox?.giftboxDescription}
-                </Typography>
+                <Typography variant="body2">Note Content : {giftbox?.noteContent}</Typography>
+                <Typography variant="body2">Description : {giftbox?.giftboxDescription}</Typography>
                 <Typography variant="body2" component="div" gutterBottom>
                   Box Color: {giftbox?.boxcolorId}
                 </Typography>
@@ -992,8 +980,8 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
             </Grid>
             <Grid item xs={4}>
               <Card sx={{ padding: 3 }}>
-                <Typography variant="body1" component="div" gutterBottom >
-                  Shipping address:{" "}
+                <Typography variant="body1" component="div" gutterBottom>
+                  Shipping address:{' '}
                 </Typography>
                 <TextField
                   sx={{ mb: 1.5 }}
@@ -1010,28 +998,16 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
                   onChange={(event, newValue) => setSelectedDistrict(newValue)}
                   options={districts}
                   getOptionLabel={(option) => option.deliveryDistrictName}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="District"
-                      variant="outlined"
-                      size="small"
-                    />
-                  )}
+                  renderInput={(params) => <TextField {...params} label="District" variant="outlined" size="small" />}
                 />
               </Card>
             </Grid>
             <Grid item xs={4}>
               <Card sx={{ padding: 3 }}>
-              <Typography variant="body" component="div" gutterBottom>
+                <Typography variant="body" component="div" gutterBottom>
                   Due Date
                 </Typography>
-                <Typography
-                  variant="body2"
-                  component="div"
-                  gutterBottom
-                  color={"darkred"}
-                >
+                <Typography variant="body2" component="div" gutterBottom color={'darkred'}>
                   Please note that additional charges may apply for late orders.
                 </Typography>
                 <TextField
@@ -1045,19 +1021,18 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
                   inputProps={{
                     min: tomorrowString, // Disable today and past dates
                   }}
-                  sx={{ mb: 2}}
+                  sx={{ mb: 2 }}
                 />
-              
-                
+
                 <TextField
-          label="Giftbox Quantity"
-          type="number"
-          value={quantity}
-          onChange={handleQuantityInput}
-          InputProps={{ inputProps: { min: 1 } }}
-          size= 'small'
-          fullWidth
-        />
+                  label="Giftbox Quantity"
+                  type="number"
+                  value={quantity}
+                  onChange={handleQuantityInput}
+                  InputProps={{ inputProps: { min: 1 } }}
+                  size="small"
+                  fullWidth
+                />
               </Card>
             </Grid>
           </Grid>
@@ -1141,14 +1116,8 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
               </TableBody>
             </Table>
           </TableContainer>
-          <Box
-            alignItems="center"
-            justifyContent="end"
-            display="flex"
-            sx={{ my: 2, me: 3 }}
-          >
+          <Box alignItems="center" justifyContent="end" display="flex" sx={{ my: 2, me: 3 }}>
             <Button variant="contained" color="primary" onClick={handleOrder}>
-
               Proceed to Payment
             </Button>
           </Box>

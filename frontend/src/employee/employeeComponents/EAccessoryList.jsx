@@ -1,25 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import { Card, CardActions, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
- 
-  Typography,
-
-  Box,
-} from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import NecklaceImage from "../../images/accessories/necklaces.jpg";
-
-
+import NecklaceImage from '../../images/accessories/necklaces.jpg';
 
 const EAccessoryList = () => {
   const navigate = useNavigate();
@@ -27,15 +14,15 @@ const EAccessoryList = () => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "employee") {
+        if (res.data.authenticated && res.data.user.role === 'employee') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -43,23 +30,21 @@ const EAccessoryList = () => {
       });
   }, [navigate]);
 
-
   const [accessories, setAccessories] = useState([]);
-//   const [openAddAccessoryModal, setOpenAddAccessoryModal] = useState(false);
-//   const [openEditAccessoryModal, setOpenEditAccessoryModal] = useState(false);
-//   const [selectedAccessory, setSelectedAccessory] = useState(null);
-
+  //   const [openAddAccessoryModal, setOpenAddAccessoryModal] = useState(false);
+  //   const [openEditAccessoryModal, setOpenEditAccessoryModal] = useState(false);
+  //   const [selectedAccessory, setSelectedAccessory] = useState(null);
 
   const fetchAccessories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/accessory/getAccessory");
+      const response = await fetch('http://localhost:3001/api/accessory/getAccessory');
       if (!response.ok) {
-        throw new Error("Failed to fetch accessories");
+        throw new Error('Failed to fetch accessories');
       }
       const data = await response.json();
       setAccessories(data);
     } catch (error) {
-      console.error("Error fetching accessories:", error);
+      console.error('Error fetching accessories:', error);
     }
   };
 
@@ -67,57 +52,56 @@ const EAccessoryList = () => {
     fetchAccessories();
   }, []);
 
-//   const handleOpenAddAccessoryModal = () => setOpenAddAccessoryModal(true);
-//   const handleCloseAddAccessoryModal = () => setOpenAddAccessoryModal(false);
+  //   const handleOpenAddAccessoryModal = () => setOpenAddAccessoryModal(true);
+  //   const handleCloseAddAccessoryModal = () => setOpenAddAccessoryModal(false);
 
-//   const handleOpenEditAccessoryModal = (accessory) => {
-//     setSelectedAccessory(accessory);
-//     setOpenEditAccessoryModal(true);
-//   };
+  //   const handleOpenEditAccessoryModal = (accessory) => {
+  //     setSelectedAccessory(accessory);
+  //     setOpenEditAccessoryModal(true);
+  //   };
 
-//   const handleCloseEditAccessoryModal = () => {
-//     setOpenEditAccessoryModal(false);
-//     setSelectedAccessory(null); // Reset selected accessory
-//   };
+  //   const handleCloseEditAccessoryModal = () => {
+  //     setOpenEditAccessoryModal(false);
+  //     setSelectedAccessory(null); // Reset selected accessory
+  //   };
 
-//   const handleCardClick = () => {
-//     navigate(`/admin/accessory/add`);
-//     window.location.reload();  // Reloads the page when accessory card is clicked
-//   };
+  //   const handleCardClick = () => {
+  //     navigate(`/admin/accessory/add`);
+  //     window.location.reload();  // Reloads the page when accessory card is clicked
+  //   };
 
-//   const deleteAccessory = async (accessoryID) => {
-//     try {
-//       const confirmed = await Swal.fire({
-//         title: "Are you sure?",
-//         text: "You won't be able to revert this!",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonColor: "#3085d6",
-//         cancelButtonColor: "#d33",
-//         confirmButtonText: "Yes, delete it!",
-//       });
+  //   const deleteAccessory = async (accessoryID) => {
+  //     try {
+  //       const confirmed = await Swal.fire({
+  //         title: "Are you sure?",
+  //         text: "You won't be able to revert this!",
+  //         icon: "warning",
+  //         showCancelButton: true,
+  //         confirmButtonColor: "#3085d6",
+  //         cancelButtonColor: "#d33",
+  //         confirmButtonText: "Yes, delete it!",
+  //       });
 
-//       if (confirmed.isConfirmed) {
-//         const response = await fetch(`http://localhost:3001/api/accessory/${accessoryID}`, {
-//           method: "DELETE",
-//         });
+  //       if (confirmed.isConfirmed) {
+  //         const response = await fetch(`http://localhost:3001/api/accessory/${accessoryID}`, {
+  //           method: "DELETE",
+  //         });
 
-//         if (!response.ok) {
-//           throw new Error("Failed to delete the accessory");
-//         }
+  //         if (!response.ok) {
+  //           throw new Error("Failed to delete the accessory");
+  //         }
 
-//         // const newRows = rows.filter((row) => row.id !== id);
-//         // setRows(newRows);
+  //         // const newRows = rows.filter((row) => row.id !== id);
+  //         // setRows(newRows);
 
-//         Swal.fire("Deleted!", "Your file has been deleted.", "success");
-//         window.location.reload();
-//       }
-//     } catch (error) {
-//       console.error("Error deleting accessory:", error);
-//       Swal.fire("Error!", "Failed to delete the accessory.", "error");
-//     }
-//   };
-
+  //         Swal.fire("Deleted!", "Your file has been deleted.", "success");
+  //         window.location.reload();
+  //       }
+  //     } catch (error) {
+  //       console.error("Error deleting accessory:", error);
+  //       Swal.fire("Error!", "Failed to delete the accessory.", "error");
+  //     }
+  //   };
 
   return (
     <>
@@ -127,20 +111,18 @@ const EAccessoryList = () => {
           <Card sx={{ pb: 2, flexGrow: 1 }}>
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-                marginRight: "20px",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px',
+                marginRight: '20px',
               }}
             >
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                sx={{ width: 300, marginLeft: "20px" }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Search by name" />
-                )}
+                sx={{ width: 300, marginLeft: '20px' }}
+                renderInput={(params) => <TextField {...params} label="Search by name" />}
               />
               {/* <Stack direction="row" spacing={2} pr={1.5}>
                 <Button
@@ -158,11 +140,11 @@ const EAccessoryList = () => {
             </div>
             <div
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                justifyContent: "left",
-                paddingLeft: "20px",
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '20px',
+                justifyContent: 'left',
+                paddingLeft: '20px',
               }}
             >
               {accessories.map((accessory) => (
@@ -175,13 +157,8 @@ const EAccessoryList = () => {
                     height: 350,
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    alt={accessory.accessoryName}
-                    height="200"
-                    image={NecklaceImage}
-                  />
-                  <CardContent sx={{ textAlign: "left" }}>
+                  <CardMedia component="img" alt={accessory.accessoryName} height="200" image={NecklaceImage} />
+                  <CardContent sx={{ textAlign: 'left' }}>
                     <Typography gutterBottom variant="h6" component="div">
                       {accessory.accessoryName}
                     </Typography>
@@ -189,7 +166,7 @@ const EAccessoryList = () => {
                       Rs.{accessory.accessoryPrice}
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ justifyContent: "center" }}>
+                  <CardActions sx={{ justifyContent: 'center' }}>
                     {/* <Stack direction="row" spacing={1} justifyContent="center">
                       <Button
                         variant="outlined"

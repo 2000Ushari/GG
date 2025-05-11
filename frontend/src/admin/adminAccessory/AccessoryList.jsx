@@ -29,7 +29,6 @@
 // import AddAccessory from "./AddAccessory";
 // import EditAccessory from "./EditAccessory";
 
-
 // const AccessoryList = () => {
 //   const navigate = useNavigate();
 
@@ -52,12 +51,10 @@
 //       });
 //   }, [navigate]);
 
-
 //   const [accessories, setAccessories] = useState([]);
 //   const [openAddAccessoryModal, setOpenAddAccessoryModal] = useState(false);
 //   const [openEditAccessoryModal, setOpenEditAccessoryModal] = useState(false);
 //   const [selectedAccessory, setSelectedAccessory] = useState(null);
-
 
 //   const fetchAccessories = async () => {
 //     try {
@@ -88,7 +85,6 @@
 //     setOpenEditAccessoryModal(false);
 //     setSelectedAccessory(null); // Reset selected accessory
 //   };
-
 
 //   const deleteAccessory = async (accessoryID) => {
 //     try {
@@ -122,7 +118,6 @@
 //       Swal.fire("Error!", "Failed to delete the accessory.", "error");
 //     }
 //   };
-
 
 //   return (
 //     <>
@@ -213,7 +208,7 @@
 //                       )}
 //                       <Button variant="outlined" size="large">
 //                         <DeleteIcon onClick={() => deleteAccessory(accessory.accessoryId)} />
-//                       </Button> 
+//                       </Button>
 //                     </Stack>
 //                   </CardActions>
 //                 </Card>
@@ -227,8 +222,6 @@
 // };
 
 // export default AccessoryList;
-
-
 
 // import React, { useEffect, useState } from "react";
 // import {
@@ -256,7 +249,6 @@
 // import AddAccessory from "./AddAccessory";
 // import EditAccessory from "./EditAccessory";
 
-
 // const AccessoryList = () => {
 //   const navigate = useNavigate();
 
@@ -279,12 +271,10 @@
 //       });
 //   }, [navigate]);
 
-
 //   const [accessories, setAccessories] = useState([]);
 //   const [openAddAccessoryModal, setOpenAddAccessoryModal] = useState(false);
 //   const [openEditAccessoryModal, setOpenEditAccessoryModal] = useState(false);
 //   const [selectedAccessory, setSelectedAccessory] = useState(null);
-
 
 //   const fetchAccessories = async () => {
 //     try {
@@ -315,7 +305,6 @@
 //     setOpenEditAccessoryModal(false);
 //     setSelectedAccessory(null); // Reset selected accessory
 //   };
-
 
 //   const deleteAccessory = async (accessoryID) => {
 //     try {
@@ -349,7 +338,6 @@
 //       Swal.fire("Error!", "Failed to delete the accessory.", "error");
 //     }
 //   };
-
 
 //   return (
 //     <>
@@ -440,7 +428,7 @@
 //                       )}
 //                       <Button variant="outlined" size="large">
 //                         <DeleteIcon onClick={() => deleteAccessory(accessory.accessoryId)} />
-//                       </Button> 
+//                       </Button>
 //                     </Stack>
 //                   </CardActions>
 //                 </Card>
@@ -455,35 +443,22 @@
 
 // export default AccessoryList;
 
+import React, { useEffect, useState } from 'react';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Modal, Box } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import AddIcon from '@mui/icons-material/Add';
+import Grid from '@mui/material/Grid';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-
-
-import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  Modal,
-  Box,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Stack from "@mui/material/Stack";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import AddIcon from "@mui/icons-material/Add";
-import Grid from "@mui/material/Grid";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import NecklaceImage from "../../images/accessories/necklaces.jpg";
-import AddAccessory from "./AddAccessory";
-import EditAccessory from "./EditAccessory";
-
+import NecklaceImage from '../../images/accessories/necklaces.jpg';
+import AddAccessory from './AddAccessory';
+import EditAccessory from './EditAccessory';
 
 const AccessoryList = () => {
   const navigate = useNavigate();
@@ -491,15 +466,15 @@ const AccessoryList = () => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -507,23 +482,21 @@ const AccessoryList = () => {
       });
   }, [navigate]);
 
-
   const [accessories, setAccessories] = useState([]);
   const [openAddAccessoryModal, setOpenAddAccessoryModal] = useState(false);
   const [openEditAccessoryModal, setOpenEditAccessoryModal] = useState(false);
   const [selectedAccessory, setSelectedAccessory] = useState(null);
 
-
   const fetchAccessories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/accessory/getAccessory");
+      const response = await fetch('http://localhost:3001/api/accessory/getAccessory');
       if (!response.ok) {
-        throw new Error("Failed to fetch accessories");
+        throw new Error('Failed to fetch accessories');
       }
       const data = await response.json();
       setAccessories(data);
     } catch (error) {
-      console.error("Error fetching accessories:", error);
+      console.error('Error fetching accessories:', error);
     }
   };
 
@@ -546,42 +519,41 @@ const AccessoryList = () => {
 
   const handleCardClick = () => {
     navigate(`/admin/accessory/add`);
-    window.location.reload();  // Reloads the page when accessory card is clicked
+    window.location.reload(); // Reloads the page when accessory card is clicked
   };
 
   const deleteAccessory = async (accessoryID) => {
     try {
       const confirmed = await Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
       });
 
       if (confirmed.isConfirmed) {
         const response = await fetch(`http://localhost:3001/api/accessory/${accessoryID}`, {
-          method: "DELETE",
+          method: 'DELETE',
         });
 
         if (!response.ok) {
-          throw new Error("Failed to delete the accessory");
+          throw new Error('Failed to delete the accessory');
         }
 
         // const newRows = rows.filter((row) => row.id !== id);
         // setRows(newRows);
 
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error deleting accessory:", error);
-      Swal.fire("Error!", "Failed to delete the accessory.", "error");
+      console.error('Error deleting accessory:', error);
+      Swal.fire('Error!', 'Failed to delete the accessory.', 'error');
     }
   };
-
 
   return (
     <>
@@ -591,27 +563,21 @@ const AccessoryList = () => {
           <Card sx={{ pb: 2, flexGrow: 1 }}>
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-                marginRight: "20px",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px',
+                marginRight: '20px',
               }}
             >
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                sx={{ width: 300, marginLeft: "20px" }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Search by name" />
-                )}
+                sx={{ width: 300, marginLeft: '20px' }}
+                renderInput={(params) => <TextField {...params} label="Search by name" />}
               />
               <Stack direction="row" spacing={2} pr={1.5}>
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  onClick={handleCardClick}
-                >
+                <Button variant="contained" startIcon={<AddIcon />} onClick={handleCardClick}>
                   Add Accessory
                 </Button>
                 {/* <AddAccessory
@@ -622,11 +588,11 @@ const AccessoryList = () => {
             </div>
             <div
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                justifyContent: "left",
-                paddingLeft: "20px",
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '20px',
+                justifyContent: 'left',
+                paddingLeft: '20px',
               }}
             >
               {accessories.map((accessory) => (
@@ -639,13 +605,8 @@ const AccessoryList = () => {
                     height: 350,
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    alt={accessory.accessoryName}
-                    height="200"
-                    image={NecklaceImage}
-                  />
-                  <CardContent sx={{ textAlign: "left" }}>
+                  <CardMedia component="img" alt={accessory.accessoryName} height="200" image={NecklaceImage} />
+                  <CardContent sx={{ textAlign: 'left' }}>
                     <Typography gutterBottom variant="h6" component="div">
                       {accessory.accessoryName}
                     </Typography>
@@ -653,13 +614,9 @@ const AccessoryList = () => {
                       Rs.{accessory.accessoryPrice}
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ justifyContent: "center" }}>
+                  <CardActions sx={{ justifyContent: 'center' }}>
                     <Stack direction="row" spacing={1} justifyContent="center">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => handleOpenEditAccessoryModal(accessory)}
-                      >
+                      <Button variant="outlined" size="small" onClick={() => handleOpenEditAccessoryModal(accessory)}>
                         <EditIcon />
                       </Button>
                       {selectedAccessory && (
@@ -672,7 +629,7 @@ const AccessoryList = () => {
                       )}
                       <Button variant="outlined" size="large">
                         <DeleteIcon onClick={() => deleteAccessory(accessory.accessoryId)} />
-                      </Button> 
+                      </Button>
                     </Stack>
                   </CardActions>
                 </Card>

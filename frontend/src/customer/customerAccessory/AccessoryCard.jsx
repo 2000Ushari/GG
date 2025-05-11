@@ -10,7 +10,6 @@
 // import Typography from '@mui/material/Typography';
 // // import { red } from '@mui/material/colors';
 
-
 // import Flowers from "../../images/categories/flowers.png";
 // import Rating from '@mui/material/Rating';
 // import Button from '@mui/material/Button';
@@ -19,7 +18,6 @@
 // import Checkbox from '@mui/material/Checkbox';
 // import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 // import AddBoxIcon from '@mui/icons-material/AddBox';
-
 
 //     const ExpandMore = styled((props) => {
 //       const { expand, ...other } = props;
@@ -31,7 +29,6 @@
 //         duration: theme.transitions.duration.shortest,
 //       }),
 //     }));
-
 
 // function CustomerAccessories() {
 
@@ -47,9 +44,9 @@
 //             height="194"
 //             image= {Flowers}
 //             alt="Paella dish"
-    
+
 //           />
-          
+
 //           <CardContent>
 
 //             <Typography variant="h6" color="black" gutterBottom>
@@ -61,20 +58,18 @@
 
 //           </CardContent>
 //           <CardActions sx={{ justifyContent: "space-between" }} disableSpacing>
-            
+
 //             <Rating name="read-only" value={value} readOnly/>
 //             <IconButton aria-label="add to favorites">
 //             <Checkbox {...label} icon={<FavoriteBorder />} checkedIcon={<Favorite color='error' />} />
 
 //             </IconButton>
 //           </CardActions>
-          
+
 //         </Card>
 //     </>
 //   );
 // }
-    
-    
 
 // export default CustomerAccessories;
 
@@ -163,8 +158,6 @@
 
 // export default CustomerAccessories;
 
-
-
 // import * as React from 'react';
 // import { styled } from '@mui/material/styles';
 // import Card from '@mui/material/Card';
@@ -227,7 +220,7 @@
 //           <AddButton className="addButton">
 //             Add to Giftbox
 //           </AddButton>
-        
+
 //         <CardContent>
 //           <Typography variant="h6" color="black" gutterBottom>
 //             {/* Red Rose for love */}
@@ -250,7 +243,6 @@
 // }
 
 // export default AccessoryCard;
-
 
 // import * as React from 'react';
 // import { styled } from '@mui/material/styles';
@@ -277,7 +269,7 @@
 //     cursor: 'pointer',
 //   '&:hover .addButton': {
 //     display: 'block',
-    
+
 //   },
 // });
 
@@ -294,7 +286,6 @@
 //   },
 // });
 
-
 // function AccessoryCard({ accessoryDetails }) {
 //   const [value, setValue] = React.useState(accessoryDetails.rating || 4); // assuming rating is provided in accessoryDetails
 //   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -306,7 +297,7 @@
 //   };
 
 //   return (
-    
+
 //       <CustomCard
 //                   key={accessoryDetails.accessoryId}
 //                   onClick={handleCardClick}
@@ -341,7 +332,6 @@
 // }
 
 // export default AccessoryCard;
-
 
 // import React, {useEffect} from 'react';
 // import { styled } from '@mui/material/styles';
@@ -411,14 +401,14 @@
 //           "Content-Type": "application/json",
 //         },
 //       });
-  
+
 //       if (!customerResponse.ok) {
 //         throw new Error("Failed to fetch customer information.");
 //       }
-  
+
 //       const customerData = await customerResponse.json();
 //       const realCustomerId = customerData.customerId; // Assuming the API returns the customerId in the response
-  
+
 //       // Show confirmation dialog
 //       const result = await Swal.fire({
 //         title: "Add to Favorites?",
@@ -428,7 +418,7 @@
 //         confirmButtonText: "Yes, add it!",
 //         cancelButtonText: "No, cancel",
 //       });
-  
+
 //       // If user confirms, proceed to add the accessory to favorites
 //       if (result.isConfirmed) {
 //         // Make API request to add accessory to favorites using the real customerId
@@ -442,7 +432,7 @@
 //             accessoryId: accessoryDetails.accessoryId, // Use the accessoryId from accessoryDetails
 //           }),
 //         });
-  
+
 //         // Show success message
 //         Swal.fire("Added!", "This accessory has been added to your favorites.", "success");
 //       }
@@ -452,7 +442,6 @@
 //       Swal.fire("Error!", "Could not add the accessory to favorites.", "error");
 //     }
 //   };
-  
 
 //   return (
 //     <CustomCard key={accessoryDetails.accessoryId} onClick={handleCardClick}>
@@ -537,7 +526,7 @@ function AccessoryCard({ accessoryDetails, customerId }) {
   const [value, setValue] = useState(accessoryDetails.rating || 4);
   const [isFavorite, setIsFavorite] = useState(false); // New state to check if the accessory is a favorite
   const navigate = useNavigate();
-//  const customerID = customerId;
+  //  const customerID = customerId;
 
   useEffect(() => {
     // console.log("customerId:", customerID); // Add this to see if userId is correctly passed.
@@ -562,7 +551,6 @@ function AccessoryCard({ accessoryDetails, customerId }) {
     checkIfFavorite();
   }, [customerId, accessoryDetails.accessoryId]);
 
-
   const handleAddOrRemoveFromFavorites = async () => {
     try {
       const action = isFavorite ? 'remove from' : 'add to';
@@ -574,12 +562,12 @@ function AccessoryCard({ accessoryDetails, customerId }) {
         confirmButtonText: `Yes, ${isFavorite ? 'remove' : 'add'} it!`,
         cancelButtonText: 'No, cancel',
       });
-  
+
       if (result.isConfirmed) {
         const endpoint = isFavorite
           ? 'http://localhost:3001/api/accessory/removeFromFavorites'
           : 'http://localhost:3001/api/accessory/addToFavorites';
-  
+
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -590,27 +578,31 @@ function AccessoryCard({ accessoryDetails, customerId }) {
             accessoryId: accessoryDetails.accessoryId,
           }),
         });
-  
+
         // Check if the response is ok
         if (!response.ok) {
           const errorMessage = await response.text(); // Or response.json() depending on your API response
           throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
         }
-  
+
         Swal.fire(
           `${isFavorite ? 'Removed!' : 'Added!'}`,
           `This accessory has been ${isFavorite ? 'removed from' : 'added to'} your favorites.`,
           'success'
         );
-  
+
         setIsFavorite(!isFavorite);
       }
     } catch (error) {
       console.error('Error updating favorites:', error);
-      Swal.fire('Error!', `Could not ${isFavorite ? 'remove' : 'add'} the accessory to favorites. ${error.message}`, 'error');
+      Swal.fire(
+        'Error!',
+        `Could not ${isFavorite ? 'remove' : 'add'} the accessory to favorites. ${error.message}`,
+        'error'
+      );
     }
   };
-  
+
   const handleCardClick = () => {
     navigate(`/customer/accessoryView/${accessoryDetails.accessoryId}`);
     window.location.reload(); // Reloads the page when accessory card is clicked
@@ -634,7 +626,7 @@ function AccessoryCard({ accessoryDetails, customerId }) {
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }} disableSpacing>
-      <Rating value={accessoryDetails.averageRating || 0} readOnly />
+        <Rating value={accessoryDetails.averageRating || 0} readOnly />
         <IconButton
           aria-label="add to favorites"
           onClick={(e) => {

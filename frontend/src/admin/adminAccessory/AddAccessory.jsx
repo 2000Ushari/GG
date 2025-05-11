@@ -1098,7 +1098,6 @@
 //                 </FormGroup>
 //               </Grid>
 
-
 //               <Grid item xs={6}>
 //                 <TextField
 //                   label="Quantity"
@@ -1111,7 +1110,7 @@
 //                   disabled={sizesAvailable}
 //                 />
 //               </Grid>
-              
+
 //               <Grid item xs={12}>
 //                 <FormGroup>
 //                   {Object.entries(sizes).map(([size, { checked, units }]) => (
@@ -1165,7 +1164,6 @@
 //     </div>
 //   );
 // }
-
 
 // import React, { useState, useEffect } from "react";
 // import {
@@ -1517,7 +1515,7 @@
 //                   disabled={sizesAvailable}
 //                 />
 //               </Grid>
-              
+
 //               <Grid item xs={12}>
 //                 <FormGroup>
 //                   {Object.entries(sizes).map(([size, { checked, units }]) => (
@@ -1933,7 +1931,6 @@
 //   );
 // }
 
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   Card,
@@ -2290,7 +2287,6 @@
 //   );
 // }
 
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   Card,
@@ -2625,7 +2621,7 @@
 //   );
 // }
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   Grid,
@@ -2639,29 +2635,28 @@ import {
   Checkbox,
   FormControlLabel,
   Switch,
-} from "@mui/material";
-import { green } from "@mui/material/colors";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+} from '@mui/material';
+import { green } from '@mui/material/colors';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-
-import AdminNavbar from "../adminComponents/AdminNavbar";
-import AdminSidenav from "../adminComponents/AdminSidenav";
+import AdminNavbar from '../adminComponents/AdminNavbar';
+import AdminSidenav from '../adminComponents/AdminSidenav';
 
 export default function AddAccessory() {
   const navigate = useNavigate();
-  const [accessoryName, setAccessoryName] = useState("");
-  const [accessoryPrice, setAccessoryPrice] = useState("");
-  const [accessoryDescription, setAccessoryDescription] = useState("");
-  const [accessoryColor, setAccessoryColor] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [error, setError] = useState("");
+  const [accessoryName, setAccessoryName] = useState('');
+  const [accessoryPrice, setAccessoryPrice] = useState('');
+  const [accessoryDescription, setAccessoryDescription] = useState('');
+  const [accessoryColor, setAccessoryColor] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [error, setError] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [units, setUnits] = useState("");
+  const [units, setUnits] = useState('');
 
   const [sizesAvailable, setSizesAvailable] = useState(false);
   const [sizes, setSizes] = useState([]);
@@ -2669,17 +2664,17 @@ export default function AddAccessory() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (!(res.data.authenticated && res.data.user.role === "admin")) {
-          navigate("/login");
+        if (!(res.data.authenticated && res.data.user.role === 'admin')) {
+          navigate('/login');
         }
       })
       .catch((err) => {
         console.log(err);
-        navigate("/login");
+        navigate('/login');
       });
 
     fetchCategories();
@@ -2688,29 +2683,27 @@ export default function AddAccessory() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:3001/api/category/getCategory"
-      );
+      const response = await fetch('http://localhost:3001/api/category/getCategory');
       if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+        throw new Error('Failed to fetch categories');
       }
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error('Error fetching categories:', error);
     }
   };
 
   const fetchSizes = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/accessory/getSizes/all");
+      const response = await fetch('http://localhost:3001/api/accessory/getSizes/all');
       if (!response.ok) {
-        throw new Error("Failed to fetch sizes");
+        throw new Error('Failed to fetch sizes');
       }
       const data = await response.json();
       setSizes(data);
     } catch (error) {
-      console.error("Error fetching sizes:", error);
+      console.error('Error fetching sizes:', error);
     }
   };
 
@@ -2736,24 +2729,21 @@ export default function AddAccessory() {
             }))
           : [{ sizeId: 1, quantity: parseInt(quantity, 10) }];
 
-        const response = await axios.post(
-          "http://localhost:3001/api/accessory/addAccessory",
-          {
-            ...accessoryData,
-            sizes: stockData,
-          }
-        );
+        const response = await axios.post('http://localhost:3001/api/accessory/addAccessory', {
+          ...accessoryData,
+          sizes: stockData,
+        });
 
         if (response.status === 201) {
-          Swal.fire("Success!", "Accessory added successfully.", "success");
+          Swal.fire('Success!', 'Accessory added successfully.', 'success');
           setSuccess(true);
-          navigate("/admin/accessories");
+          navigate('/admin/accessories');
         } else {
-          throw new Error("Failed to add accessory");
+          throw new Error('Failed to add accessory');
         }
       } catch (error) {
-        console.error("Error adding accessory:", error);
-        Swal.fire("Error!", "Failed to add the accessory.", "error");
+        console.error('Error adding accessory:', error);
+        Swal.fire('Error!', 'Failed to add the accessory.', 'error');
         setError(error.message);
       } finally {
         setTimeout(() => {
@@ -2773,7 +2763,7 @@ export default function AddAccessory() {
   const buttonSx = {
     ...(success && {
       bgcolor: green[500],
-      "&:hover": {
+      '&:hover': {
         bgcolor: green[700],
       },
     }),
@@ -2783,24 +2773,14 @@ export default function AddAccessory() {
     <div className="bgcolor">
       <AdminNavbar />
       <Box height={60} />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <AdminSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ marginLeft: "10px", fontWeight: "bold" }}
-          >
+          <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
             Accessories
           </Typography>
           <Card sx={{ padding: 2 }}>
-            <Typography
-              variant="h6"
-              align="left"
-              marginLeft={2}
-              color="grey"
-            >
+            <Typography variant="h6" align="left" marginLeft={2} color="grey">
               Add Accessory
             </Typography>
             <Box height={20} />
@@ -2855,12 +2835,10 @@ export default function AddAccessory() {
               <Grid item xs={6}>
                 <Autocomplete
                   options={categories}
-                  getOptionLabel={(option) => option.categoryName || ""}
+                  getOptionLabel={(option) => option.categoryName || ''}
                   value={selectedCategory}
                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Category" variant="outlined" size="small" />
-                  )}
+                  renderInput={(params) => <TextField {...params} label="Category" variant="outlined" size="small" />}
                   fullWidth
                 />
               </Grid>
@@ -2893,12 +2871,7 @@ export default function AddAccessory() {
               <Grid item xs={12}>
                 <FormGroup>
                   <FormControlLabel
-                    control={
-                      <Switch
-                        checked={sizesAvailable}
-                        onChange={(e) => setSizesAvailable(e.target.checked)}
-                      />
-                    }
+                    control={<Switch checked={sizesAvailable} onChange={(e) => setSizesAvailable(e.target.checked)} />}
                     label="Sizes available"
                   />
                 </FormGroup>
@@ -2907,34 +2880,35 @@ export default function AddAccessory() {
               {/* Dynamic Size Quantity Input */}
               <Grid item xs={12}>
                 <FormGroup>
-                  {sizesAvailable && sizes.map(({ sizeId, size }) => (
-                    <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={Boolean(selectedSizes[sizeId])}
-                            onChange={handleSizeQuantityChange(sizeId)}
-                          />
-                        }
-                        label={size}
-                      />
-                      <TextField
-                        label="Quantity"
-                        variant="outlined"
-                        size="small"
-                        type="number"
-                        value={selectedSizes[sizeId] || ""}
-                        onChange={handleSizeQuantityChange(sizeId)}
-                        fullWidth
-                        disabled={!Boolean(selectedSizes[sizeId])}
-                      />
-                    </Grid>
-                  ))}
+                  {sizesAvailable &&
+                    sizes.map(({ sizeId, size }) => (
+                      <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={Boolean(selectedSizes[sizeId])}
+                              onChange={handleSizeQuantityChange(sizeId)}
+                            />
+                          }
+                          label={size}
+                        />
+                        <TextField
+                          label="Quantity"
+                          variant="outlined"
+                          size="small"
+                          type="number"
+                          value={selectedSizes[sizeId] || ''}
+                          onChange={handleSizeQuantityChange(sizeId)}
+                          fullWidth
+                          disabled={!Boolean(selectedSizes[sizeId])}
+                        />
+                      </Grid>
+                    ))}
                 </FormGroup>
               </Grid>
 
               <Grid item xs={12}>
-                <Box sx={{ position: "relative" }}>
+                <Box sx={{ position: 'relative' }}>
                   <Button
                     variant="contained"
                     color="primary"
@@ -2950,11 +2924,11 @@ export default function AddAccessory() {
                       size={24}
                       sx={{
                         color: green[500],
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        marginTop: "-12px",
-                        marginLeft: "-12px",
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
                       }}
                     />
                   )}

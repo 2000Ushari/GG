@@ -1180,17 +1180,17 @@
 
 // export default MyGiftbox;
 
-import React, { useState, useEffect } from "react";
-import { Box, TextField, Button, Card } from "@mui/material";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import Swal from "sweetalert2";
-import { Autocomplete, Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Box, TextField, Button, Card } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { Autocomplete, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import GiftboxAccessoryCard from "./GiftboxAccessoryCard";
+import CustomerSidenav from '../customerComponent/CustomerSidenav';
+import NavbarCustomerAfterSignedIn from '../customerComponent/NavbarCustomerAfterSignedIn';
+import GiftboxAccessoryCard from './GiftboxAccessoryCard';
 
 function MyGiftbox() {
   const [giftboxDetails, setGiftboxDetails] = useState(null);
@@ -1200,9 +1200,9 @@ function MyGiftbox() {
   const { giftboxId } = useParams();
 
   // State variables for editing
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [noteContent, setNoteContent] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [noteContent, setNoteContent] = useState('');
   const [boxColors, setBoxColors] = useState([]); // Store all box colors
   const [boxColor, setBoxColor] = useState(null);
   const [boxColorId, setBoxColorId] = useState(null);
@@ -1218,42 +1218,38 @@ function MyGiftbox() {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setUserId(res.data.user.id); // Set user ID for customer
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
-        console.log("Error in authentication:", err);
+        console.log('Error in authentication:', err);
       });
   }, [navigate]);
 
   // Fetch giftbox details and accessories
   const fetchGiftboxData = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/giftbox/getGiftboxById/${giftboxId}`
-      );
+      const response = await fetch(`http://localhost:3001/api/giftbox/getGiftboxById/${giftboxId}`);
       const data = await response.json();
       setGiftboxDetails(data[0]);
-      console.log("Giftbox details:", data[0]);
+      console.log('Giftbox details:', data[0]);
 
       setName(data[0].giftboxName);
       setDescription(data[0].giftboxDescription);
       setNoteContent(data[0].noteContent);
       setBoxColorId(data[0].boxColorId);
 
-      const accessoriesResponse = await fetch(
-        `http://localhost:3001/api/giftbox/getGiftboxAccessories/${giftboxId}`
-      );
+      const accessoriesResponse = await fetch(`http://localhost:3001/api/giftbox/getGiftboxAccessories/${giftboxId}`);
       const accessoriesData = await accessoriesResponse.json();
       setGiftboxAccessories(accessoriesData);
-      console.log("Accessories:", accessoriesData);
+      console.log('Accessories:', accessoriesData);
 
       setQuantities(
         accessoriesData.reduce((acc, accessory) => {
@@ -1262,20 +1258,18 @@ function MyGiftbox() {
         }, {})
       );
     } catch (error) {
-      console.error("Error fetching giftbox data:", error);
+      console.error('Error fetching giftbox data:', error);
     }
   };
 
   // Fetch all box colors for Autocomplete
   const fetchBoxColors = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/giftbox/getBoxColors`
-      ); // Adjust this route based on your backend
+      const response = await fetch(`http://localhost:3001/api/giftbox/getBoxColors`); // Adjust this route based on your backend
       const data = await response.json();
       setBoxColors(data); // Set array of colors in the state
     } catch (error) {
-      console.error("Error fetching box colors:", error);
+      console.error('Error fetching box colors:', error);
     }
   };
 
@@ -1303,24 +1297,23 @@ function MyGiftbox() {
         `http://localhost:3001/api/giftbox/putBoxcolorId/${giftboxId}`,
         { boxcolorId: boxColorId } // Include boxColorId in the request body
       );
-  
+
       if (response.status === 200) {
-        console.log("Box color ID updated successfully!");
+        console.log('Box color ID updated successfully!');
       } else {
-        throw new Error("Unexpected response from the server.");
+        throw new Error('Unexpected response from the server.');
       }
     } catch (error) {
-      console.error("Error updating box color ID:", error);
+      console.error('Error updating box color ID:', error);
     }
   };
-  
+
   useEffect(() => {
     if (giftboxId && selectedBoxColor?.boxColorId) {
       putBoxcolorId(giftboxId, selectedBoxColor.boxColorId);
     }
   }, [giftboxId, selectedBoxColor]);
 
-  
   // Calculate total price based on quantities and accessory prices
   useEffect(() => {
     const price = giftboxAccessories.reduce((acc, accessory) => {
@@ -1341,9 +1334,7 @@ function MyGiftbox() {
   // Remove accessory from giftbox
   const handleRemoveAccessory = (accessoryId) => {
     setGiftboxAccessories((prevAccessories) =>
-      prevAccessories.filter(
-        (accessory) => accessory.accessoryId !== accessoryId
-      )
+      prevAccessories.filter((accessory) => accessory.accessoryId !== accessoryId)
     );
   };
 
@@ -1352,36 +1343,31 @@ function MyGiftbox() {
       await putBoxcolorId(giftboxId, selectedBoxColor.boxColorId);
     }
     try {
-      const response = await axios.put(
-        `http://localhost:3001/api/giftbox/updateGiftbox/${giftboxId}`,
-        {
-          giftboxName: name,
-          giftboxDescription: description,
-          noteContent: noteContent,
-          // boxColorId: selectedBoxColor?.boxColorId, // Add selected color ID here
-        }
-      );
+      const response = await axios.put(`http://localhost:3001/api/giftbox/updateGiftbox/${giftboxId}`, {
+        giftboxName: name,
+        giftboxDescription: description,
+        noteContent: noteContent,
+        // boxColorId: selectedBoxColor?.boxColorId, // Add selected color ID here
+      });
 
       if (response.status === 200) {
         Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Giftbox details updated successfully!",
-          confirmButtonText: "OK",
+          icon: 'success',
+          title: 'Success',
+          text: 'Giftbox details updated successfully!',
+          confirmButtonText: 'OK',
         });
       } else {
-        throw new Error("Unexpected response from the server.");
+        throw new Error('Unexpected response from the server.');
       }
     } catch (error) {
-      console.error("Error updating giftbox details:", error);
+      console.error('Error updating giftbox details:', error);
 
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text:
-          error.response?.data?.message ||
-          "Failed to update giftbox details. Please try again.",
-        confirmButtonText: "Close",
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || 'Failed to update giftbox details. Please try again.',
+        confirmButtonText: 'Close',
       });
     }
   };
@@ -1422,47 +1408,43 @@ function MyGiftbox() {
 
   const handleCheckout = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:3001/api/giftbox/updateGiftboxAccessories`,
-        {
-          giftboxId: giftboxId,
-          giftboxAccessories: giftboxAccessories.map((accessory) => ({
-            accessoryId: accessory.accessoryId,
-            quantity: quantities[accessory.accessoryId] || 1,
-          })),
-        }
-      );
-  
+      const response = await axios.post(`http://localhost:3001/api/giftbox/updateGiftboxAccessories`, {
+        giftboxId: giftboxId,
+        giftboxAccessories: giftboxAccessories.map((accessory) => ({
+          accessoryId: accessory.accessoryId,
+          quantity: quantities[accessory.accessoryId] || 1,
+        })),
+      });
+
       if (response.status === 200) {
         Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Giftbox updated successfully! You can now proceed to checkout.",
-          confirmButtonText: "OK",
+          icon: 'success',
+          title: 'Success',
+          text: 'Giftbox updated successfully! You can now proceed to checkout.',
+          confirmButtonText: 'OK',
         }).then((result) => {
           if (result.isConfirmed) {
             navigate(`/customer/cart/${giftboxId}`, { state: { giftboxId: giftboxDetails.giftboxId } });
           }
         });
       } else {
-        throw new Error("Unexpected response from the server.");
+        throw new Error('Unexpected response from the server.');
       }
     } catch (error) {
-      console.error("Error checking out giftbox:", error);
+      console.error('Error checking out giftbox:', error);
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to checkout giftbox. Please try again.",
-        confirmButtonText: "Close",
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to checkout giftbox. Please try again.',
+        confirmButtonText: 'Close',
       });
     }
   };
-  
 
   return (
     <div className="bgcolor">
       <NavbarCustomerAfterSignedIn />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Card>
@@ -1474,7 +1456,7 @@ function MyGiftbox() {
                 onChange={(e) => setName(e.target.value)}
                 fullWidth
                 margin="normal"
-                sx={{ width: "40%", m: 2 }}
+                sx={{ width: '40%', m: 2 }}
               />
               <Grid item xs={6}>
                 <Autocomplete
@@ -1482,14 +1464,7 @@ function MyGiftbox() {
                   onChange={(event, newValue) => setSelectedBoxColor(newValue)}
                   options={boxColors}
                   getOptionLabel={(option) => option.color}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Box Color"
-                      variant="outlined"
-                      size="small"
-                    />
-                  )}
+                  renderInput={(params) => <TextField {...params} label="Box Color" variant="outlined" size="small" />}
                 />
               </Grid>
               <TextField
@@ -1500,7 +1475,7 @@ function MyGiftbox() {
                 rows={3}
                 fullWidth
                 margin="normal"
-                sx={{ width: "40%", m: 2 }}
+                sx={{ width: '40%', m: 2 }}
               />
               <TextField
                 label="Note Content"
@@ -1510,20 +1485,15 @@ function MyGiftbox() {
                 rows={3}
                 fullWidth
                 margin="normal"
-                sx={{ width: "40%", m: 2 }}
+                sx={{ width: '40%', m: 2 }}
               />
-              <Button
-                variant="outlined"
-                color="info"
-                onClick={handleSave}
-                sx={{ width: "15%", m: 2 }}
-              >
+              <Button variant="outlined" color="info" onClick={handleSave} sx={{ width: '15%', m: 2 }}>
                 Save
               </Button>
 
               <h3>Sub Total Price: Rs.{totalPrice}</h3>
 
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                 {giftboxAccessories.map((accessory) => (
                   <GiftboxAccessoryCard
                     key={accessory.accessoryId}
@@ -1535,12 +1505,7 @@ function MyGiftbox() {
                   />
                 ))}
               </Box>
-              <Button
-                variant="contained"
-                color="success"
-                sx={{ width: "15%", m: 2 }}
-                onClick={handleCheckout}
-              >
+              <Button variant="contained" color="success" sx={{ width: '15%', m: 2 }} onClick={handleCheckout}>
                 Checkout
               </Button>
             </Box>

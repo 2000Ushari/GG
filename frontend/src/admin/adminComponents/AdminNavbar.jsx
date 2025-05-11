@@ -18,10 +18,12 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../appStore';
 import { useNavigate } from 'react-router-dom';
 
-const AppBar = styled(MuiAppBar, {
-  })(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-  }));
+const AppBar = styled(
+  MuiAppBar,
+  {}
+)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+}));
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -129,10 +131,20 @@ export default function AdminNavbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => { handleProfileClick(); handleMenuClose(); }}>
+      <MenuItem
+        onClick={() => {
+          handleProfileClick();
+          handleMenuClose();
+        }}
+      >
         View My Profile
       </MenuItem>
-      <MenuItem onClick={() => { handleLogout(); handleMenuClose(); }}>
+      <MenuItem
+        onClick={() => {
+          handleLogout();
+          handleMenuClose();
+        }}
+      >
         Logout
       </MenuItem>
     </Menu>
@@ -164,11 +176,7 @@ export default function AdminNavbar() {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
           </Badge>
@@ -192,7 +200,7 @@ export default function AdminNavbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation={0} sx={{backgroundColor:"#ffffff",color:"#2f2f2f"}} >
+      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: '#ffffff', color: '#2f2f2f' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -205,28 +213,24 @@ export default function AdminNavbar() {
             <MenuIcon />
           </IconButton>
           <Button
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                display: { xs: "none", sm: "block" },
-                fontSize: 30,
-                fontWeight: 500,
-                fontFamily: "fantasy",
-              }}
-              onClick={() => navigate("/admin/home")} // Correct path to home
-              
-            >
-              The Glitter Gallery
-            </Button>
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              fontSize: 30,
+              fontWeight: 500,
+              fontFamily: 'fantasy',
+            }}
+            onClick={() => navigate('/admin/home')} // Correct path to home
+          >
+            The Glitter Gallery
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -235,11 +239,7 @@ export default function AdminNavbar() {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
+            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>

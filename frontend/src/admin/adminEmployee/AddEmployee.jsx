@@ -74,7 +74,7 @@
 //       setError("Please fill out all fields.");
 //       return;
 //     }
-    
+
 //     // Make POST request to backend
 //     fetch("http://localhost:3001/api/employee/addEmployee", {
 //       method: "POST",
@@ -168,7 +168,6 @@
 //             />
 //           </Grid>
 
-          
 //           <Grid item xs={6}>
 //       <Autocomplete
 //         options={genderOptions}
@@ -211,13 +210,11 @@
 //             />
 //           </Grid>
 
-
-
 // <Grid item xs={6}>
 //       <Autocomplete
 //         options={workingStatusOptions}
 //         value={workingStatus}
-//         onChange={(event, newValue) => setWorkingStatus(newValue)}  
+//         onChange={(event, newValue) => setWorkingStatus(newValue)}
 //         renderInput={(params) => (
 //           <TextField
 //             {...params} // This spreads all the necessary props to the TextField
@@ -252,7 +249,6 @@
 // }
 
 // export default AddEmployee;
-
 
 // import { Grid, IconButton, Typography } from "@mui/material";
 // import React, { useState } from "react";
@@ -498,14 +494,12 @@
 //             />
 //           </Grid>
 
-          
-
 //           {error && (
 //             <Typography variant="body2" color="error" align="center">
 //               {error}
 //             </Typography>
 //           )}
-          
+
 //           <Grid item xs={12}>
 //             <Typography variant="h5" align="center">
 //               <Button variant="contained" onClick={handleSubmit}>
@@ -523,19 +517,18 @@
 
 // export default AddEmployee;
 
-
 import * as React from 'react';
-import { Grid, IconButton, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
-import Modal from "@mui/material/Modal";
-import Autocomplete from "@mui/material/Autocomplete";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Grid, IconButton, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2';
+import Modal from '@mui/material/Modal';
+import Autocomplete from '@mui/material/Autocomplete';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
@@ -548,23 +541,21 @@ function AddEmployee({ open, closeEvent }) {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
         console.log(err);
       });
   }, [navigate]);
-
-
 
   const modalStyle = {
     position: 'absolute',
@@ -583,18 +574,18 @@ function AddEmployee({ open, closeEvent }) {
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
   };
 
-  const [employeeFirstName, setEmployeeFirstName] = useState("");
-  const [employeeLastName, setEmployeeLastName] = useState("");
-  const [employeeContact, setEmployeeContact] = useState("");
-  const [employeeGender, setEmployeeGender] = useState("");
-  const [employeeNIC, setEmployeeNIC] = useState("");
-  const [employeeAddress, setEmployeeAddress] = useState("");
-  const [workingStatus, setWorkingStatus] = useState("");
+  const [employeeFirstName, setEmployeeFirstName] = useState('');
+  const [employeeLastName, setEmployeeLastName] = useState('');
+  const [employeeContact, setEmployeeContact] = useState('');
+  const [employeeGender, setEmployeeGender] = useState('');
+  const [employeeNIC, setEmployeeNIC] = useState('');
+  const [employeeAddress, setEmployeeAddress] = useState('');
+  const [workingStatus, setWorkingStatus] = useState('');
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  const genderOptions = ["Female", "Male", "Preferred not to mention"];
-  const workingStatusOptions = ["Active", "Inactive"];
+  const genderOptions = ['Female', 'Male', 'Preferred not to mention'];
+  const workingStatusOptions = ['Active', 'Inactive'];
 
   const handleFirstNameChange = (event) => {
     setEmployeeFirstName(event.target.value);
@@ -623,19 +614,27 @@ function AddEmployee({ open, closeEvent }) {
   // const handleWorkingStatusChange = (event) => {
   //   setWorkingStatus(event.target.value);
   // };
-  
+
   const handleSubmit = () => {
     // Validation
-    if (!employeeFirstName || !employeeLastName || !employeeContact || !employeeGender || !employeeNIC || !employeeAddress || !workingStatus) {
-      setError("Please fill out all fields.");
+    if (
+      !employeeFirstName ||
+      !employeeLastName ||
+      !employeeContact ||
+      !employeeGender ||
+      !employeeNIC ||
+      !employeeAddress ||
+      !workingStatus
+    ) {
+      setError('Please fill out all fields.');
       return;
     }
-    
+
     // Make POST request to backend
-    fetch("http://localhost:3001/api/employee/addEmployee", {
-      method: "POST",
+    fetch('http://localhost:3001/api/employee/addEmployee', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         employeeFirstName,
@@ -649,28 +648,26 @@ function AddEmployee({ open, closeEvent }) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to add employee");
+          throw new Error('Failed to add employee');
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Employee created:", data);
-        Swal.fire("Success!", "Employee added successfully.", "success");
+        console.log('Employee created:', data);
+        Swal.fire('Success!', 'Employee added successfully.', 'success');
         // Close the modal after success
         closeEvent();
         window.location.reload();
       })
       .catch((error) => {
-        console.error("Error adding employee:", error);
-        Swal.fire("Error!", "Failed to add the employee.", "error");
+        console.error('Error adding employee:', error);
+        Swal.fire('Error!', 'Failed to add the employee.', 'error');
         // Close the modal even if there's an error
         closeEvent();
       });
   };
 
   return (
-
-
     <Modal
       open={open}
       onClose={closeEvent}
@@ -679,10 +676,7 @@ function AddEmployee({ open, closeEvent }) {
       style={backdropStyle}
     >
       <Box sx={modalStyle}>
-        <IconButton
-          style={{ position: "absolute", top: 10, right: 10 }}
-          onClick={closeEvent}
-        >
+        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="add-employee-modal-title">
@@ -698,7 +692,7 @@ function AddEmployee({ open, closeEvent }) {
               size="small"
               value={employeeFirstName}
               onChange={handleFirstNameChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
           </Grid>
 
@@ -710,7 +704,7 @@ function AddEmployee({ open, closeEvent }) {
               size="small"
               value={employeeLastName}
               onChange={handleLastNameChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
           </Grid>
 
@@ -722,27 +716,26 @@ function AddEmployee({ open, closeEvent }) {
               size="small"
               value={employeeContact}
               onChange={handleContactChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
           </Grid>
 
-          
           <Grid item xs={6}>
-      <Autocomplete
-        options={genderOptions}
-        value={employeeGender}
-        onChange={(event, newValue) => setEmployeeGender(newValue)}  // Corrected this line
-        renderInput={(params) => (
-          <TextField
-            {...params} // This spreads all the necessary props to the TextField
-            label="Gender"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-        )}
-      />
-    </Grid>
+            <Autocomplete
+              options={genderOptions}
+              value={employeeGender}
+              onChange={(event, newValue) => setEmployeeGender(newValue)} // Corrected this line
+              renderInput={(params) => (
+                <TextField
+                  {...params} // This spreads all the necessary props to the TextField
+                  label="Gender"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
           <Grid item xs={6}>
             <TextField
               id="nic"
@@ -751,7 +744,7 @@ function AddEmployee({ open, closeEvent }) {
               size="small"
               value={employeeNIC}
               onChange={handleNICChange}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             />
           </Grid>
 
@@ -769,25 +762,23 @@ function AddEmployee({ open, closeEvent }) {
             />
           </Grid>
 
-
-
-<Grid item xs={6}>
-      <Autocomplete
-        options={workingStatusOptions}
-        value={workingStatus}
-        onChange={(event, newValue) => setWorkingStatus(newValue)}  
-        renderInput={(params) => (
-          <TextField
-            {...params} // This spreads all the necessary props to the TextField
-            label="Working Status"
-            variant="outlined"
-            size="small"
-            fullWidth
-          />
-        )}
-      />
-    </Grid>
-    {/* <Grid item xs={12}>
+          <Grid item xs={6}>
+            <Autocomplete
+              options={workingStatusOptions}
+              value={workingStatus}
+              onChange={(event, newValue) => setWorkingStatus(newValue)}
+              renderInput={(params) => (
+                <TextField
+                  {...params} // This spreads all the necessary props to the TextField
+                  label="Working Status"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                />
+              )}
+            />
+          </Grid>
+          {/* <Grid item xs={12}>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer
         components={['DateRangePicker']}
@@ -814,11 +805,8 @@ function AddEmployee({ open, closeEvent }) {
         </Grid>
 
         <Box sx={{ m: 2 }}></Box>
-
       </Box>
     </Modal>
-
-
   );
 }
 

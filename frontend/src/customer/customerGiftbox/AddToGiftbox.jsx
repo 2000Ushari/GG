@@ -1,89 +1,87 @@
+//   const [accessoryName, setAccessoryName] = useState("");
+//   const [accessoryPrice, setAccessoryPrice] = useState("");
+//   const [accessoryDescription, setAccessoryDescription] = useState("");
+//   const [accessoryQuantity, setAccessoryQuantity] = useState("");
+//   const [accessoryColor, setAccessoryColor] = useState("");
 
+//   const [error, setError] = useState("");
 
-  //   const [accessoryName, setAccessoryName] = useState("");
-  //   const [accessoryPrice, setAccessoryPrice] = useState("");
-  //   const [accessoryDescription, setAccessoryDescription] = useState("");
-  //   const [accessoryQuantity, setAccessoryQuantity] = useState("");
-  //   const [accessoryColor, setAccessoryColor] = useState("");
+//   const [selectedCategory, setSelectedCategory] = useState(null);
+//   const [categories, setCategories] = useState([]);
 
-  //   const [error, setError] = useState("");
+//   const handleNameChange = (event) => {
+//     setAccessoryName(event.target.value);
+//   };
 
-  //   const [selectedCategory, setSelectedCategory] = useState(null);
-  //   const [categories, setCategories] = useState([]);
+//   const handlePriceChange = (event) => {
+//     setAccessoryPrice(event.target.value);
+//   };
 
-  //   const handleNameChange = (event) => {
-  //     setAccessoryName(event.target.value);
-  //   };
+//   const handleDescriptionChange = (event) => {
+//     setAccessoryDescription(event.target.value);
+//   };
 
-  //   const handlePriceChange = (event) => {
-  //     setAccessoryPrice(event.target.value);
-  //   };
+//   const handleQuantityChange = (event) => {
+//     setAccessoryQuantity(event.target.value);
+//   };
 
-  //   const handleDescriptionChange = (event) => {
-  //     setAccessoryDescription(event.target.value);
-  //   };
+//   const handleColorChange = (event) => {
+//     setAccessoryColor(event.target.value);
+//   };
 
-  //   const handleQuantityChange = (event) => {
-  //     setAccessoryQuantity(event.target.value);
-  //   };
+//   const handleSubmit = () => {
+//     // Make POST request to backend
+//     fetch("http://localhost:3001/api/", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         accessoryName,
+//         accessoryPrice,
+//         accessoryDescription,
+//         accessoryQuantity,
+//         accessoryColor,
+//         categoryId: selectedCategory.categoryId,
+//       }),
+//     })
+//       .then((response) => {
+//         if (!response.ok) {
+//           throw new Error("Failed to add accessory");
+//         }
+//         return response.json();
+//       })
+//       .then((data) => {
+//         console.log("Accessory created:", data);
+//         Swal.fire("Success!", "Accessory added successfully.", "success");
+//         // Close the modal after success
+//         closeEvent();
+//         window.location.reload();
+//       })
+//       .catch((error) => {
+//         console.error("Error adding accessory:", error);
+//         Swal.fire("Error!", "Failed to add the accessory.", "error");
+//         // Close the modal even if there's an error
+//         closeEvent();
+//       });
+//   };
 
-  //   const handleColorChange = (event) => {
-  //     setAccessoryColor(event.target.value);
-  //   };
+//   const fetchCategories = async () => {
+//    try {
+//     const response = await fetch("http://localhost:3001/api/category/getCategory");
+//     if (!response.ok) {
+//      throw new Error("Failed to fetch categories");
+//     }
+//      const data = await response.json();
+//     setCategories(data);
+//    } catch (error) {
+//      console.error("Error fetching categories:", error);
+//     }
+//   };
 
-  //   const handleSubmit = () => {
-  //     // Make POST request to backend
-  //     fetch("http://localhost:3001/api/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         accessoryName,
-  //         accessoryPrice,
-  //         accessoryDescription,
-  //         accessoryQuantity,
-  //         accessoryColor,
-  //         categoryId: selectedCategory.categoryId,
-  //       }),
-  //     })
-  //       .then((response) => {
-  //         if (!response.ok) {
-  //           throw new Error("Failed to add accessory");
-  //         }
-  //         return response.json();
-  //       })
-  //       .then((data) => {
-  //         console.log("Accessory created:", data);
-  //         Swal.fire("Success!", "Accessory added successfully.", "success");
-  //         // Close the modal after success
-  //         closeEvent();
-  //         window.location.reload();
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error adding accessory:", error);
-  //         Swal.fire("Error!", "Failed to add the accessory.", "error");
-  //         // Close the modal even if there's an error
-  //         closeEvent();
-  //       });
-  //   };
-
-  //   const fetchCategories = async () => {
-  //    try {
-  //     const response = await fetch("http://localhost:3001/api/category/getCategory");
-  //     if (!response.ok) {
-  //      throw new Error("Failed to fetch categories");
-  //     }
-  //      const data = await response.json();
-  //     setCategories(data);
-  //    } catch (error) {
-  //      console.error("Error fetching categories:", error);
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     fetchCategories();
-  //   }, []);
+//   useEffect(() => {
+//     fetchCategories();
+//   }, []);
 
 //   import { CardMedia, Grid, IconButton, Typography } from "@mui/material";
 // import React, { useState, useEffect } from "react";
@@ -145,8 +143,6 @@
 //     fetchAccessory();
 //   }, [customerId]);
 
-
-
 //   const modalStyle = {
 //     position: "absolute",
 //     top: "50%",
@@ -163,8 +159,6 @@
 //     backdropFilter: "blur(3px)", // Light black background with a blur effect
 //     backgroundColor: "rgba(0, 0, 0, 0.6)",
 //   };
-
-
 
 //   const handleGoToCustomClick = () => {
 //     navigate("/customer/ourProducts"); //Navigate to the custom giftboxes
@@ -281,8 +275,6 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
-        
 
 //         <Grid item xs={6}>
 //           <TextField
@@ -299,7 +291,7 @@
 //             fullWidth
 //           />
 //         </Grid>
-        
+
 //         <Grid item xs={12}>
 //           <TextField
 //             id="color"
@@ -347,7 +339,6 @@
 
 // export default AddToGiftbox;
 
-
 // import { Grid, IconButton, Typography } from "@mui/material";
 // import React, { useState, useEffect } from "react";
 // import Box from "@mui/material/Box";
@@ -359,7 +350,7 @@
 // import axios from "axios";
 // import ShowMyGiftboxCard from "./ShowMyGiftboxCard";
 
-// function AddToGiftbox({ open, closeEvent, customerId, accessoryId }) {  
+// function AddToGiftbox({ open, closeEvent, customerId, accessoryId }) {
 //   const navigate = useNavigate();
 //   const [myGiftboxes, setMyGiftboxes] = useState([]);
 
@@ -371,7 +362,7 @@
 //           const response = await axios.get(
 //             `http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`
 //           );
-  
+
 //           if (response.status === 200) {
 //             console.log("Giftboxes fetched successfully:", response.data);
 //             setMyGiftboxes(response.data); // Update the state with fetched data
@@ -385,10 +376,9 @@
 //         console.log("customerId is not available yet.");
 //       }
 //     };
-  
+
 //     fetchGiftboxes();
 //   }, [customerId]);
-  
 
 //   const modalStyle = {
 //     position: "absolute",
@@ -460,19 +450,18 @@
 
 // export default AddToGiftbox;
 
+import { Grid, IconButton, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
+import Modal from '@mui/material/Modal';
+import Stack from '@mui/material/Stack';
+import axios from 'axios';
+import ShowMyGiftboxCard from './ShowMyGiftboxCard';
 
-import { Grid, IconButton, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
-import Modal from "@mui/material/Modal";
-import Stack from "@mui/material/Stack";
-import axios from "axios";
-import ShowMyGiftboxCard from "./ShowMyGiftboxCard";
-
-function AddToGiftbox({ open, closeEvent, customerId, accessoryId, quantity, sizeId }) {  
+function AddToGiftbox({ open, closeEvent, customerId, accessoryId, quantity, sizeId }) {
   const navigate = useNavigate();
   const [myGiftboxes, setMyGiftboxes] = useState([]);
 
@@ -481,47 +470,45 @@ function AddToGiftbox({ open, closeEvent, customerId, accessoryId, quantity, siz
       if (customerId) {
         console.log(`Fetching giftboxes for customerId: ${customerId}`);
         try {
-          const response = await axios.get(
-            `http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`
-          );
-  
+          const response = await axios.get(`http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`);
+
           if (response.status === 200) {
             setMyGiftboxes(response.data);
           } else {
-            console.error("Failed to fetch giftbox details:", response);
+            console.error('Failed to fetch giftbox details:', response);
           }
         } catch (error) {
-          console.error("Error fetching giftbox details:", error);
+          console.error('Error fetching giftbox details:', error);
         }
       }
     };
-  
+
     fetchGiftboxes();
   }, [customerId]);
 
   const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 600,
-    bgcolor: "background.paper",
+    bgcolor: 'background.paper',
     borderRadius: 4,
     boxShadow: 24,
     p: 4,
   };
 
   const backdropStyle = {
-    backdropFilter: "blur(3px)", // Light black background with a blur effect
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backdropFilter: 'blur(3px)', // Light black background with a blur effect
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   };
 
   const handleGoToCustomClick = () => {
-    navigate("/customer/ourProducts"); // Navigate to the custom giftboxes
+    navigate('/customer/ourProducts'); // Navigate to the custom giftboxes
   };
 
   const handleGiftboxViewClick = () => {
-    navigate("/customer/giftboxes"); // Navigate to the giftbox view in the Customer Tabs
+    navigate('/customer/giftboxes'); // Navigate to the giftbox view in the Customer Tabs
   };
 
   return (
@@ -533,33 +520,26 @@ function AddToGiftbox({ open, closeEvent, customerId, accessoryId, quantity, siz
       style={backdropStyle}
     >
       <Box sx={modalStyle}>
-        <IconButton
-          style={{ position: "absolute", top: 10, right: 10 }}
-          onClick={closeEvent}
-        >
+        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="add-accessory-modal-title">
           My Gift Boxes
         </Typography>
 
-        <ShowMyGiftboxCard 
+        <ShowMyGiftboxCard
           key={myGiftboxes.giftboxId}
           // get the giftbox details by the giftboxId
           giftboxDetails={myGiftboxes}
-          selectedAccessory={accessoryId}  // Pass accessoryId as selectedAccessory
+          selectedAccessory={accessoryId} // Pass accessoryId as selectedAccessory
           selectedQuantity={quantity} // Pass quantity as selectedQuantity
           selectedSizeId={sizeId} // Pass sizeId as selectedSizeId
         />
 
         <Grid item xs={12}>
           <Typography variant="h5" align="center">
-            <Stack spacing={2} direction="row" justifyContent={"center"}>
-              <Button
-                variant="outlined"
-                color="success"
-                onClick={handleGoToCustomClick}
-              >
+            <Stack spacing={2} direction="row" justifyContent={'center'}>
+              <Button variant="outlined" color="success" onClick={handleGoToCustomClick}>
                 Go with Custom Gift box
               </Button>
 

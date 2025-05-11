@@ -37,14 +37,6 @@ const Images = () => {
                 </Typography>
               </CardContent>
             </Card>
-
-
-
-
-
-
-
-            
           </Grid>
         ))}
       </Grid>

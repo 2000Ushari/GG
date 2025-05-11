@@ -1,52 +1,51 @@
-import React from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import React from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
+import Home from './pages/Home';
+import OurStory from './pages/OurStory.jsx';
+import ContactUs from './pages/ContactUs';
+import TermsConditions from './pages/TermsConditions';
+import HappyCustomer from './pages/HappyCustomer';
+import Profile from './pages/Profile';
 
-import Home from "./pages/Home";
-import OurStory from "./pages/OurStory.jsx";
-import ContactUs from "./pages/ContactUs";
-import TermsConditions from "./pages/TermsConditions";
-import HappyCustomer from "./pages/HappyCustomer";
-import Profile from "./pages/Profile";
+import Login from './pages/Login';
+import Register from './pages/Register';
+import InitialRegister from './pages/InitialRegister';
 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import InitialRegister from "./pages/InitialRegister";
-
-import AdminHome from "./admin/AdminHome";
-import AdminOrder from "./admin/AdminOrders";
-import AdminAccessories from "./admin/AdminAccessories";
-import AddAccessory from "./admin/adminAccessory/AddAccessory";
-import AdminCategories from "./admin/AdminCategories";
-import AdminGiftboxes from "./admin/AdminGiftboxes.jsx";
+import AdminHome from './admin/AdminHome';
+import AdminOrder from './admin/AdminOrders';
+import AdminAccessories from './admin/AdminAccessories';
+import AddAccessory from './admin/adminAccessory/AddAccessory';
+import AdminCategories from './admin/AdminCategories';
+import AdminGiftboxes from './admin/AdminGiftboxes.jsx';
 // import ViewGiftbox from "./admin/adminGiftbox/ViewGiftbox.jsx";
-import AdminEmployees from "./admin/AdminEmployees.jsx";
-import AdminCustomers from "./admin/AdminCustomers.jsx";
-import CustomerList from "./admin/adminCustomer/CustomerList.jsx";
-import Configurations from "./admin/adminConfigurations/Configurations.jsx";
+import AdminEmployees from './admin/AdminEmployees.jsx';
+import AdminCustomers from './admin/AdminCustomers.jsx';
+import CustomerList from './admin/adminCustomer/CustomerList.jsx';
+import Configurations from './admin/adminConfigurations/Configurations.jsx';
 
-import CustomerHome from "./customer/CustomerHome";
-import AccessoryView from "./customer/customerAccessory/AccessoryView";
-import CustomGiftboxes from "./customer/customerGiftbox/CustomGiftboxesList.jsx";
-import CustomerTabs from "./customer/customerOrder/CustomerTabs.jsx";
-import Giftboxes from "./customer/customerGiftbox/MyGiftboxesList.jsx";
-import MyGiftbox from "./customer/customerGiftbox/MyGiftbox.jsx";
-import Orders from "./customer/customerOrder/MyOrders.jsx";
-import Cart from "./customer/customerOrder/MyCart.jsx";
-import Favorites from "./customer/MyFavorites.jsx";
-import Settings from "./customer/Settings.jsx";
-import BuyGiftbox from "./customer/customerOrder/BuyGiftbox.jsx";
-import OrderPayment from "./customer/customerOrder/OrderPayment.jsx";
-import CateWiseAccessoriesPage from "./pages/CateWiseAccessoriesPage.jsx";
+import CustomerHome from './customer/CustomerHome';
+import AccessoryView from './customer/customerAccessory/AccessoryView';
+import CustomGiftboxes from './customer/customerGiftbox/CustomGiftboxesList.jsx';
+import CustomerTabs from './customer/customerOrder/CustomerTabs.jsx';
+import Giftboxes from './customer/customerGiftbox/MyGiftboxesList.jsx';
+import MyGiftbox from './customer/customerGiftbox/MyGiftbox.jsx';
+import Orders from './customer/customerOrder/MyOrders.jsx';
+import Cart from './customer/customerOrder/MyCart.jsx';
+import Favorites from './customer/MyFavorites.jsx';
+import Settings from './customer/Settings.jsx';
+import BuyGiftbox from './customer/customerOrder/BuyGiftbox.jsx';
+import OrderPayment from './customer/customerOrder/OrderPayment.jsx';
+import CateWiseAccessoriesPage from './pages/CateWiseAccessoriesPage.jsx';
 
-import EditEmployee from "./admin/adminEmployee/EditEmployee.jsx";
-import ViewEmployee from "./admin/adminEmployee/ViewEmployee.jsx";
+import EditEmployee from './admin/adminEmployee/EditEmployee.jsx';
+import ViewEmployee from './admin/adminEmployee/ViewEmployee.jsx';
 
-import EmployeeHome from "./employee/EmployeeHome.jsx";
-import EmployeeOrders from "./employee/EmployeeOrders.jsx";
-import EmployeeCategories from "./employee/EmployeeCategories.jsx";
-import EmployeeGiftboxes from "./employee/EmployeeGiftboxes.jsx";
-import EmployeeAccessories from "./employee/EmployeeAccessories.jsx";
+import EmployeeHome from './employee/EmployeeHome.jsx';
+import EmployeeOrders from './employee/EmployeeOrders.jsx';
+import EmployeeCategories from './employee/EmployeeCategories.jsx';
+import EmployeeGiftboxes from './employee/EmployeeGiftboxes.jsx';
+import EmployeeAccessories from './employee/EmployeeAccessories.jsx';
 
 export default function App() {
   return (
@@ -75,64 +74,37 @@ export default function App() {
         {/* Admin employee routes */}
         <Route path="/admin/employees" exact element={<AdminEmployees />} />
         {/* <Route path="/admin/employees/edit/:employeeId" element={<EditEmployee />} /> */}
-        <Route
-          path="/admin/employees/view/:employeeId"
-          element={<ViewEmployee />}
-        />
+        <Route path="/admin/employees/view/:employeeId" element={<ViewEmployee />} />
 
         <Route path="/admin/customers" element={<AdminCustomers />} />
 
         <Route path="/customer/home" exact element={<CustomerHome />} />
         {/* <Route path="/customer/accessoryView" exact element={<AccessoryView />} /> */}
-        <Route
-          path="/customer/accessoryView/:accessoryId"
-          element={<AccessoryView />}
-        />
+        <Route path="/customer/accessoryView/:accessoryId" element={<AccessoryView />} />
 
         <Route path="/customer/customerTabs" element={<CustomerTabs />} />
         <Route path="/customer/ourProducts" element={<CustomGiftboxes />} />
         <Route path="/customer/giftboxes" element={<Giftboxes />} />
-        <Route
-          path="/customer/giftboxes/view/:giftboxId"
-          element={<MyGiftbox />}
-        />
+        <Route path="/customer/giftboxes/view/:giftboxId" element={<MyGiftbox />} />
         <Route path="/customer/orders" element={<Orders />} />
         <Route path="/customer/cart" element={<Cart />} />
         <Route path="/customer/favorites" element={<Favorites />} />
         <Route path="/customer/settings" element={<Settings />} />
 
-
         <Route path="/customer/cart/:giftboxId" element={<BuyGiftbox />} />
-        <Route path="/customer/order/orderPayment/:orderId" element = {<OrderPayment />} />
+        <Route path="/customer/order/orderPayment/:orderId" element={<OrderPayment />} />
 
         <Route path="/admin/customerList" element={<CustomerList />} />
 
         {/* Employee */}
         <Route path="/employee/home" exact element={<EmployeeHome />} />
         <Route path="/employee/order" exact element={<EmployeeOrders />} />
-        <Route
-          path="/employee/categories"
-          exact
-          element={<EmployeeCategories />}
-        />
-        <Route
-          path="/employee/giftboxes"
-          exact
-          element={<EmployeeGiftboxes />}
-        />
-        <Route
-          path="/employee/accessories"
-          exact
-          element={<EmployeeAccessories />}
-        />
+        <Route path="/employee/categories" exact element={<EmployeeCategories />} />
+        <Route path="/employee/giftboxes" exact element={<EmployeeGiftboxes />} />
+        <Route path="/employee/accessories" exact element={<EmployeeAccessories />} />
 
-        <Route
-          path="/category/:category"
-          element={<CateWiseAccessoriesPage />}
-        />
-        
+        <Route path="/category/:category" element={<CateWiseAccessoriesPage />} />
       </Routes>
     </BrowserRouter>
-
   );
 }

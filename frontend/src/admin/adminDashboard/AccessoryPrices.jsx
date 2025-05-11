@@ -35,18 +35,10 @@
 //   );
 // };
 
-import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
-import axios from "axios";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import React, { useState, useEffect } from 'react';
+import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 // Register necessary components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -56,10 +48,10 @@ const AccessoryPrices = () => {
     labels: [],
     datasets: [
       {
-        label: "Price",
+        label: 'Price',
         data: [],
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
         borderWidth: 1,
       },
     ],
@@ -68,7 +60,7 @@ const AccessoryPrices = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/api/dashboard/getAccessoryData");
+        const response = await axios.get('http://localhost:3001/api/dashboard/getAccessoryData');
         const data = response.data;
 
         // Extract labels and data points
@@ -80,16 +72,16 @@ const AccessoryPrices = () => {
           labels: labels,
           datasets: [
             {
-              label: "Price",
+              label: 'Price',
               data: accessoryData,
-              backgroundColor: "rgba(75,192,192,0.4)",
-              borderColor: "rgba(75,192,192,1)",
+              backgroundColor: 'rgba(75,192,192,0.4)',
+              borderColor: 'rgba(75,192,192,1)',
               borderWidth: 1,
             },
           ],
         });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
 
@@ -105,13 +97,13 @@ const AccessoryPrices = () => {
           x: {
             title: {
               display: true,
-              text: "Accessory Id",
+              text: 'Accessory Id',
             },
           },
           y: {
             title: {
               display: true,
-              text: "Price per unit (Rs)",
+              text: 'Price per unit (Rs)',
             },
             beginAtZero: true,
           },

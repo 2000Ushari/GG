@@ -244,15 +244,12 @@
 //   const handleCloseCreateGBModal = () => setOpenCreateGBModal(false);
 //   const [selectedGiftbox, setSelectedGiftbox] = useState(null);
 
-
 //   const navigate = useNavigate();
-
 
 //   const handleClickMyGB = (giftboxID) => {
 //     navigate(`/customer/giftboxes/view/${giftboxID}`);
 //     window.location.reload();
 //   };
-
 
 //   // Authentication check
 //   useEffect(() => {
@@ -420,8 +417,6 @@
 
 // export default MyGiftboxesList;
 
-
-
 // import React, { useEffect, useState } from "react";
 // import Stack from "@mui/material/Stack";
 // import AddIcon from "@mui/icons-material/Add";
@@ -453,7 +448,7 @@
 
 //   const handleOpenCreateGBModal = () => setOpenCreateGBModal(true);
 //   const handleCloseCreateGBModal = () => setOpenCreateGBModal(false);
-  
+
 //   const navigate = useNavigate();
 
 //   const handleClickMyGB = (giftboxID) => {
@@ -691,7 +686,6 @@
 //       fetchMyGiftboxes();
 //     }
 //   }, [customerId]);
-  
 
 //   // const deleteGiftbox = async (giftboxID) => {
 //   //   try {
@@ -777,18 +771,18 @@
 
 // export default MyGiftboxesList;
 
-import React, { useEffect, useState } from "react";
-import Stack from "@mui/material/Stack";
-import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { Box, Button, CircularProgress } from "@mui/material";
-import Swal from "sweetalert2";
+import React, { useEffect, useState } from 'react';
+import Stack from '@mui/material/Stack';
+import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Box, Button, CircularProgress } from '@mui/material';
+import Swal from 'sweetalert2';
 
-import CreateMyGiftbox from "./CreateMyGiftbox";
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
-import GiftboxCard from "./GiftboxCard"; // Import the GiftboxCard component
+import CreateMyGiftbox from './CreateMyGiftbox';
+import NavbarCustomerAfterSignedIn from '../customerComponent/NavbarCustomerAfterSignedIn';
+import CustomerSidenav from '../customerComponent/CustomerSidenav';
+import GiftboxCard from './GiftboxCard'; // Import the GiftboxCard component
 
 const MyGiftboxesList = () => {
   const [customerId, setCustomerId] = useState(null);
@@ -803,14 +797,14 @@ const MyGiftboxesList = () => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setCustomerId(res.data.user.id);
         } else {
-          navigate("/login");
+          navigate('/login');
         }
       })
       .catch((err) => {
@@ -823,12 +817,10 @@ const MyGiftboxesList = () => {
     const fetchGiftboxes = async () => {
       if (!customerId) return;
       try {
-        const response = await axios.get(
-          `http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`
-        );
+        const response = await axios.get(`http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`);
         setGiftboxes(response.data);
       } catch (error) {
-        console.error("Error fetching gift boxes:", error);
+        console.error('Error fetching gift boxes:', error);
       } finally {
         setLoading(false); // Stop loading regardless of success or error
       }
@@ -840,41 +832,34 @@ const MyGiftboxesList = () => {
     <>
       <NavbarCustomerAfterSignedIn />
       <Box height={30} />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <h1>My Giftboxes</h1>
           <Stack direction="row" spacing={2} pr={1.5}>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleOpenCreateGBModal}
-            >
+            <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreateGBModal}>
               Create New Giftbox
             </Button>
 
-            <CreateMyGiftbox
-              open={openCreateGBModal}
-              closeEvent={handleCloseCreateGBModal}
-            />
+            <CreateMyGiftbox open={openCreateGBModal} closeEvent={handleCloseCreateGBModal} />
           </Stack>
           {loading ? (
             <CircularProgress />
           ) : (
             <div
               style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "20px",
-                justifyContent: "left",
-                paddingLeft: "20px",
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '20px',
+                justifyContent: 'left',
+                paddingLeft: '20px',
               }}
             >
-                          <Box height={10} />
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-              {giftboxes.map((giftbox) => (
-                <GiftboxCard key={giftbox.giftboxId} giftbox={giftbox} />
-              ))}
+              <Box height={10} />
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                {giftboxes.map((giftbox) => (
+                  <GiftboxCard key={giftbox.giftboxId} giftbox={giftbox} />
+                ))}
               </Box>
             </div>
           )}

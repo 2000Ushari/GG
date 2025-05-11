@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2';
 
 const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
   const navigate = useNavigate();
@@ -11,15 +11,15 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -28,10 +28,10 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
   }, [navigate]);
 
   const [giftboxData, setGiftboxData] = useState({
-    giftboxName: "",
-    noteContent: "",
-    giftboxColor: "",
-    giftboxPrice: "",
+    giftboxName: '',
+    noteContent: '',
+    giftboxColor: '',
+    giftboxPrice: '',
     accessories: [{ accessory: null, quantity: 1, price: 0 }],
   });
   const [accessories, setAccessories] = useState([]);
@@ -42,26 +42,26 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
 
     if (giftbox) {
       setGiftboxData({
-        giftboxName: giftbox.giftboxName || "",
-        noteContent: giftbox.noteContent || "",
-        giftboxColor: giftbox.giftboxColor || "",
-        giftboxPrice: giftbox.giftboxPrice || "",
-        accessories: giftbox.accessories || [""],
+        giftboxName: giftbox.giftboxName || '',
+        noteContent: giftbox.noteContent || '',
+        giftboxColor: giftbox.giftboxColor || '',
+        giftboxPrice: giftbox.giftboxPrice || '',
+        accessories: giftbox.accessories || [''],
       });
     }
   }, [giftbox]);
 
   const fetchAccessories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/accessory/getAccessories");
+      const response = await fetch('http://localhost:3001/api/accessory/getAccessories');
       if (!response.ok) {
-        throw new Error("Failed to fetch accessories");
+        throw new Error('Failed to fetch accessories');
       }
       const data = await response.json();
       setAccessories(data);
     } catch (error) {
-      console.error("Error fetching accessories:", error);
-      setError("Error fetching accessories.");
+      console.error('Error fetching accessories:', error);
+      setError('Error fetching accessories.');
     }
   };
 
@@ -76,9 +76,9 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
   };
 
   const handleAddAccessory = () => {
-    setGiftboxData({ 
-      ...giftboxData, 
-      accessories: [...giftboxData.accessories, { accessory: null, quantity: 1 }] 
+    setGiftboxData({
+      ...giftboxData,
+      accessories: [...giftboxData.accessories, { accessory: null, quantity: 1 }],
     });
   };
 
@@ -91,35 +91,35 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
     try {
       // Basic validations
       if (!giftboxData.giftboxName || !giftboxData.giftboxPrice) {
-        setError("Please fill in all required fields.");
+        setError('Please fill in all required fields.');
         return;
       }
 
       // Numeric validations
       if (isNaN(giftboxData.giftboxPrice)) {
-        setError("Price must be a numeric value.");
+        setError('Price must be a numeric value.');
         return;
       }
 
       const response = await fetch(`http://localhost:3001/api/giftbox/${giftboxID}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(giftboxData),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update giftbox");
+        throw new Error('Failed to update giftbox');
       }
 
       const data = await response.json();
-      Swal.fire("Success!", "Giftbox updated successfully.", "success");
+      Swal.fire('Success!', 'Giftbox updated successfully.', 'success');
       closeEvent();
       window.location.reload();
     } catch (error) {
-      console.error("Error updating giftbox:", error);
-      Swal.fire("Error!", "Failed to update the giftbox.", "error");
+      console.error('Error updating giftbox:', error);
+      Swal.fire('Error!', 'Failed to update the giftbox.', 'error');
       setError(error.message);
     }
   };
@@ -132,8 +132,20 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
       aria-describedby="edit-giftbox-modal-description"
       style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
     >
-      <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 600, bgcolor: 'background.paper', borderRadius: 4, boxShadow: 24, p: 4 }}>
-        <IconButton style={{ position: "absolute", top: 10, right: 10 }} onClick={closeEvent}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          bgcolor: 'background.paper',
+          borderRadius: 4,
+          boxShadow: 24,
+          p: 4,
+        }}
+      >
+        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="edit-giftbox-modal-title">
@@ -147,7 +159,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
               variant="outlined"
               size="small"
               value={giftboxData.giftboxName}
-              onChange={(e) => handleInputChange(e, "giftboxName")}
+              onChange={(e) => handleInputChange(e, 'giftboxName')}
               fullWidth
             />
           </Grid>
@@ -157,7 +169,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
               variant="outlined"
               size="small"
               value={giftboxData.giftboxColor}
-              onChange={(e) => handleInputChange(e, "giftboxColor")}
+              onChange={(e) => handleInputChange(e, 'giftboxColor')}
               fullWidth
             />
           </Grid>
@@ -168,7 +180,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
               size="small"
               type="number"
               value={giftboxData.giftboxPrice}
-              onChange={(e) => handleInputChange(e, "giftboxPrice")}
+              onChange={(e) => handleInputChange(e, 'giftboxPrice')}
               fullWidth
             />
           </Grid>
@@ -178,7 +190,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
               variant="outlined"
               size="small"
               value={giftboxData.noteContent}
-              onChange={(e) => handleInputChange(e, "noteContent")}
+              onChange={(e) => handleInputChange(e, 'noteContent')}
               fullWidth
               multiline
               rows={4}
@@ -191,10 +203,12 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
                 <Grid item xs={5}>
                   <Autocomplete
                     value={accessoryItem.accessory}
-                    onChange={(event, newValue) => handleAccessoryChange(index, "accessory", newValue)}
+                    onChange={(event, newValue) => handleAccessoryChange(index, 'accessory', newValue)}
                     options={accessories}
                     getOptionLabel={(option) => option.accessoryName}
-                    renderInput={(params) => <TextField {...params} label="Accessory" variant="outlined" size="small" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Accessory" variant="outlined" size="small" />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -204,7 +218,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
                     size="small"
                     type="number"
                     value={accessoryItem.quantity}
-                    onChange={(e) => handleAccessoryChange(index, "quantity", e.target.value)}
+                    onChange={(e) => handleAccessoryChange(index, 'quantity', e.target.value)}
                     fullWidth
                   />
                 </Grid>
@@ -214,7 +228,9 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
                     variant="outlined"
                     size="small"
                     type="number"
-                    value={accessoryItem.accessory ? accessoryItem.accessory.accessoryPrice * accessoryItem.quantity : ""}
+                    value={
+                      accessoryItem.accessory ? accessoryItem.accessory.accessoryPrice * accessoryItem.quantity : ''
+                    }
                     InputProps={{
                       readOnly: true,
                     }}
@@ -228,7 +244,7 @@ const EditGiftbox = ({ closeEvent, open, giftboxID, giftbox }) => {
                 </Grid>
               </Grid>
             ))}
-            <Button variant="contained" onClick={handleAddAccessory} fullWidth style={{ marginTop: "10px" }}>
+            <Button variant="contained" onClick={handleAddAccessory} fullWidth style={{ marginTop: '10px' }}>
               Add Accessory
             </Button>
           </Grid>

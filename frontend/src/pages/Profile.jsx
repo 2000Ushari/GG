@@ -93,8 +93,6 @@
 //         <CustomerSidenav />
 //         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
 //           <h1>Profile</h1>
-          
-
 
 //           {user && (
 //                 <Box>
@@ -104,13 +102,12 @@
 //                   {/* Add more user details as needed */}
 //                 </Box>
 //               )}
-              
+
 //         </Box>
 //       </Box>
 //     </>
 //   );
 // }
-
 
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
@@ -256,18 +253,18 @@
 //   );
 // }
 
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Material UI Components
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 // Components
-import CustomerProfile from "../customer/CustomerProfile";
-import AdminProfile from "../admin/AdminProfile";
-import EmployeeProfile from "../employee/EmployeeProfile";
+import CustomerProfile from '../customer/CustomerProfile';
+import AdminProfile from '../admin/AdminProfile';
+import EmployeeProfile from '../employee/EmployeeProfile';
 
 export default function Profile() {
   const [user, setUser] = useState(null); // State to store user information
@@ -278,7 +275,7 @@ export default function Profile() {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
@@ -286,7 +283,7 @@ export default function Profile() {
           setUser(res.data.user); // Set user data if authenticated
           setCustomerId(res.data.user.id); // Set customer ID
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -297,16 +294,15 @@ export default function Profile() {
   // Fetch user details based on customerId
   useEffect(() => {
     if (customerId) {
-      console.log("Fetching user details...");
+      console.log('Fetching user details...');
       const fetchUserDetails = async () => {
         try {
-          const response = await axios.get(
-            `http://localhost:3001/api/authentication/getUserDetails/${customerId}`,
-            { withCredentials: true }
-          );
+          const response = await axios.get(`http://localhost:3001/api/authentication/getUserDetails/${customerId}`, {
+            withCredentials: true,
+          });
           setUserDetails(response.data);
         } catch (error) {
-          console.error("Error fetching user details:", error);
+          console.error('Error fetching user details:', error);
         }
       };
 
@@ -317,27 +313,23 @@ export default function Profile() {
   // Logout function
   const handleLogout = () => {
     axios
-      .post(
-        "http://localhost:3001/api/auth/logout",
-        {},
-        { withCredentials: true }
-      )
+      .post('http://localhost:3001/api/auth/logout', {}, { withCredentials: true })
       .then((res) => {
         if (res.data.logout) {
           setUser(null); // Clear user state after logout
           setCustomerId(null); // Clear user Id after logout
-          navigate("/login"); // Redirect to login page
+          navigate('/login'); // Redirect to login page
         }
       })
       .catch((err) => {
-        console.log("Logout failed", err);
+        console.log('Logout failed', err);
       });
   };
 
   // Save function
   const handleSave = (updatedDetails) => {
     // Implement the save logic here, e.g., send a POST request to update the user details
-    console.log("Saving details:", updatedDetails);
+    console.log('Saving details:', updatedDetails);
   };
 
   // If user is not set, show a loading or fallback UI
@@ -347,25 +339,18 @@ export default function Profile() {
 
   return (
     <>
-          {/* <h1>My Profile</h1> */}
-          {userDetails ? (
-            <Box>
-              <h2>Welcome, {userDetails.userId}</h2>
-              {/* Render role-specific profile component */}
-              {userDetails.userRole === 'customer' && (
-                <CustomerProfile userDetails={userDetails} onSave={handleSave} />
-              )}
-              {userDetails.userRole === 'admin' && (
-                <AdminProfile userDetails={userDetails} onSave={handleSave} />
-              )}
-              {userDetails.userRole === 'employee' && (
-                <EmployeeProfile userDetails={userDetails} onSave={handleSave} />
-              )}
-            </Box>
-          ) : (
-            <Typography variant="h6">Loading user details...</Typography>
-          )}
-
+      {/* <h1>My Profile</h1> */}
+      {userDetails ? (
+        <Box>
+          <h2>Welcome, {userDetails.userId}</h2>
+          {/* Render role-specific profile component */}
+          {userDetails.userRole === 'customer' && <CustomerProfile userDetails={userDetails} onSave={handleSave} />}
+          {userDetails.userRole === 'admin' && <AdminProfile userDetails={userDetails} onSave={handleSave} />}
+          {userDetails.userRole === 'employee' && <EmployeeProfile userDetails={userDetails} onSave={handleSave} />}
+        </Box>
+      ) : (
+        <Typography variant="h6">Loading user details...</Typography>
+      )}
     </>
   );
 }

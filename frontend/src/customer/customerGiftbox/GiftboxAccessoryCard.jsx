@@ -43,7 +43,7 @@
 //     const [giftboxAccessoriesDetails, setGiftboxAccessoriesDetails] = useState(null);
 //     const [isFavorite, setIsFavorite] = useState(false);
 //     const navigate = useNavigate();
-  
+
 //     // Fetch accessory details using the accessoryId
 //     useEffect(() => {
 //       const fetchGiftboxAccessoryDetails = async () => {
@@ -60,7 +60,7 @@
 //       };
 //       fetchGiftboxAccessoryDetails();
 //     }, [giftboxId]);
-  
+
 //     // Check if accessory is in favorites
 //     // useEffect(() => {
 //     //   const checkIfFavorite = async () => {
@@ -77,7 +77,7 @@
 //     //   };
 //     //   checkIfFavorite();
 //     // }, [customerId, giftboxAccessoriesDetails.accessoryId]);
-  
+
 //     // const handleRemoveFromFavorites = async () => {
 //     //   try {
 //     //     const result = await Swal.fire({
@@ -88,23 +88,23 @@
 //     //       confirmButtonText: "Yes, remove it!",
 //     //       cancelButtonText: "No, cancel",
 //     //     });
-    
+
 //     //     if (result.isConfirmed) {
 //     //       // Make API request to remove the accessory from favorites
 //     //       const endpoint = "http://localhost:3001/api/accessory/removeFromFavorites";
-    
+
 //     //       await fetch(endpoint, {
 //     //         method: "POST",
 //     //         headers: { "Content-Type": "application/json" },
 //     //         body: JSON.stringify({ customerId, accessoryId }),
 //     //       });
-    
+
 //     //       Swal.fire(
 //     //         "Removed!",
 //     //         "This accessory has been removed from your favorites.",
 //     //         "success"
 //     //       );
-    
+
 //     //       // Optionally, remove the accessory from the list in the UI without reloading the page
 //     //       setIsFavorite(false); // You can remove the favorite from the UI by setting the state or refreshing the list
 //     //     }
@@ -114,16 +114,15 @@
 //     //   }
 //     //   window.location.reload();
 //     // };
-    
-  
+
 //     const handleCardClick = () => {
 //       navigate(`/customer/accessoryView/${giftboxAccessoriesDetails.accessoryId}`);
 //     };
-  
+
 //     if (!giftboxAccessoriesDetails) {
 //       return <p>Loading accessory...</p>;
 //     }
-  
+
 //   return (
 //     <CustomCard onClick={handleCardClick}>
 //     <CardMedia
@@ -148,13 +147,13 @@
 //         //   handleRemoveFromFavorites();
 //         }}
 //       >
-        
+
 //         <Checkbox
 //           icon={<FavoriteBorder />}
 //           checkedIcon={<Favorite color="error"  />}
 //         //   checked={isFavorite}
 //           inputProps={{ "aria-label": "favorite accessory" }}
-          
+
 //         />
 //       </IconButton>
 //     </CardActions>
@@ -173,12 +172,11 @@
 // import Button from "@mui/material/Button";
 // import TextField from "@mui/material/TextField";
 
-// import Flowers from "../../images/accessories/necklaces2.jpg"; 
-
+// import Flowers from "../../images/accessories/necklaces2.jpg";
 
 // const CustomCard = styled(Card)({
 //     position: "relative",
-    
+
 //     minWidth: 180,
 //     minHeight: 400,
 //     width: 500,
@@ -188,7 +186,7 @@
 //       display: "block",
 //     },
 //   });
-  
+
 //   const AddButton = styled(Button)({
 //     position: "absolute",
 //     top: 0,
@@ -279,13 +277,12 @@
 
 // export default GiftboxAccessoryCard;
 
-
 // import React, { useEffect, useState } from "react";
 // import { Card, CardMedia, CardContent, Typography, CardActions, Button, TextField, Select, MenuItem } from "@mui/material";
 // import { styled } from "@mui/material/styles";
 // import { useNavigate } from "react-router-dom";
 
-// import Flowers from "../../images/accessories/necklaces2.jpg"; 
+// import Flowers from "../../images/accessories/necklaces2.jpg";
 
 // const CustomCard = styled(Card)({
 //     position: "relative",
@@ -298,7 +295,7 @@
 //       display: "block",
 //     },
 //   });
-  
+
 //   const AddButton = styled(Button)({
 //     position: "absolute",
 //     top: 0,
@@ -414,7 +411,7 @@
 // import React from "react";
 // import { Card, CardMedia, CardContent, Typography, TextField } from "@mui/material";
 // import { styled } from "@mui/material/styles";
-// import Flowers from "../../images/accessories/necklaces2.jpg"; 
+// import Flowers from "../../images/accessories/necklaces2.jpg";
 // import Button from "@mui/material/Button";
 // import { useNavigate } from "react-router-dom";
 
@@ -428,7 +425,7 @@
 //       display: "block",
 //     },
 //   });
-  
+
 //   const AddButton = styled(Button)({
 //     position: "absolute",
 //     top: 0,
@@ -483,7 +480,7 @@
 // import React from "react";
 // import { Card, CardMedia, CardContent, Typography, TextField, Button } from "@mui/material";
 // import { styled } from "@mui/material/styles";
-// import Flowers from "../../images/accessories/necklaces2.jpg"; 
+// import Flowers from "../../images/accessories/necklaces2.jpg";
 // import { useNavigate } from "react-router-dom";
 // import Swal from "sweetalert2"; // SweetAlert for confirmation dialog
 
@@ -614,35 +611,34 @@
 
 // export default GiftboxAccessoryCard;
 
-
-import React, { useEffect, useState } from "react";
-import { Card, CardMedia, CardContent, Typography, TextField, Button, CardActions } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Flowers from "../../images/accessories/necklaces2.jpg"; 
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // SweetAlert for confirmation dialog
+import React, { useEffect, useState } from 'react';
+import { Card, CardMedia, CardContent, Typography, TextField, Button, CardActions } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Flowers from '../../images/accessories/necklaces2.jpg';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // SweetAlert for confirmation dialog
 
 const CustomCard = styled(Card)({
-  position: "relative",
+  position: 'relative',
   minWidth: 180,
   minHeight: 450,
   width: 250,
   height: 550,
-  "&:hover .addButton": {
-    display: "block",
+  '&:hover .addButton': {
+    display: 'block',
   },
 });
 
 const AddButton = styled(Button)({
-  position: "absolute",
+  position: 'absolute',
   top: 0,
-  width: "100%",
+  width: '100%',
   borderRadius: 0,
-  display: "none",
-  backgroundColor: "rgba(0, 0, 0, 0.7)",
-  color: "white",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  display: 'none',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
 });
 
@@ -651,7 +647,6 @@ function GiftboxAccessoryCard({ giftboxId, accessory, onQuantityChange, onRemove
   const [quantity, setQuantity] = useState(accessory.quantity || 1); // Use initial quantity from accessory if available
   const [totalPrice, setTotalPrice] = useState(accessory.accessoryPrice * quantity);
   const [sizeOptions, setSizeOptions] = useState([]);
-
 
   // Update total price when quantity changes
   useEffect(() => {
@@ -668,19 +663,17 @@ function GiftboxAccessoryCard({ giftboxId, accessory, onQuantityChange, onRemove
       // Save updated quantity to the database
       try {
         await fetch(`http://localhost:3001/api/accessory/updateQuantity/${accessory.accessoryId}`, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ quantity: newQuantity }),
         });
       } catch (error) {
-        console.error("Error updating quantity:", error);
+        console.error('Error updating quantity:', error);
       }
     }
   };
-
-
 
   // Handle card click to view accessory details
   const handleCardClick = () => {
@@ -690,66 +683,71 @@ function GiftboxAccessoryCard({ giftboxId, accessory, onQuantityChange, onRemove
   // Remove accessory from giftbox with confirmation
   const handleRemoveClick = async () => {
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you want to remove this accessory from the giftbox?",
-      icon: "warning",
+      title: 'Are you sure?',
+      text: 'Do you want to remove this accessory from the giftbox?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, remove it!",
-      cancelButtonText: "Cancel",
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'Cancel',
     });
 
     if (result.isConfirmed) {
       try {
-        await fetch(`http://localhost:3001/api/giftbox/removeAccessoryFromGiftbox/${giftboxId}/${accessory.accessoryId}`, {
-          method: "DELETE",
-        });
+        await fetch(
+          `http://localhost:3001/api/giftbox/removeAccessoryFromGiftbox/${giftboxId}/${accessory.accessoryId}`,
+          {
+            method: 'DELETE',
+          }
+        );
         onRemoveAccessory(accessory.accessoryId); // Update parent component state
 
         // Show a success alert
-        Swal.fire("Removed!", "The accessory has been removed from the giftbox.", "success");
+        Swal.fire('Removed!', 'The accessory has been removed from the giftbox.', 'success');
       } catch (error) {
-        console.error("Error removing accessory:", error);
+        console.error('Error removing accessory:', error);
 
         // Show an error alert if there's an issue
-        Swal.fire("Error", "Failed to remove the accessory. Please try again.", "error");
+        Swal.fire('Error', 'Failed to remove the accessory. Please try again.', 'error');
       }
     }
   };
 
-    // Fetch available sizes for accessory if applicable
+  // Fetch available sizes for accessory if applicable
   const fetchSizeOptions = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/accessory/size/getSizeOptions/${accessory.sizeId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch accessory size options");
+        throw new Error('Failed to fetch accessory size options');
       }
       const data = await response.json();
       setSizeOptions(data); // Assuming data is an array of size options
     } catch (error) {
-      console.error("Error fetching size options:", error);
+      console.error('Error fetching size options:', error);
     }
   };
 
   useEffect(() => {
-    if (accessory.size !== "N/A") {
+    if (accessory.size !== 'N/A') {
       fetchSizeOptions();
     }
   }, [accessory.size]);
 
   return (
     <CustomCard>
-      <AddButton className="addButton" onClick={handleCardClick}>Add to Giftbox</AddButton>
+      <AddButton className="addButton" onClick={handleCardClick}>
+        Add to Giftbox
+      </AddButton>
       <CardMedia component="img" height="194" image={accessory.image || Flowers} alt={accessory.accessoryName} />
       <CardContent>
         <Typography variant="h6">{accessory.accessoryName}</Typography>
         <Typography variant="body2">Price per Item: Rs.{accessory.accessoryPrice}</Typography>
         <Typography variant="body2">Color: {accessory.accessoryColor}</Typography>
         <Typography variant="body2">Size: {accessory.sizeId}</Typography>
-                {/* Displaying the size options */}
-                <Typography variant="body2">Size: {sizeOptions.length > 0 ? sizeOptions.join(', ') : 'N/A'}</Typography>
-        <br/>
+        {/* Displaying the size options */}
+        <Typography variant="body2">Size: {sizeOptions.length > 0 ? sizeOptions.join(', ') : 'N/A'}</Typography>
+        <br />
         <TextField
           label="Quantity"
           type="number"
@@ -758,19 +756,19 @@ function GiftboxAccessoryCard({ giftboxId, accessory, onQuantityChange, onRemove
           InputProps={{ inputProps: { min: 1 } }}
           fullWidth
         />
-        <Typography variant="body2" sx={{ marginTop: "8px", fontWeight: "bold" }}>
-  Total Price: Rs.{totalPrice}
-</Typography>
-        <CardActions sx={{ marginBottom: "5px" }}>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={handleRemoveClick}
-          sx={{ margin: "8px", position: "absolute", bottom: 8, right: 4, width: "90%" }}
-        >
-          Remove
-        </Button>
-       </CardActions>
+        <Typography variant="body2" sx={{ marginTop: '8px', fontWeight: 'bold' }}>
+          Total Price: Rs.{totalPrice}
+        </Typography>
+        <CardActions sx={{ marginBottom: '5px' }}>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleRemoveClick}
+            sx={{ margin: '8px', position: 'absolute', bottom: 8, right: 4, width: '90%' }}
+          >
+            Remove
+          </Button>
+        </CardActions>
       </CardContent>
     </CustomCard>
   );

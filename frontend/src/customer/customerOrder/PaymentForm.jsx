@@ -9,7 +9,7 @@
 
 //   const handleSubmit = async (event) => {
 //     event.preventDefault();
-    
+
 //     if (!stripe || !elements) {
 //       return;
 //     }
@@ -83,7 +83,6 @@
 
 // export default PaymentForm;
 
-
 // PaymentForm.js
 // import React, { useState } from 'react';
 // import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -96,7 +95,7 @@
 
 //   const handleSubmit = async (event) => {
 //     event.preventDefault();
-    
+
 //     // Ensure stripe and elements are loaded
 //     if (!stripe || !elements) {
 //       return;

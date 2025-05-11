@@ -48,8 +48,7 @@
 //   fetchGiftboxes();
 // }, [customerId]);
 
-
-//   return ( 
+//   return (
 //     <>
 //     <div>
 //       <NavbarCustomerAfterSignedIn />
@@ -69,18 +68,16 @@
 //     </div>
 //   );
 
-
 // export default MyCart
 
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
-import MyCartGBCard from "./MyCartGBCard" // Make sure this component exists
+import NavbarCustomerAfterSignedIn from '../customerComponent/NavbarCustomerAfterSignedIn';
+import CustomerSidenav from '../customerComponent/CustomerSidenav';
+import MyCartGBCard from './MyCartGBCard'; // Make sure this component exists
 
 function MyCart() {
   const navigate = useNavigate();
@@ -91,18 +88,18 @@ function MyCart() {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setCustomerId(res.data.user.id);
         } else {
-          navigate("/login");
+          navigate('/login');
         }
       })
       .catch((err) => {
-        console.error("Error during authentication:", err);
+        console.error('Error during authentication:', err);
       });
   }, [navigate]);
 
@@ -111,12 +108,10 @@ function MyCart() {
     const fetchGiftboxes = async () => {
       if (!customerId) return;
       try {
-        const response = await axios.get(
-          `http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`
-        );
+        const response = await axios.get(`http://localhost:3001/api/giftbox/getMyGiftboxes/${customerId}`);
         setGiftboxes(response.data);
       } catch (error) {
-        console.error("Error fetching gift boxes:", error);
+        console.error('Error fetching gift boxes:', error);
       } finally {
         setLoading(false); // Stop loading regardless of success or error
       }
@@ -128,7 +123,7 @@ function MyCart() {
     <div>
       <NavbarCustomerAfterSignedIn />
       <Box height={30} />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <h1>My Cart</h1>
@@ -137,11 +132,9 @@ function MyCart() {
           {loading ? (
             <p>Loading gift boxes...</p>
           ) : (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
               {giftboxes.length > 0 ? (
-                giftboxes.map((giftbox) => (
-                  <MyCartGBCard key={giftbox.giftboxId} giftbox={giftbox} />
-                ))
+                giftboxes.map((giftbox) => <MyCartGBCard key={giftbox.giftboxId} giftbox={giftbox} />)
               ) : (
                 <p>No gift boxes found.</p>
               )}
