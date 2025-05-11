@@ -20,42 +20,43 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(session({
-    secret: "secretcode",
+app.use(
+  session({
+    secret: 'secretcode',
     resave: false, // Set to false to avoid unnecessary session resaving
     saveUninitialized: false, // Set to false to avoid saving uninitialized sessions
-    cookie: { maxAge: 24 * 60 * 60 * 1000 } // Cookie expiry time
-}));
-
-app.use(
-    cors({
-        origin: "http://localhost:3000", // Frontend port
-        credentials: true, // Allow credentials
-        methods: ["GET", "POST", "PUT", "DELETE"],
-    })
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // Cookie expiry time
+  })
 );
 
-app.get("/api/auth/authenticated", (req, res) => {
-    if (req.session.user) {
-        res.json({ authenticated: true, user: req.session.user });
-    } else {
-        res.json({ authenticated: false });
-    }
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // Frontend port
+    credentials: true, // Allow credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+);
+
+app.get('/api/auth/authenticated', (req, res) => {
+  if (req.session.user) {
+    res.json({ authenticated: true, user: req.session.user });
+  } else {
+    res.json({ authenticated: false });
+  }
 });
 
-
-app.use("/api/order", OrderRoutes);
-app.use("/api/accessory", AccessoryRoutes);
-app.use("/api/category", CategoryRoutes);
-app.use("/api/giftbox", GiftboxRoutes);
-app.use("/api/authentication", AuthenticationRoutes);
-app.use("/api/employee", EmployeeRoutes);
-app.use("/api/user", UserRoutes);
-app.use("/api/customer", CustomerRoutes);
-app.use("/api/dashboard", DashboardRoutes);
-app.use("/api/payment", PaymentRoutes);
-app.use("/api/configurations", AdminConfigsRoutes);
+app.use('/api/order', OrderRoutes);
+app.use('/api/accessory', AccessoryRoutes);
+app.use('/api/category', CategoryRoutes);
+app.use('/api/giftbox', GiftboxRoutes);
+app.use('/api/authentication', AuthenticationRoutes);
+app.use('/api/employee', EmployeeRoutes);
+app.use('/api/user', UserRoutes);
+app.use('/api/customer', CustomerRoutes);
+app.use('/api/dashboard', DashboardRoutes);
+app.use('/api/payment', PaymentRoutes);
+app.use('/api/configurations', AdminConfigsRoutes);
 
 app.listen(3001, () => {
-    console.log('Server is running on port 3001');
+  console.log('Server is running on port 3001');
 });

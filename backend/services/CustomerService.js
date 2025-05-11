@@ -1,21 +1,21 @@
-import connection from "../dbConnection.js";
+import connection from '../dbConnection.js';
 
 export class CustomerService {
   static async getCustomers() {
-    const query = "SELECT * FROM customer";
+    const query = 'SELECT * FROM customer';
     return await connection.promise().query(query);
   }
   catch(error) {
-    console.error("Error fetching accessories:", error);
+    console.error('Error fetching accessories:', error);
     throw error;
   }
 
   static async getCustomerById(customerId) {
-    const query = "SELECT * FROM customer WHERE customerId = ?";
+    const query = 'SELECT * FROM customer WHERE customerId = ?';
     return await connection.promise().query(query, [customerId]);
   }
   catch(error) {
-    console.error("Error fetching customer:", error);
+    console.error('Error fetching customer:', error);
     throw error;
   }
 
@@ -36,15 +36,12 @@ export class CustomerService {
       WHERE 
         customer.userId = ?;
     `;
-  
+
     try {
       return await connection.promise().query(query, [userId]);
     } catch (error) {
-      console.error("Error fetching customer details:", error);
+      console.error('Error fetching customer details:', error);
       throw error;
     }
   }
-  
-
-
 }
