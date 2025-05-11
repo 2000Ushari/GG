@@ -28,16 +28,39 @@ const getAccessoryById = async (req, res) => {
   }
 };
 
+// const addAccessory = async (req, res) => {
+//   try {
+//     console.log("Adding accessory:", req.body);
+//     const result = await AccessoryService.addAccessory(req.body);
+//     if (result) {
+//       console.log("Accessory added successfully", {
+//         ...req.body,
+//       });
+//       res.status(201).json({
+//         message: "Accessory added successfully",
+//         ...req.body,
+//       });
+//     } else {
+//       res.status(400).json({ error: "Error adding accessory" });
+//     }
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+
 const addAccessory = async (req, res) => {
   try {
-    console.log("Adding accessory:", req.body);
-    const result = await AccessoryService.addAccessory(req.body);
-    if (result) {
-      console.log("Accessory added successfully", {
-        ...req.body,
-      });
+    const { sizes } = req.body; // sizes should be an array of { sizeId, quantity } pairs
+    console.log("Adding accessory with sizes:", req.body);
+
+    const accessoryId = await AccessoryService.addAccessory(req.body, sizes);
+    if (accessoryId) {
+      console.log("Accessory added successfully with accessoryId:", accessoryId);
       res.status(201).json({
-        message: "Accessory added successfully",
+        message: "Accessory and stock updated successfully",
+        accessoryId,
         ...req.body,
       });
     } else {
@@ -48,6 +71,7 @@ const addAccessory = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const updateAccessory = async (req, res) => {
   try {
@@ -457,6 +481,37 @@ const getFavorites = async (req, res) => {
   }
 };
 
+// //getAccessoryByCategory function
+// const getAccessoryByCategory = async (req, res) => {
+//   const categoryId = req.params.cid;
+//   try {
+//     const accessories = await AccessoryService.getAccessoryByCategory(categoryId);
+//     if (accessories) {
+//       res.status(200).json(accessories[0]);
+//     }
+//   } catch (error) {
+//     console.error("Error fetching accessories:", error);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
+const getAccessoryByCategory = async (req, res) => {
+  const categoryId = req.params.cid;
+  try {
+    const accessories = await AccessoryService.getAccessoryByCategory(categoryId);
+    console.log("Fetched Accessories Data:", accessories); 
+    if (accessories && accessories[0]) {
+      res.status(200).json(accessories[0]); 
+    } else {
+      res.status(404).json({ message: "No accessories found." });
+    }
+  } catch (error) {
+    console.error("Error fetching accessories:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 export {
   getAccessory,
   getAccessoryById,
@@ -472,4 +527,5 @@ export {
   addToStock,
   checkIfFavorite,
   getFavorites,
+  getAccessoryByCategory,
 };

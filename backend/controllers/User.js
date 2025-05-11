@@ -2,7 +2,8 @@ import connection from "../dbConnection.js";
 import { UserService } from "../services/UserService.js";
 
 const getCustomerIdByUserId = async (req, res) => {
-  const { id: userId } = req.params; // Destructuring to correctly get the userId
+  // const { id: userId } = req.params; // Destructuring to correctly get the userId
+  const userId = req.params.id;
 
   try {
     const customer = await UserService.getCustomerIdByUserId(userId); // Fetch from service

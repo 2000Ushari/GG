@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 // import NavbarCustomer from "../customerComponent/NavbarCustomer";
 import CustomerFooter from "../customerComponent/CustomerFooter";
 import CustomerOrderTable from "./CustomerOrderTable";
+import CustomerOrderHistoryTable from "./CustomerOrderHistoryTable";
+import CustomerOrderCancelledTable from "./CustomerOrderCancelledTable";
 
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -54,8 +56,8 @@ function CustomerTabs() {
           </TabList>
         </Box>
         <TabPanel value="1"><CustomerOrderTable/></TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="2"><CustomerOrderHistoryTable/></TabPanel>
+        <TabPanel value="3"><CustomerOrderCancelledTable/></TabPanel>
 
       </TabContext>
     </Box>

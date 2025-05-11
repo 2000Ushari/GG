@@ -562,50 +562,6 @@ function AccessoryCard({ accessoryDetails, customerId }) {
     checkIfFavorite();
   }, [customerId, accessoryDetails.accessoryId]);
 
-  // const handleAddOrRemoveFromFavorites = async () => {
-  //   try {
-  //     const action = isFavorite ? 'remove from' : 'add to';
-  //     const result = await Swal.fire({
-  //       title: `${isFavorite ? 'Remove from Favorites?' : 'Add to Favorites?'}`,
-  //       text: `Do you want to ${action} favorites?`,
-  //       icon: 'question',
-  //       showCancelButton: true,
-  //       confirmButtonText: `Yes, ${isFavorite ? 'remove' : 'add'} it!`,
-  //       cancelButtonText: 'No, cancel',
-  //     });
-
-  //     if (result.isConfirmed) {
-  //       // Make API request to add or remove the accessory from favorites
-  //       const endpoint = isFavorite
-  //         ? 'http://localhost:3001/api/accessory/removeFromFavorites'
-  //         : 'http://localhost:3001/api/accessory/addToFavorites';
-
-  //       await fetch(endpoint, {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: JSON.stringify({
-  //           customerId: customerId,
-  //           accessoryId: accessoryDetails.accessoryId,
-  //         }),
-  //       });
-
-  //       Swal.fire(
-  //         `${isFavorite ? 'Removed!' : 'Added!'}`,
-  //         `This accessory has been ${isFavorite ? 'removed from' : 'added to'} your favorites.`,
-  //         'success'
-  //       );
-
-  //       // Toggle the favorite state after successful action
-  //       setIsFavorite(!isFavorite);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating favorites:', error);
-  //     Swal.fire('Error!', `Could not ${isFavorite ? 'remove' : 'add'} the accessory to favorites.`, 'error');
-  //   }
-  // };
-
 
   const handleAddOrRemoveFromFavorites = async () => {
     try {

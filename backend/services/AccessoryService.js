@@ -24,7 +24,60 @@ export class AccessoryService {
     }
   }
 
-  static async addAccessory(accessory) {
+
+  // static async addAccessory(accessory) {
+  //   try {
+  //     const {
+  //       accessoryName,
+  //       accessoryDescription,
+  //       accessoryColor,
+  //       accessoryPrice,
+  //       units,
+  //       categoryId,
+  //     } = accessory;
+  //     console.log("Adding accessory:", accessory);
+  //     console.log(accessoryName, accessoryDescription, accessoryColor, accessoryPrice, units, categoryId);
+  //     // Validation
+  //     if (
+  //       !accessoryName ||
+  //       !accessoryDescription ||
+  //       !accessoryColor ||
+  //       !units ||
+  //       !accessoryPrice ||
+  //       !categoryId
+  //     ) {
+  //       throw new Error(
+  //         "Please provide name, description, color, units, price, and categoryId."
+  //       );
+  //     }
+
+  //     // Additional Validation
+  //     if (accessoryPrice < 0 || units < 0) {
+  //       throw new Error("Price and units can not be negative.");
+  //     }
+
+  //     // Insert the new accessory into the database
+  //     const query = `
+  //               INSERT INTO accessory (accessoryName, accessoryDescription, accessoryColor, accessoryPrice,units, categoryId)
+  //               VALUES (?, ?, ?, ?, ?, ?)
+  //           `;
+  //     return await connection
+  //       .promise()
+  //       .query(query, [
+  //         accessoryName,
+  //         accessoryDescription,
+  //         accessoryColor,
+  //         accessoryPrice,
+  //         units,
+  //         categoryId,
+  //       ]);
+  //   } catch (error) {
+  //     console.error("Error adding accessory:", error);
+  //     throw error;
+  //   }
+  // }
+
+  static async addAccessory(accessory, sizes) { 
     try {
       const {
         accessoryName,
@@ -33,34 +86,32 @@ export class AccessoryService {
         accessoryPrice,
         units,
         categoryId,
+        quantity,
       } = accessory;
-      console.log("Adding accessory:", accessory);
-      console.log(accessoryName, accessoryDescription, accessoryColor, accessoryPrice, units, categoryId);
-      // Validation
-      if (
-        !accessoryName ||
-        !accessoryDescription ||
-        !accessoryColor ||
-        !units ||
-        !accessoryPrice ||
-        !categoryId
-      ) {
-        throw new Error(
-          "Please provide name, description, color, units, price, and categoryId."
-        );
+
+console.log(sizes);
+
+      // Validation for accessory details
+      if (!accessoryName || !accessoryDescription || !accessoryColor || !units || !accessoryPrice || !categoryId) {
+        throw new Error("Please provide name, description, color, units, price, and categoryId.");
       }
 
-      // Additional Validation
+      // Validate either quantity or sizes  is provided, but not both
+      if (quantity > 0 && sizes.length > 0) {
+        throw new Error("Please provide either units or sizes, but not both.");
+      }
+
+
       if (accessoryPrice < 0 || units < 0) {
-        throw new Error("Price and units can not be negative.");
+        throw new Error("Price and units cannot be negative.");
       }
 
-      // Insert the new accessory into the database
+      // Insert the accessory and get the accessoryId
       const query = `
-                INSERT INTO accessory (accessoryName, accessoryDescription, accessoryColor, accessoryPrice,units, categoryId)
+                INSERT INTO accessory (accessoryName, accessoryDescription, accessoryColor, accessoryPrice, units, categoryId)
                 VALUES (?, ?, ?, ?, ?, ?)
             `;
-      return await connection
+      const [result] = await connection
         .promise()
         .query(query, [
           accessoryName,
@@ -70,11 +121,27 @@ export class AccessoryService {
           units,
           categoryId,
         ]);
+      
+      const accessoryId = result.insertId;
+
+      console.log("New accessoryId:", accessoryId);
+
+      // Insert each size and quantity combination into the stock table
+      const stockQuery = `INSERT INTO stock (accessoryId, sizeId, quantity) VALUES (?, ?, ?)`;
+      const stockPromises = sizes.map(({ sizeId, quantity }) =>
+        connection.promise().query(stockQuery, [accessoryId, sizeId, quantity])
+      );
+      
+      await Promise.all(stockPromises); // Wait for all stock inserts to complete
+      
+      return accessoryId;
+
     } catch (error) {
       console.error("Error adding accessory:", error);
       throw error;
     }
   }
+
 
   static async updateAccessory(accessoryId, accessory) {
     try {
@@ -370,6 +437,22 @@ static async removeFromFavorites(removeFavorite) {
         throw error;
       }
     }
+
+    
+// getAccessoryByCategory service
+static async getAccessoryByCategory(categoryId) {
+  try {
+    if (!categoryId) {
+      throw new Error("Please provide a valid category ID.");
+    }
+
+    const query = "SELECT * FROM accessory WHERE categoryId = ?";
+    return await connection.promise().query(query, [categoryId]);
+  } catch (error) {
+    console.error("Error fetching accessories by category:", error);
+    throw error;
+  }
 }
 
 
+}

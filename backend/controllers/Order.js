@@ -310,16 +310,66 @@ export const placeOrder = (req, res) => {
 
 export const getOrdersByCustomerId = (req, res) => {
   const customerId = req.params.cid;
-  const query = "SELECT * FROM orders WHERE customerId = ?";
+  const query = "SELECT * FROM orders WHERE customerId = ? AND orderStatus != 'Cancelled' AND orderStatus != 'Completed' ;";
   connection.query(query, [customerId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result);
+    }
+  });
+}
+
+export const updateOrderStatusAfterPaid = (req, res) => {
+  const orderId = req.params.oid;
+  // const { orderStatus } = req.body;
+  const query = "UPDATE orders SET orderStatus = 'Order Placed' WHERE orderId = ?";
+  connection.query(query, [orderId], (err, result) => {
     if (err) {
       console.log(err);
     } else {
       res.send(result);
     }
   });
+};
+
+export const updateOrderStatusWhenCancelled = (req, res) => {
+  const orderId = req.params.oid;
+  console.log(orderId);
+  // const { orderStatus } = req.body;
+  const query = "UPDATE orders SET orderStatus = 'Cancelled' WHERE orderId = ?";
+  connection.query(query, [orderId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+};
+
+export const getOrderHistoryByCustomerId = (req, res) => {
+  const customerId = req.params.cid;
+  const query = "SELECT * FROM orders WHERE customerId = ? AND orderStatus = 'Completed'";
+  connection.query(query, [customerId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result);
+    }
+  });
 }
 
+export const getCancelledOrdersByCustomerId = (req, res) => {
+  const customerId = req.params.cid;
+  const query = "SELECT * FROM orders WHERE customerId = ? AND orderStatus = 'Cancelled'";
+  connection.query(query, [customerId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(result);
+    }
+  });
+}
 
 
 export default {
@@ -336,4 +386,6 @@ export default {
   getDistrictById,
   placeOrder,
   getOrdersByCustomerId,
+  updateOrderStatusWhenCancelled,
+  getOrderHistoryByCustomerId
 };

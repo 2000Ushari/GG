@@ -38,5 +38,31 @@ export class DashboardService {
     console.error("Error fetching total sales:", error);
     throw error;
   }
+
+  static async accessoryVsStock() { 
+    const query = "SELECT a.accessoryId, SUM(s.quantity) AS totalQuantity FROM accessory a JOIN stock s ON a.accessoryId = s.accessoryId GROUP BY a.accessoryId;";
+    return await connection.promise().query(query);
+  } 
+  catch(error) {
+    console.error("Error fetching accessory vs stock data:", error);
+    throw error;
+  }
   
+  static async getOrderCountByStatus () {
+    const query = "SELECT OrderStatus, COUNT(*) AS orderCount FROM orders GROUP BY OrderStatus;"
+    return await connection.promise().query(query);
+  } 
+  catch(error) {
+    console.error("Error fetching order count by status:", error);
+    throw error;
+  }
+
+  static async getOrderCount() {
+    const query = "SELECT COUNT(*) AS orderCount FROM orders;";
+    return await connection.promise().query(query);
+  }
+  catch(error) {
+    console.error("Error fetching order count:", error);
+    throw error;
+  }
 }

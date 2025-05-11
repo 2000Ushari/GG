@@ -833,16 +833,6 @@ const tomorrowString = tomorrow.toISOString().split('T')[0];
   
     let calculatedOtherFees = 0;
   
-  //   // Determine otherFees based on hoursDifference
-  //   if (hoursDifference < 48) {
-  //     calculatedOtherFees = subtotal * 0.10;
-  //   } else if (hoursDifference < 96) {
-  //     calculatedOtherFees = subtotal * 0.05;
-  //   }
-  //   setOtherFee(calculatedOtherFees);
-  // };
-
-    // Updated fee calculation
     if (hoursDifference <= 24) {
       calculatedOtherFees = subtotal * 0.25; // 25% charge for less than 24 hours
     } else if (hoursDifference < 48) {

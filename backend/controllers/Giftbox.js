@@ -226,7 +226,6 @@ const updateGiftbox = async (req, res) => {
   const {
     giftboxName,
     giftboxDescription,
-    boxColorId,
     noteContent,
     giftboxPrice,
   } = req.body;
@@ -237,7 +236,6 @@ const updateGiftbox = async (req, res) => {
       giftboxId,
       giftboxName,
       giftboxDescription,
-      boxColorId,
       noteContent,
       giftboxPrice
     );
@@ -330,6 +328,7 @@ const deleteGiftbox = (req, res) => {
 
 const createMyGiftbox = (req, res) => {
   const { giftboxName, userId, giftboxDescription, noteContent, boxColorId } = req.body;
+  const giftboxType = "Customized";
   console.log(giftboxName, userId, giftboxDescription, noteContent, boxColorId);
 
   // Validation
@@ -341,8 +340,8 @@ const createMyGiftbox = (req, res) => {
 
   // Insert the new giftbox into the database
   const giftboxQuery = `
-    INSERT INTO giftbox (giftboxName, userId, giftboxDescription, noteContent, boxColorId)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO giftbox (giftboxName, userId, giftboxType, giftboxDescription, noteContent, boxColorId)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
   
   connection.query(
@@ -350,6 +349,7 @@ const createMyGiftbox = (req, res) => {
     [
       giftboxName,
       userId,
+      giftboxType,
       giftboxDescription || null, // Corrected order of parameters
       noteContent || null,
       boxColorId || null,
@@ -385,6 +385,7 @@ const createMyGiftbox = (req, res) => {
           giftboxId,
           userId,
           giftboxName,
+          giftboxType,
           noteContent,
           boxColorId,
           giftboxDescription,
@@ -452,17 +453,18 @@ const getCustomizedGiftbox = (req, res) => {
   });
 };
 
-// const getMyGiftboxes = (req, res) => {
-//   const query = "SELECT * FROM giftbox WHERE userId = ?";
-//   connection.query(query, [req.params.id], (err, result) => {
-//     if (err) {
-//       console.log(err);
-//       return res.status(500).json({ error: "Error fetching giftboxes." });
-//     } else {
-//       res.status(200).json(result);
-//     }
-//   });
-// };
+const putBoxcolorId = (req, res) => {
+  const giftboxId = req.params.gid;
+  const boxColorId = req.body.boxcolorId;
+  const query = "UPDATE giftbox SET boxColorId = ? WHERE giftboxId = ?";
+  connection.query(query, [boxColorId, giftboxId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+};
 
 
 const getMyGiftboxes = (req, res) => {
@@ -650,7 +652,7 @@ export {
   getCustomizedGiftbox,
   getMyGiftboxes,
   getGiftboxAccessories,
-
+  putBoxcolorId,
   removeAccessoryFromGiftbox,
-  getGiftboxColorById
+  getGiftboxColorById,
 };

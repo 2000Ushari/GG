@@ -18,6 +18,7 @@ function FigureCards() {
     const [customerCount, setCustomerCount] = useState(0);
     const [accessoryCount, setAccessoryCount] = useState(0);
     const [sales, setSales] = useState();
+    const [orderCount, setOrderCount] = useState(0);
 
     const fetchNoOfCustomers = async () => {
       try {
@@ -74,6 +75,25 @@ useEffect(() => {
   fetchSales();
 }, []); 
 
+const fetchOrderCount = async () => {
+  try {
+      const response = await fetch("http://localhost:3001/api/dashboard/getOrderCount");
+      if (!response.ok) throw new Error("Failed to fetch order count");
+      
+      const data = await response.json();
+      // console.log("API Response:", data);  // Log the response to check structure
+      
+      // Update state with the correct data if the structure is as expected
+      setOrderCount(data[0].orderCount || 0);
+  }
+  catch (error) {
+      console.error("Error fetching order count:", error);
+  }
+}
+useEffect(() => {
+  fetchOrderCount();
+}, []);
+
   return (
     <div>
       <Grid item xs={12}>
@@ -104,7 +124,6 @@ useEffect(() => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" >Share</Button>
               <Button size="small" >Learn More</Button>
             </CardActions>
           </Card>
@@ -134,7 +153,6 @@ useEffect(() => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Share</Button>
               <Button size="small">Learn More</Button>
             </CardActions>
           </Card>
@@ -164,7 +182,6 @@ useEffect(() => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Share</Button>
               <Button size="small">Learn More</Button>
             </CardActions>
           </Card>
@@ -174,7 +191,7 @@ useEffect(() => {
           >
             <CardContent>
               <div className="iconstyle">
-                <SavingsIcon />
+                <ShoppingBagIcon />
               </div>
               <Typography
                 gutterBottom
@@ -182,7 +199,7 @@ useEffect(() => {
                 component="div"
                 sx={{ color: "#ffffff" }}
               >
-                $900.00
+                {orderCount}
               </Typography>
               <Typography
                 gutterBottom
@@ -190,11 +207,10 @@ useEffect(() => {
                 component="div"
                 sx={{ color: "#ccd1d1" }}
               >
-                Revenue
+                Total Orders
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">Share</Button>
               <Button size="small">Learn More</Button>
             </CardActions>
           </Card>

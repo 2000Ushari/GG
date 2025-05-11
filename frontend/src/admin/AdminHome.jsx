@@ -18,7 +18,9 @@ import AdminNavbar from "./adminComponents/AdminNavbar";
 import AccordianDash from "../components/AccordianDash";
 import "../Dash.css";
 import FigureCards from "./adminComponents/FigureCards";
-import Chart from "./adminDashboard/Chart";
+import AccessoryPrices from "./adminDashboard/AccessoryPrices";
+import AccessoryVsStock from "./adminDashboard/AccessoryVsStock";
+import OrderCountByStatus from "./adminDashboard/OrderCountByStatus";
 
 
 
@@ -56,10 +58,38 @@ export default function AdminHome() {
           <FigureCards/>
             <Box height={20} />
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              <Grid item xs={12}>
+                <Card sx={{ height: 90 + "vh" }}>
+                  <CardContent>
+    <AccessoryPrices />
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={4}>
+              <Card>
+               <CardContent>
+                    <OrderCountByStatus/>
+                  </CardContent>
+               </Card>
+              </Grid>
+              <Grid item xs={4}>
+              <Card>
+               <CardContent>
+                    <OrderCountByStatus/>
+                  </CardContent>
+               </Card>
+              </Grid>
+              <Grid item xs={4}>
+              <Card>
+               <CardContent>
+                    <OrderCountByStatus/>
+                  </CardContent>
+               </Card>
+              </Grid>
+              <Grid item xs={12}>
                 <Card sx={{ height: 200 + "vh" }}>
                   <CardContent>
-    <Chart />
+    <AccessoryVsStock />
                   </CardContent>
                 </Card>
               </Grid>

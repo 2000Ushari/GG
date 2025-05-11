@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import CategoryList from "./adminCategory/CategoryList";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
@@ -12,6 +11,7 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 
 import AdminSidenav from "./adminComponents/AdminSidenav";
 import AdminNavbar from "./adminComponents/AdminNavbar";
+import CategoryList from "./adminCategory/CategoryList";
 
 export default function AdminCategories() {
   const navigate = useNavigate();

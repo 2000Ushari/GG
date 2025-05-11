@@ -309,6 +309,7 @@ import Slider from "react-slick";
 import { Box, Typography } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router-dom";
 
 import Bottles from "../../images/categories/bottles.jpeg";
 import Hairbands from "../../images/categories/hairBands.jpeg";
@@ -347,7 +348,13 @@ const images = [
   { id: 15, url: Flowers, title: "Flowers" },
 ];
 
-const CustomerOrders = () => {
+const CategoryTiles = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryTitle) => {
+    navigate(`/category/${categoryTitle}`); // Navigate with category title
+  };
+
   const settings = {
     dots: false,
     infinite: true,
@@ -447,6 +454,7 @@ const CustomerOrders = () => {
               <ImageButton
                 focusRipple
                 key={image.title}
+                onClick={() => handleCategoryClick(image.title)} // Handle click
               >
                 <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
                 <ImageBackdrop className="MuiImageBackdrop-root" />
@@ -475,5 +483,5 @@ const CustomerOrders = () => {
   );
 };
 
-export default CustomerOrders;
+export default CategoryTiles;
 

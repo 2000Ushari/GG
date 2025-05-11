@@ -1279,25 +1279,48 @@ function MyGiftbox() {
     }
   };
 
-  const getBoxColor = async (boxColorId) => {
+  // const putBoxcolorId = async (giftboxId) => {
+  //   try {
+  //     //write a post request to update the box color id
+  //     const response = await axios.put( `http://localhost:3001/api/giftbox/putBoxcolorId/${giftboxId}`)
+  //     if (response.status === 200) {
+  //       console.log("Box color ID updated successfully!");
+  //     } else {
+  //       throw new Error("Unexpected response from the server.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating box color ID:", error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   putBoxcolorId(giftboxId);
+  // }, [giftboxId]);
+
+  const putBoxcolorId = async (giftboxId, boxColorId) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/giftbox/getGiftboxColorById/${boxColorId}`
+      // Send a PUT request to update the box color ID
+      const response = await axios.put(
+        `http://localhost:3001/api/giftbox/putBoxcolorId/${giftboxId}`,
+        { boxcolorId: boxColorId } // Include boxColorId in the request body
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch giftbox color");
+  
+      if (response.status === 200) {
+        console.log("Box color ID updated successfully!");
+      } else {
+        throw new Error("Unexpected response from the server.");
       }
-      const data = await response.json();
-      setBoxColor(data.color); // Store giftbox color in state
-      console.log("Giftbox color:", data.color);
     } catch (error) {
-      console.error("Error fetching giftbox color:", error);
+      console.error("Error updating box color ID:", error);
     }
   };
+  
   useEffect(() => {
-    getBoxColor(giftboxId);
-  }, [giftboxId]);
+    if (giftboxId && selectedBoxColor?.boxColorId) {
+      putBoxcolorId(giftboxId, selectedBoxColor.boxColorId);
+    }
+  }, [giftboxId, selectedBoxColor]);
 
+  
   // Calculate total price based on quantities and accessory prices
   useEffect(() => {
     const price = giftboxAccessories.reduce((acc, accessory) => {
@@ -1325,6 +1348,9 @@ function MyGiftbox() {
   };
 
   const handleSave = async () => {
+    if (giftboxId && selectedBoxColor?.boxColorId) {
+      await putBoxcolorId(giftboxId, selectedBoxColor.boxColorId);
+    }
     try {
       const response = await axios.put(
         `http://localhost:3001/api/giftbox/updateGiftbox/${giftboxId}`,
@@ -1332,7 +1358,7 @@ function MyGiftbox() {
           giftboxName: name,
           giftboxDescription: description,
           noteContent: noteContent,
-          boxColorId: selectedBoxColor?.boxColorId, // Add selected color ID here
+          // boxColorId: selectedBoxColor?.boxColorId, // Add selected color ID here
         }
       );
 

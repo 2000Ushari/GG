@@ -32,6 +32,7 @@ import Favorites from "./customer/MyFavorites.jsx";
 import Settings from "./customer/Settings.jsx";
 import BuyGiftbox from "./customer/customerOrder/BuyGiftbox.jsx";
 import OrderPayment from "./customer/customerOrder/OrderPayment.jsx";
+import CateWiseAccessoriesPage from "./pages/CateWiseAccessoriesPage.jsx";
 
 import EditEmployee from "./admin/adminEmployee/EditEmployee.jsx";
 import ViewEmployee from "./admin/adminEmployee/ViewEmployee.jsx";
@@ -115,6 +116,12 @@ export default function App() {
           exact
           element={<EmployeeAccessories />}
         />
+
+        <Route
+          path="/category/:category"
+          element={<CateWiseAccessoriesPage />}
+        />
+        
       </Routes>
     </BrowserRouter>
 

@@ -114,7 +114,19 @@ export const updateCategory = (req, res) => {
     });
 };
 
+export const getCategoryByName = (req, res) => {  
+  const category = req.params.categoryName;
+  const query = "SELECT * FROM category WHERE categoryName = ?";
+  connection.query(query, [category], (err, result) => {
+      if (err) {
+        console.log("Working")
+          console.log(category + " not found");
+      } else {
+          res.send(result);
+      }
+  });
+}
 
 
-export default { getCategory, addCategory, updateCategory, deleteCategory };
+export default { getCategory, addCategory, updateCategory, deleteCategory, getCategoryByName };
 

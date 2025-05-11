@@ -130,7 +130,7 @@ function CustomGiftboxesList() {
                             color="secondary"
                             // onClick={handleOpenAddToCartboxModal} navigates to add to cart
                           >
-                            Add to Cart
+                            Checkout
                           </Button>
                       
                     </Stack>

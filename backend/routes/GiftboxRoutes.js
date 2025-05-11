@@ -1,5 +1,5 @@
 import express from "express";
-import { getGiftbox, addGiftbox, createMyGiftbox, getBoxColors, getCustomizedGiftbox, getGiftboxById, getMyGiftboxes, deleteGiftbox, updateGiftbox, getGiftboxAccessories, removeAccessoryFromGiftbox, getBoxColorByGiftboxId, getGiftboxColorById, updateGiftboxAccessories } from "../controllers/Giftbox.js";
+import { getGiftbox, addGiftbox, createMyGiftbox, getBoxColors, getCustomizedGiftbox, getGiftboxById, getMyGiftboxes, deleteGiftbox, updateGiftbox, getGiftboxAccessories, removeAccessoryFromGiftbox, getBoxColorByGiftboxId, getGiftboxColorById, updateGiftboxAccessories,putBoxcolorId } from "../controllers/Giftbox.js";
 
 const router = express.Router();
 
@@ -17,7 +17,7 @@ router.put("/updateGiftbox/:gid", updateGiftbox);
 router.get("/getGiftboxAccessories/:gid", getGiftboxAccessories);
 router.post("/updateGiftboxAccessories", updateGiftboxAccessories);
 router.delete("/removeAccessoryFromGiftbox/:gid/:aid", removeAccessoryFromGiftbox);
- 
+router.put("/putBoxcolorId/:gid", putBoxcolorId);
 
 // router.get("/getGiftboxTotalValue/:gid", getGiftboxTotalValue);
 

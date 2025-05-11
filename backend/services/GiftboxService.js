@@ -31,7 +31,6 @@ export class GiftboxService {
     giftboxId,
     giftboxName,
     giftboxDescription,
-    boxColorId,
     noteContent,
     giftboxPrice
   ) {
@@ -44,7 +43,6 @@ export class GiftboxService {
         SET
           giftboxName = ?,
           giftboxDescription = ?,
-          boxColorId = ?,
           noteContent = ?,
           giftboxPrice = ?
         WHERE giftboxId = ?
@@ -54,7 +52,6 @@ export class GiftboxService {
         .query(query, [
           giftboxName,
           giftboxDescription,
-          boxColorId,
           noteContent,
           giftboxPrice,
           giftboxId,

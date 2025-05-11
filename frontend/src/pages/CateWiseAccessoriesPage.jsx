@@ -1,9 +1,21 @@
-//before customer logs in and selects a category, this page will show all the accessories in that category
-import React from "react";
-import { Box, Grid } from "@mui/material";
-import CustomerCarousal from "../components/CustomerCarousal";
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
+//After customer logs in and selects a category, this page will show all the accessories in that category
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+} from "@mui/material";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import styled from "@mui/material/styles/styled";
+import Flowers from '../images/accessories/acs3.jpg';
+
+import NavbarCustomer from "../customer/customerComponent/Navbar";
+import CategoryTiles from "../customer/customerComponent/CategoryTiles";
 
 const CustomCard = styled(Card)({
   position: 'relative',
@@ -17,12 +29,57 @@ const CustomCard = styled(Card)({
   },
 });
 
-function CategoryWiseAccessories() {
-  
+const CateWiseAccessoriesPage = () => {
   const { category } = useParams(); // Get category from URL
   const [categoryId, setCategoryId] = useState([]);
   const [accessories, setAccessories] = useState([]);
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
+  const [customerId, setCustomerId] = useState(null);
+
+  // Authentication check
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.authenticated && res.data.user.role === "customer") {
+          setUser(res.data.user); // Set user data if authenticated
+          setCustomerId(res.data.user.id);
+        } else {
+          navigate("/login"); // Redirect to login if not authenticated
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [navigate]);
+
+  // Fetch user details based on customerId
+  useEffect(() => {
+    if (customerId) {
+      const fetchUserDetails = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3001/api/authentication/getUserDetails/${customerId}`,
+            { withCredentials: true }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch user details");
+          }
+          const data = await response.json();
+          setUserDetails(data);
+          setUserDetails(response.data);
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        }
+      };
+
+      fetchUserDetails();
+    }
+  }, [customerId]);
 
 
   useEffect(() => {
@@ -61,31 +118,9 @@ function CategoryWiseAccessories() {
     window.location.reload(); // Reloads the page when accessory card is clicked
   };
 
+  
+
   return (
-//     <>
-//       <div>CategoryWiseAccessories</div>
-//       <div className="bgcolor">
-//         {/* Pass the handleLogout function as a prop to Navbar */}
-//         <NavbarCustomerAfterSignedIn handleLogout={handleLogout} />
-//         <Box height={60} />
-//         <Box sx={{ display: "flex" }}>
-//           <CustomerSidenav />
-//       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//         <Grid container spacing={1} sx={{ justifyContent: "center" }}>
-//           <Box sx={{ display: "flex" }}>
-//             <Grid item xs={12}>
-//               <Box sx={{ display: "flex", justifyContent: "center" }}>
-//                 <CustomerCarousal />
-//               </Box>
-//             </Grid>
-//           </Box>
-//         </Grid>
-//       </Box>
-//         </Box>
-//     </div>
-//     </>
-//   );
-// }
     <>
       <div className="bgcolor">
         <NavbarCustomer />
@@ -145,4 +180,5 @@ function CategoryWiseAccessories() {
     </>
   );
 };
-export default CategoryWiseAccessories;
+
+export default CateWiseAccessoriesPage;

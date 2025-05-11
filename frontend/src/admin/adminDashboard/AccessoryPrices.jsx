@@ -51,7 +51,7 @@ import {
 // Register necessary components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Chart = () => {
+const AccessoryPrices = () => {
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -121,4 +121,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default AccessoryPrices;

@@ -20,7 +20,7 @@ function MyOrders() {
       .then((res) => {
         if (res.data.authenticated && res.data.user.role === "customer") {
           // setUser(res.data.user); // Set user data if authenticated
-          userId(res.data.user.id);
+          // userId(res.data.user.id);
         } else {
           navigate("/login"); // Redirect to login if not authenticated
         }

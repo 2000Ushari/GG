@@ -18,12 +18,46 @@ import CardMedia from "@mui/material/CardMedia";
 import earringImage from "../images/accessories/ear1.jpg";
 import Images from "../components/Images";
 import Carousal from "../components/Carousal";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Countup from "react-countup";
+
 import NavbarCustomer from "../customer/customerComponent/Navbar";
 import CategoryTiles from "../customer/customerComponent/CategoryTiles";
 import CustomerFooter from "../customer/customerComponent/CustomerFooter";
+import AccessoryCard from "../customer/customerAccessory/AccessoryCard";
+
 
 export default function Home() {
+  const [accessories, setAccessories] = useState([]);
+  const navigate = useNavigate(); 
+
+    // Show all accessories in cards on the customer homepage
+    const fetchAccessories = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/api/accessory/getAccessory");
+        if (!response.ok) {
+          throw new Error("Failed to fetch accessories");
+        }
+        const data = await response.json();
+        setAccessories(data);
+      } catch (error) {
+        console.error("Error fetching accessories:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchAccessories();
+    }, []);
+  
+    // Get random accessories from the fetched data
+    const getRandomAccessories = (accessories, count) => {
+      const shuffled = accessories.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    };
+  
+ const randomAccessories = getRandomAccessories(accessories, 12);
+
   return (
     <>
       <div className="bgcolor">
@@ -46,7 +80,7 @@ export default function Home() {
 
               <Grid item xs={12}>
                 <Stack spacing={2} direction={"row"}>
-                  <Card
+                  {/* <Card
                     sx={{ minWidth: 49 + "%", height: 200 }}
                     className="gradientyellowish"
                   >
@@ -75,7 +109,7 @@ export default function Home() {
                       <Button size="small">Share</Button>
                       <Button size="small">Learn More</Button>
                     </CardActions>
-                  </Card>
+                  </Card> */}
                   <Card
                     sx={{ minWidth: 49 + "%", height: 200 }}
                     className="gradientpurpleish"
@@ -111,7 +145,7 @@ export default function Home() {
               </Grid>
               <Grid item xs={4}>
                 <Stack spacing={2}>
-                  <Card className="gradientpurpleish">
+                  {/* <Card className="gradientpurpleish">
                     <Stack spacing={2} direction="row">
                       <div className="iconstyle">
                         <StorefrontIcon />
@@ -122,7 +156,7 @@ export default function Home() {
                         <span className="pricesubtitle">Total Income</span>
                       </div>
                     </Stack>
-                  </Card>
+                  </Card> */}
                   <Card sx={{ maxWidth: 345 }}>
                     <Stack spacing={2} direction="row">
                       <div className="iconstyleblack">
@@ -140,13 +174,29 @@ export default function Home() {
             </Grid>
             <Box height={20} />
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              {/* <Grid item xs={8}>
                 <Card sx={{ height: 200 + "vh" }}>
                   <CardContent>
                     <Images />
                   </CardContent>
                 </Card>
-              </Grid>
+              </Grid> */}
+
+              <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap" justifyContent={"space-evenly"}>
+                        {randomAccessories.map((accessory) => (
+                          // Navigate to accessory card and pass accessory details and customerId
+                          // console.log("customerId:", customerId),
+                          // console.log("accessory:", accessory),
+              
+                          <AccessoryCard 
+                            key={accessory.accessoryId} 
+                            accessoryDetails={accessory} 
+                            // userId={userId} // Pass userId for the API calls
+                            //customerId={customerId} // Pass customerId for favorites handling
+                          />
+                        ))}
+                      </Stack>
+  
               <Grid item xs={4}>
                 <Card sx={{ height: 60 + "vh" }}>
                   <CardContent>
@@ -158,7 +208,7 @@ export default function Home() {
                 </Card>
                 {/* practice */}
                 <br />
-                <Box sx={{ flexGrow: 1 }}>
+                {/* <Box sx={{ flexGrow: 1 }}>
                   <Card sx={{ maxWidth: 345 }}>
                     <CardMedia
                       sx={{ height: 140 }}
@@ -180,7 +230,7 @@ export default function Home() {
                       <Button size="small">Learn More</Button>
                     </CardActions>
                   </Card>
-                </Box>
+                </Box> */}
                 
               </Grid>
             </Grid>
