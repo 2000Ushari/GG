@@ -3,8 +3,12 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 
 import Home from "./pages/Home";
-import About from "./pages/About";
+import OurStory from "./pages/OurStory.jsx";
+import ContactUs from "./pages/ContactUs";
+import TermsConditions from "./pages/TermsConditions";
+import HappyCustomer from "./pages/HappyCustomer";
 import Profile from "./pages/Profile";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import InitialRegister from "./pages/InitialRegister";
@@ -19,6 +23,7 @@ import AdminGiftboxes from "./admin/AdminGiftboxes.jsx";
 import AdminEmployees from "./admin/AdminEmployees.jsx";
 import AdminCustomers from "./admin/AdminCustomers.jsx";
 import CustomerList from "./admin/adminCustomer/CustomerList.jsx";
+import Configurations from "./admin/adminConfigurations/Configurations.jsx";
 
 import CustomerHome from "./customer/CustomerHome";
 import AccessoryView from "./customer/customerAccessory/AccessoryView";
@@ -49,7 +54,10 @@ export default function App() {
       <Routes>
         <Route path="/" exact element={<Home />} />
         {/* <Route path="/" exact element={<CustomerHome />} /> */}
-        <Route path="/about" exact element={<About />} />
+        <Route path="/our-story" exact element={<OurStory />} />
+        <Route path="/contact-us" exact element={<ContactUs />} />
+        <Route path="/terms-and-services" exact element={<TermsConditions />} />
+        <Route path="/happy-customers" exact element={<HappyCustomer />} />
         <Route path="/profile" exact element={<Profile />} />
         <Route path="/login" exact element={<Login />} />
         <Route path="/register" exact element={<Register />} />
@@ -62,6 +70,7 @@ export default function App() {
         <Route path="/admin/accessory/add" exact element={<AddAccessory />} />
         <Route path="/admin/categories" exact element={<AdminCategories />} />
         <Route path="/admin/giftboxes" exact element={<AdminGiftboxes />} />
+        <Route path="/admin/configurations" exact element={<Configurations />} />
 
         {/* Admin employee routes */}
         <Route path="/admin/employees" exact element={<AdminEmployees />} />

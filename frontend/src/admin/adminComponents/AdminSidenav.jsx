@@ -244,7 +244,7 @@ export default function AdminSidenav() {
           </ListItem>
 
 
-          <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/profile")}>
+          <ListItem disablePadding sx={{ display: "block" }} onClick={() => navigate("/admin/configurations")}>
             <ListItemButton
               sx={{
                 minHeight: 48,

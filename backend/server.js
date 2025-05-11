@@ -13,6 +13,7 @@ import AuthenticationRoutes from './routes/AuthenticationRoutes.js';
 import CustomerRoutes from './routes/CustomerRoutes.js';
 import DashboardRoutes from './routes/DashboardRoutes.js';
 import PaymentRoutes from './routes/PaymentRoutes.js';
+import AdminConfigsRoutes from './routes/AdminConfigsRoutes.js';
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/api/user", UserRoutes);
 app.use("/api/customer", CustomerRoutes);
 app.use("/api/dashboard", DashboardRoutes);
 app.use("/api/payment", PaymentRoutes);
+app.use("/api/configurations", AdminConfigsRoutes);
 
 app.listen(3001, () => {
     console.log('Server is running on port 3001');

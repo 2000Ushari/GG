@@ -37,11 +37,8 @@ const CustomerFooter = () => {
             <Link href="/our-story" color="lightgray" display="block" underline="none">
               Our Story
             </Link>
-            <Link href="/help-center" color="lightgray" display="block" underline="none">
-              Help Center
-            </Link>
-            <Link href="/how-to-buy" color="lightgray" display="block" underline="none">
-              How to Buy
+            <Link href="/happy-customers" color="lightgray" display="block" underline="none">
+              Happy Customers
             </Link>
           </Box>
         </Grid>
