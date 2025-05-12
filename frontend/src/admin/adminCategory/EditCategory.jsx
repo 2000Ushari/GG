@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const EditCategory = ({ closeEvent, open, categoryID, category }) => {
   const [categoryData, setCategoryData] = useState({
-    categoryName: "",
-    categoryPrice: "",
-    categoryDescription: "",
-    categoryQuantity: "",
-    categoryColor: "",
+    categoryName: '',
+    categoryPrice: '',
+    categoryDescription: '',
+    categoryQuantity: '',
+    categoryColor: '',
     selectedCategory: null,
   });
   const [categories, setCategories] = useState([]);
@@ -21,15 +21,15 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -37,35 +37,32 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
       });
   }, [navigate]);
 
-  
-
   useEffect(() => {
     fetchCategories();
 
-
     if (category) {
-        setCategoryData({
-        categoryName: category.categoryName || "",
-        categoryPrice: category.categoryPrice || "",
-        categoryDescription: category.categoryDescription || "",
-        categoryQuantity: category.categoryQuantity || "",
-        categoryColor: category.categoryColor || "",
-        selectedCategory: category.categoryId  ,
+      setCategoryData({
+        categoryName: category.categoryName || '',
+        categoryPrice: category.categoryPrice || '',
+        categoryDescription: category.categoryDescription || '',
+        categoryQuantity: category.categoryQuantity || '',
+        categoryColor: category.categoryColor || '',
+        selectedCategory: category.categoryId,
       });
     }
   }, [category]);
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/category/getCategory");
+      const response = await fetch('http://localhost:3001/api/category/getCategory');
       if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+        throw new Error('Failed to fetch categories');
       }
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
-      setError("Error fetching categories.");
+      console.error('Error fetching categories:', error);
+      setError('Error fetching categories.');
     }
   };
 
@@ -79,35 +76,34 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
   const handleSubmit = async () => {
     try {
       // Basic validations
-      if (!categoryData.categoryName || !categoryData.categoryDescription ) {
-        setError("Please fill in all required fields.");
+      if (!categoryData.categoryName || !categoryData.categoryDescription) {
+        setError('Please fill in all required fields.');
         return;
       }
-  
+
       const response = await fetch(`http://localhost:3001/api/category/${categoryID}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...categoryData
+          ...categoryData,
           // categoryId: categoryData.selectedCategory ? categoryData.selectedCategory.categoryId : null,
         }),
       });
       if (!response.ok) {
-        throw new Error("Failed to update category");
+        throw new Error('Failed to update category');
       }
       const data = await response.json();
-      Swal.fire("Success!", "Category updated successfully.", "success");
+      Swal.fire('Success!', 'Category updated successfully.', 'success');
       closeEvent();
       window.location.reload();
     } catch (error) {
-      console.error("Error updating category:", error);
-      Swal.fire("Error!", "Failed to update the category.", "error");
+      console.error('Error updating category:', error);
+      Swal.fire('Error!', 'Failed to update the category.', 'error');
       setError(error.message);
     }
   };
-  
 
   return (
     <Modal
@@ -117,8 +113,20 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
       aria-describedby="edit-category-modal-description"
       style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
     >
-      <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 600, bgcolor: 'background.paper', borderRadius: 4, boxShadow: 24, p: 4 }}>
-        <IconButton style={{ position: "absolute", top: 10, right: 10 }} onClick={closeEvent}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          bgcolor: 'background.paper',
+          borderRadius: 4,
+          boxShadow: 24,
+          p: 4,
+        }}
+      >
+        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="edit-category-modal-title">
@@ -141,7 +149,7 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
               variant="outlined"
               size="small"
               value={categoryData.categoryName}
-              onChange={(e) => handleInputChange(e, "categoryName")}
+              onChange={(e) => handleInputChange(e, 'categoryName')}
               fullWidth
             />
           </Grid>
@@ -162,7 +170,7 @@ const EditCategory = ({ closeEvent, open, categoryID, category }) => {
               variant="outlined"
               size="small"
               value={categoryData.categoryDescription}
-              onChange={(e) => handleInputChange(e, "categoryDescription")}
+              onChange={(e) => handleInputChange(e, 'categoryDescription')}
               fullWidth
               multiline
               rows={4}

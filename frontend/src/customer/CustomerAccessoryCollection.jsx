@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function CustomerAccessoryCollection() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -24,9 +24,7 @@ function CustomerAccessoryCollection() {
       });
   }, [navigate]);
 
-  return (
-    <div>CustomerAccessoryCollection</div>
-  )
+  return <div>CustomerAccessoryCollection</div>;
 }
 
-export default CustomerAccessoryCollection
+export default CustomerAccessoryCollection;

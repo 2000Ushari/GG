@@ -294,24 +294,24 @@
 
 // export default OrderPayment;
 
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import NavbarCustomerAfterSignedIn from "../customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "../customerComponent/CustomerSidenav";
-import Payment from "./Payment";
+import NavbarCustomerAfterSignedIn from '../customerComponent/NavbarCustomerAfterSignedIn';
+import CustomerSidenav from '../customerComponent/CustomerSidenav';
+import Payment from './Payment';
 
 // Define the DetailRow component separately
 const DetailRow = ({ label, value }) => (
   <Grid container>
     <Grid item xs={6} sm={3}>
-      <Typography sx={{ fontWeight: "bold" }}>{label}</Typography>
+      <Typography sx={{ fontWeight: 'bold' }}>{label}</Typography>
     </Grid>
     <Grid item xs={6} sm={9}>
       <Typography>{value}</Typography>
@@ -326,21 +326,21 @@ function OrderPayment() {
   const [customerId, setCustomerId] = useState(null);
   const [customerDetails, setCustomerDetails] = useState({});
   const [orderDetails, setOrderDetails] = useState(null);
-  const [giftboxName, setGiftboxName] = useState("");
-  const [shippingAddress, setShippingAddress] = useState("");
-  const [districtName, setDistrictName] = useState("");
+  const [giftboxName, setGiftboxName] = useState('');
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [districtName, setDistrictName] = useState('');
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setUserId(res.data.user.id);
         } else {
-          navigate("/login");
+          navigate('/login');
         }
       })
       .catch((err) => {
@@ -350,9 +350,7 @@ function OrderPayment() {
 
   const fetchOrder = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/api/order/getOrderById/${orderId}`
-      );
+      const response = await axios.get(`http://localhost:3001/api/order/getOrderById/${orderId}`);
       setOrderDetails(response.data);
       setCustomerId(response.data.customerId);
       setGiftboxName(response.data.giftboxName);
@@ -360,7 +358,7 @@ function OrderPayment() {
       setDistrictName(response.data.deliveryDistrictName);
       setTotal(response.data.price);
     } catch (error) {
-      console.error("Error fetching order:", error);
+      console.error('Error fetching order:', error);
     }
   };
 
@@ -370,12 +368,10 @@ function OrderPayment() {
 
   const fetchCustomerDetails = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/api/customer/getCustomerById/${customerId}`
-      );
+      const response = await axios.get(`http://localhost:3001/api/customer/getCustomerById/${customerId}`);
       setCustomerDetails(response.data);
     } catch (error) {
-      console.error("Error fetching customer details:", error);
+      console.error('Error fetching customer details:', error);
     }
   };
 
@@ -386,13 +382,13 @@ function OrderPayment() {
   }, [customerId]);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-GB");
+    return new Date(dateString).toLocaleDateString('en-GB');
   };
 
   return (
     <div className="bgcolor">
       <NavbarCustomerAfterSignedIn />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Box height={60} />
@@ -408,43 +404,28 @@ function OrderPayment() {
                 <Typography
                   variant="subtitle1"
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     mt: 2,
-                    backgroundColor: "lightgrey",
+                    backgroundColor: 'lightgrey',
                     borderRadius: 2,
-                    paddingLeft: "10px",
-                    py: "10px",
+                    paddingLeft: '10px',
+                    py: '10px',
                   }}
                 >
                   Order Information
                 </Typography>
                 <br />
-                <Box sx={{ marginLeft: "20px" }}>
-                  <DetailRow
-                    label="Order ID:"
-                    sx={{ marginLeft: "20px" }}
-                    value={orderDetails?.orderId}
-                  />
+                <Box sx={{ marginLeft: '20px' }}>
+                  <DetailRow label="Order ID:" sx={{ marginLeft: '20px' }} value={orderDetails?.orderId} />
                   <DetailRow
                     label="Order Date:"
-                    value={
-                      orderDetails?.orderDate
-                        ? formatDate(orderDetails.orderDate)
-                        : "N/A"
-                    }
+                    value={orderDetails?.orderDate ? formatDate(orderDetails.orderDate) : 'N/A'}
                   />
                   <DetailRow
                     label="Due Date:"
-                    value={
-                      orderDetails?.dueDate
-                        ? formatDate(orderDetails.dueDate)
-                        : "N/A"
-                    }
+                    value={orderDetails?.dueDate ? formatDate(orderDetails.dueDate) : 'N/A'}
                   />
-                  <DetailRow
-                    label="Order Status:"
-                    value={orderDetails?.orderStatus}
-                  />
+                  <DetailRow label="Order Status:" value={orderDetails?.orderStatus} />
                 </Box>
                 <Divider sx={{ my: 2 }} />
 
@@ -452,30 +433,24 @@ function OrderPayment() {
                 <Typography
                   variant="subtitle1"
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     mt: 2,
-                    backgroundColor: "lightgrey",
+                    backgroundColor: 'lightgrey',
                     borderRadius: 2,
-                    paddingLeft: "10px",
-                    py: "10px",
+                    paddingLeft: '10px',
+                    py: '10px',
                   }}
                 >
                   Customer Information
                 </Typography>
                 <br />
-                <Box sx={{ marginLeft: "20px" }}>
+                <Box sx={{ marginLeft: '20px' }}>
                   <DetailRow
                     label="Customer Name:"
                     value={`${customerDetails?.customerFirstName} ${customerDetails?.customerLastName}`}
                   />
-                  <DetailRow
-                    label="Contact details:"
-                    value={customerDetails?.customerContact}
-                  />
-                  <DetailRow
-                    label="Customer Address:"
-                    value={customerDetails?.customerAddress}
-                  />
+                  <DetailRow label="Contact details:" value={customerDetails?.customerContact} />
+                  <DetailRow label="Customer Address:" value={customerDetails?.customerAddress} />
                 </Box>
                 <Divider sx={{ my: 2 }} />
 
@@ -483,22 +458,19 @@ function OrderPayment() {
                 <Typography
                   variant="subtitle1"
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     mt: 2,
-                    backgroundColor: "lightgrey",
+                    backgroundColor: 'lightgrey',
                     borderRadius: 2,
-                    paddingLeft: "10px",
-                    py: "10px",
+                    paddingLeft: '10px',
+                    py: '10px',
                   }}
                 >
                   Delivery Details
                 </Typography>
                 <br />
-                <Box sx={{ marginLeft: "20px" }}>
-                  <DetailRow
-                    label="Shipping Address:"
-                    value={shippingAddress}
-                  />
+                <Box sx={{ marginLeft: '20px' }}>
+                  <DetailRow label="Shipping Address:" value={shippingAddress} />
                   <DetailRow label="Delivery District:" value={districtName} />
                 </Box>
                 <Divider sx={{ my: 2 }} />
@@ -507,28 +479,25 @@ function OrderPayment() {
                 <Typography
                   variant="subtitle1"
                   sx={{
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                     mt: 2,
-                    backgroundColor: "lightgrey",
+                    backgroundColor: 'lightgrey',
                     borderRadius: 2,
-                    paddingLeft: "10px",
-                    py: "10px",
+                    paddingLeft: '10px',
+                    py: '10px',
                   }}
                 >
                   Giftbox Details
                 </Typography>
                 <br />
-                <Box sx={{ marginLeft: "20px" }}>
+                <Box sx={{ marginLeft: '20px' }}>
                   <DetailRow label="Giftbox Name:" value={giftboxName} />
                   <DetailRow label="Quantity:" value={orderDetails?.quantity} />
                 </Box>
                 <Divider sx={{ my: 2 }} />
 
                 {/* Total Price */}
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: "bold", color: "primary.main", mt: 2, ml: 2 }}
-                >
+                <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main', mt: 2, ml: 2 }}>
                   Total Price: Rs. {total}
                 </Typography>
               </Card>
@@ -538,10 +507,10 @@ function OrderPayment() {
                 paymentDetails={{
                   item: orderId,
                   amount: total,
-                  currency: "LKR",
+                  currency: 'LKR',
                   address: shippingAddress,
                   city: districtName,
-                  country: "Sri Lanka",
+                  country: 'Sri Lanka',
                   giftbox: giftboxName,
                   customerId: customerId,
                   userId: userId,

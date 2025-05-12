@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
   const navigate = useNavigate();
@@ -11,15 +11,15 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -28,44 +28,42 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
   }, [navigate]);
 
   const [accessoryData, setAccessoryData] = useState({
-    accessoryName: "",
-    accessoryPrice: "",
-    accessoryDescription: "",
-    accessoryQuantity: "",
-    accessoryColor: "",
+    accessoryName: '',
+    accessoryPrice: '',
+    accessoryDescription: '',
+    accessoryQuantity: '',
+    accessoryColor: '',
     selectedCategory: null,
   });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
-  
 
   useEffect(() => {
     fetchCategories();
 
-
     if (accessory) {
       setAccessoryData({
-        accessoryName: accessory.accessoryName || "",
-        accessoryPrice: accessory.accessoryPrice || "",
-        accessoryDescription: accessory.accessoryDescription || "",
-        accessoryQuantity: accessory.accessoryQuantity || "",
-        accessoryColor: accessory.accessoryColor || "",
-        selectedCategory: accessory.categoryId  ,
+        accessoryName: accessory.accessoryName || '',
+        accessoryPrice: accessory.accessoryPrice || '',
+        accessoryDescription: accessory.accessoryDescription || '',
+        accessoryQuantity: accessory.accessoryQuantity || '',
+        accessoryColor: accessory.accessoryColor || '',
+        selectedCategory: accessory.categoryId,
       });
     }
   }, [accessory]);
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/category/getCategory");
+      const response = await fetch('http://localhost:3001/api/category/getCategory');
       if (!response.ok) {
-        throw new Error("Failed to fetch categories");
+        throw new Error('Failed to fetch categories');
       }
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error("Error fetching categories:", error);
-      setError("Error fetching categories.");
+      console.error('Error fetching categories:', error);
+      setError('Error fetching categories.');
     }
   };
 
@@ -80,20 +78,20 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
     try {
       // Basic validations
       if (!accessoryData.accessoryName || !accessoryData.accessoryPrice || !accessoryData.selectedCategory) {
-        setError("Please fill in all required fields.");
+        setError('Please fill in all required fields.');
         return;
       }
-  
+
       // Numeric validations
       if (isNaN(accessoryData.accessoryPrice) || isNaN(accessoryData.accessoryQuantity)) {
-        setError("Price and quantity must be numeric values.");
+        setError('Price and quantity must be numeric values.');
         return;
       }
-  
+
       const response = await fetch(`http://localhost:3001/api/accessory/${accessoryID}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...accessoryData,
@@ -101,19 +99,18 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
         }),
       });
       if (!response.ok) {
-        throw new Error("Failed to update accessory");
+        throw new Error('Failed to update accessory');
       }
       const data = await response.json();
-      Swal.fire("Success!", "Accessory updated successfully.", "success");
+      Swal.fire('Success!', 'Accessory updated successfully.', 'success');
       closeEvent();
       window.location.reload();
     } catch (error) {
-      console.error("Error updating accessory:", error);
-      Swal.fire("Error!", "Failed to update the accessory.", "error");
+      console.error('Error updating accessory:', error);
+      Swal.fire('Error!', 'Failed to update the accessory.', 'error');
       setError(error.message);
     }
   };
-  
 
   return (
     <Modal
@@ -123,8 +120,20 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
       aria-describedby="edit-accessory-modal-description"
       style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
     >
-      <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 600, bgcolor: 'background.paper', borderRadius: 4, boxShadow: 24, p: 4 }}>
-        <IconButton style={{ position: "absolute", top: 10, right: 10 }} onClick={closeEvent}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          bgcolor: 'background.paper',
+          borderRadius: 4,
+          boxShadow: 24,
+          p: 4,
+        }}
+      >
+        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
         <Typography variant="h5" align="center" id="edit-accessory-modal-title">
@@ -147,7 +156,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               variant="outlined"
               size="small"
               value={accessoryData.accessoryName}
-              onChange={(e) => handleInputChange(e, "accessoryName")}
+              onChange={(e) => handleInputChange(e, 'accessoryName')}
               fullWidth
             />
           </Grid>
@@ -158,7 +167,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               size="small"
               type="number"
               value={accessoryData.accessoryPrice}
-              onChange={(e) => handleInputChange(e, "accessoryPrice")}
+              onChange={(e) => handleInputChange(e, 'accessoryPrice')}
               fullWidth
             />
           </Grid>
@@ -168,7 +177,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               variant="outlined"
               size="small"
               value={accessoryData.accessoryDescription}
-              onChange={(e) => handleInputChange(e, "accessoryDescription")}
+              onChange={(e) => handleInputChange(e, 'accessoryDescription')}
               fullWidth
               multiline
               rows={4}
@@ -181,7 +190,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               size="small"
               type="number"
               value={accessoryData.accessoryQuantity}
-              onChange={(e) => handleInputChange(e, "accessoryQuantity")}
+              onChange={(e) => handleInputChange(e, 'accessoryQuantity')}
               fullWidth
             />
           </Grid>
@@ -191,7 +200,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               variant="outlined"
               size="small"
               value={accessoryData.accessoryColor}
-              onChange={(e) => handleInputChange(e, "accessoryColor")}
+              onChange={(e) => handleInputChange(e, 'accessoryColor')}
               fullWidth
             />
           </Grid>

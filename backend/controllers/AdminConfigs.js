@@ -1,4 +1,4 @@
-import { AdminConfigService } from "../services/AdminConfigService.js";      
+import { AdminConfigService } from '../services/AdminConfigService.js';
 
 //DistrictTable and delivery rates
 export const getDistricts = async (req, res) => {
@@ -6,44 +6,31 @@ export const getDistricts = async (req, res) => {
     const [districts] = await AdminConfigService.getDistricts();
     res.status(200).json(districts);
   } catch (error) {
-    console.error("Error fetching districts:", error);
+    console.error('Error fetching districts:', error);
     res.status(500).json({ error: error.message });
   }
 };
 
 //get rate per km
 export const getDeliveryRate = async (req, res) => {
-    try {
-        const [rate] = await AdminConfigService.getDeliveryRate();
-        res.status(200).json(rate);
-    } catch (error) {
-        console.error("Error fetching rate per km:", error);
-        res.status(500).json({ error: error.message });
-    }
-}
-//update rate per km
-export const updateDeliveryRate = async (req, res) => {
-    try {
-//rate will be in url params
-        const rate = req.params.rate;
-        console.log(rate);
-        await AdminConfigService.updateDeliveryRate(rate);
-        res.status(200).json({ message: "Rate updated successfully" });
-    } catch (error) {
-        console.error("Error updating rate per km:", error);
-        res.status(500).json({ error: error.message });
-    }
-}
-
-//stockTable details
-export const getStockDetails = async (req, res) => {
   try {
-    const [stocks] = await AdminConfigService.getAllStockDetails();
-    res.status(200).json(stocks);
+    const [rate] = await AdminConfigService.getDeliveryRate();
+    res.status(200).json(rate);
   } catch (error) {
-    console.error("Error fetching stock details:", error);
+    console.error('Error fetching rate per km:', error);
     res.status(500).json({ error: error.message });
   }
 };
-
-
+//update rate per km
+export const updateDeliveryRate = async (req, res) => {
+  try {
+    //rate will be in url params
+    const rate = req.params.rate;
+    console.log(rate);
+    await AdminConfigService.updateDeliveryRate(rate);
+    res.status(200).json({ message: 'Rate updated successfully' });
+  } catch (error) {
+    console.error('Error updating rate per km:', error);
+    res.status(500).json({ error: error.message });
+  }
+};

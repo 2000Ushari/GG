@@ -328,48 +328,32 @@
 
 // export default ShowMyGiftboxCard;
 
-import React, { useState } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Grid,
-  Button,
-} from "@mui/material";
-import axios from "axios";
-import AddIcon from "@mui/icons-material/Add";
-import Giftbox from "../../images/giftboxes/giftbox1.jpg";
+import React, { useState } from 'react';
+import { Box, Card, CardContent, CardMedia, Typography, Grid, Button } from '@mui/material';
+import axios from 'axios';
+import AddIcon from '@mui/icons-material/Add';
+import Giftbox from '../../images/giftboxes/giftbox1.jpg';
 
-function ShowMyGiftboxCard({
-  giftboxDetails,
-  selectedAccessory,
-  selectedQuantity,
-  selectedSizeId
-}) {
+function ShowMyGiftboxCard({ giftboxDetails, selectedAccessory, selectedQuantity, selectedSizeId }) {
   const [giftboxItem, setGiftboxItem] = useState(null);
 
   const handleAddClick = async (giftbox) => {
     const addAccessoryToMyGiftbox = async () => {
-      if (!selectedSizeId){
+      if (!selectedSizeId) {
         selectedSizeId = 1;
       }
       try {
-        const response = await axios.post(
-          "http://localhost:3001/api/accessory/addAccessoryToMyGiftbox",
-          {
-            giftboxId: giftbox.giftboxId,
-            accessoryId: selectedAccessory,
-            quantity: selectedQuantity,
-            sizeId: selectedSizeId
-          }
-        );
+        const response = await axios.post('http://localhost:3001/api/accessory/addAccessoryToMyGiftbox', {
+          giftboxId: giftbox.giftboxId,
+          accessoryId: selectedAccessory,
+          quantity: selectedQuantity,
+          sizeId: selectedSizeId,
+        });
 
-        console.log("Accessory added to giftbox", response.data);
+        console.log('Accessory added to giftbox', response.data);
         setGiftboxItem(giftbox);
       } catch (error) {
-        console.error("Error adding accessory to giftbox:", error);
+        console.error('Error adding accessory to giftbox:', error);
       }
     };
     await addAccessoryToMyGiftbox();
@@ -379,9 +363,7 @@ function ShowMyGiftboxCard({
     <>
       {giftboxItem && (
         <div>
-          <h4 sx={{color:"green"}}>
-            Added accessory to "{giftboxItem.giftboxName}" Giftbox successfully!
-          </h4>
+          <h4 sx={{ color: 'green' }}>Added accessory to "{giftboxItem.giftboxName}" Giftbox successfully!</h4>
         </div>
       )}
       <Box sx={{ height: 20 }}></Box>
@@ -390,50 +372,39 @@ function ShowMyGiftboxCard({
         spacing={2}
         justifyContent="center"
         sx={{
-          maxHeight: "500px",
-          overflowY: "auto",
+          maxHeight: '500px',
+          overflowY: 'auto',
         }}
       >
         {giftboxDetails.length > 0 ? (
           giftboxDetails.map((giftbox, index) => (
-            <Grid
-              item
-              xs={12}
-              key={index}
-              display="flex"
-              justifyContent="center"
-            >
+            <Grid item xs={12} key={index} display="flex" justifyContent="center">
               <Card
                 sx={{
                   minWidth: 400,
                   minHeight: 150,
                   width: 500,
                   height: 150,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   marginBottom: 3,
                 }}
               >
                 <CardContent>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <CardMedia
                       component="img"
                       image={Giftbox}
                       alt="Gift Box"
-                      sx={{ height: 100, width: 100, objectFit: "cover" }}
+                      sx={{ height: 100, width: 100, objectFit: 'cover' }}
                     />
                     <Box sx={{ flexGrow: 1, ml: 2, mr: 2 }}>
                       <Typography variant="body1" align="left">
                         {giftbox.giftboxName}
                       </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        align="left"
-                      >
-                        Created on:{" "}
-                        {new Date(giftbox.createdAt).toLocaleDateString()}
+                      <Typography variant="body2" color="textSecondary" align="left">
+                        Created on: {new Date(giftbox.createdAt).toLocaleDateString()}
                       </Typography>
                     </Box>
                     <Button

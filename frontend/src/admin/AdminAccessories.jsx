@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Stack from "@mui/material/Stack";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 
-import AdminSidenav from "./adminComponents/AdminSidenav";
-import AdminNavbar from "./adminComponents/AdminNavbar";
-import AccessoryList from "./adminAccessory/AccessoryList";
+import AdminSidenav from './adminComponents/AdminSidenav';
+import AdminNavbar from './adminComponents/AdminNavbar';
+import AccessoryList from './adminAccessory/AccessoryList';
 
 export default function AdminAccessories() {
   const navigate = useNavigate();
@@ -19,15 +19,15 @@ export default function AdminAccessories() {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "admin") {
+        if (res.data.authenticated && res.data.user.role === 'admin') {
           // setUser(res.data.user); // Set user data if authenticated
           // customerId(res.data.user.id);
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -35,18 +35,17 @@ export default function AdminAccessories() {
       });
   }, [navigate]);
 
-
-const [cardData, setCardData] = useState([]);
+  const [cardData, setCardData] = useState([]);
 
   return (
     <>
       <div className="bgcolor">
         <AdminNavbar />
         <Box height={60} />
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: 'flex' }}>
           <AdminSidenav />
           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: "10px", fontWeight: "bold" }}>
+            <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
               Accessories
             </Typography>
             {/* <Grid container spacing={2}> */}
@@ -59,44 +58,28 @@ const [cardData, setCardData] = useState([]);
       </div>
 
       <div>
-      <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: 'flex' }}>
           <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
             <Grid container spacing={2}>
               {cardData.map((bin) => (
                 <Grid item xs={12} sm={6} md={4} key={bin.bin_id}>
                   <Stack direction="row" spacing={2}>
                     <Card
-                      sx={{ width: "100%" }}
+                      sx={{ width: '100%' }}
                       className="gradient"
                       // onClick={() => handleOpenAddModal(bin.bin_id)}
                     >
                       <CardContent>
                         <div>
-                          <CreditCardIcon
-                            sx={{ color: "white", marginTop: 2 }}
-                          />
+                          <CreditCardIcon sx={{ color: 'white', marginTop: 2 }} />
                         </div>
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          align="center"
-                        >
+                        <Typography gutterBottom variant="h5" component="div" align="center">
                           {bin.bin_name}
                         </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          component="div"
-                        >
+                        <Typography gutterBottom variant="body2" component="div">
                           {bin.type_name}
                         </Typography>
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          component="div"
-                          sx={{ color: "gray" }}
-                        >
+                        <Typography gutterBottom variant="body2" component="div" sx={{ color: 'gray' }}>
                           {bin.address}
                         </Typography>
                       </CardContent>

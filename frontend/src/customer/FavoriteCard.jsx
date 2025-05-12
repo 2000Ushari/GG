@@ -1,4 +1,3 @@
-
 // import React, { useEffect, useState } from 'react';
 // import { styled } from '@mui/material/styles';
 // import Card from '@mui/material/Card';
@@ -171,46 +170,45 @@
 
 // export default FavoriteCard;
 
-
-import React, { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Rating from "@mui/material/Rating";
-import Checkbox from "@mui/material/Checkbox";
-import Favorite from "@mui/icons-material/Favorite";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // SweetAlert for confirmation dialog
-import Flowers from "../images/accessories/earring.jpg"; // Replace with actual default image
+import React, { useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
+import Checkbox from '@mui/material/Checkbox';
+import Favorite from '@mui/icons-material/Favorite';
+import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'; // SweetAlert for confirmation dialog
+import Flowers from '../images/accessories/earring.jpg'; // Replace with actual default image
 
 const CustomCard = styled(Card)({
-  position: "relative",
+  position: 'relative',
   minWidth: 180,
   minHeight: 400,
   width: 250,
   height: 350,
-  cursor: "pointer",
-  "&:hover .addButton": {
-    display: "block",
+  cursor: 'pointer',
+  '&:hover .addButton': {
+    display: 'block',
   },
 });
 
 const AddButton = styled(Button)({
-  position: "absolute",
+  position: 'absolute',
   top: 0,
-  width: "100%",
+  width: '100%',
   borderRadius: 0,
-  display: "none",
-  backgroundColor: "rgba(0, 0, 0, 0.7)",
-  color: "white",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+  display: 'none',
+  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  color: 'white',
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
 });
 
@@ -225,12 +223,12 @@ function FavoriteCard({ accessoryId, customerId }) {
       try {
         const response = await fetch(`http://localhost:3001/api/accessory/getAccessoryById/${accessoryId}`);
         if (!response.ok) {
-          throw new Error("Failed to fetch accessory details");
+          throw new Error('Failed to fetch accessory details');
         }
         const data = await response.json();
         setAccessoryDetails(data); // Store accessory details
       } catch (error) {
-        console.error("Error fetching accessory details:", error);
+        console.error('Error fetching accessory details:', error);
       }
     };
     fetchAccessoryDetails();
@@ -242,12 +240,12 @@ function FavoriteCard({ accessoryId, customerId }) {
       try {
         const response = await fetch(
           `http://localhost:3001/api/accessory/checkIfFavorite/${customerId}/${accessoryId}`,
-          { method: "GET" }
+          { method: 'GET' }
         );
         const data = await response.json();
         setIsFavorite(data.isFavorite); // Set favorite state
       } catch (error) {
-        console.error("Error checking if favorite:", error);
+        console.error('Error checking if favorite:', error);
       }
     };
     checkIfFavorite();
@@ -256,40 +254,35 @@ function FavoriteCard({ accessoryId, customerId }) {
   const handleRemoveFromFavorites = async () => {
     try {
       const result = await Swal.fire({
-        title: "Remove from Favorites?",
-        text: "Do you want to remove this accessory from your favorites?",
-        icon: "question",
+        title: 'Remove from Favorites?',
+        text: 'Do you want to remove this accessory from your favorites?',
+        icon: 'question',
         showCancelButton: true,
-        confirmButtonText: "Yes, remove it!",
-        cancelButtonText: "No, cancel",
+        confirmButtonText: 'Yes, remove it!',
+        cancelButtonText: 'No, cancel',
       });
-  
+
       if (result.isConfirmed) {
         // Make API request to remove the accessory from favorites
-        const endpoint = "http://localhost:3001/api/accessory/removeFromFavorites";
-  
+        const endpoint = 'http://localhost:3001/api/accessory/removeFromFavorites';
+
         await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ customerId, accessoryId }),
         });
-  
-        Swal.fire(
-          "Removed!",
-          "This accessory has been removed from your favorites.",
-          "success"
-        );
-  
+
+        Swal.fire('Removed!', 'This accessory has been removed from your favorites.', 'success');
+
         // Optionally, remove the accessory from the list in the UI without reloading the page
         setIsFavorite(false); // You can remove the favorite from the UI by setting the state or refreshing the list
       }
     } catch (error) {
-      console.error("Error removing from favorites:", error);
-      Swal.fire("Error!", "Could not remove the accessory from favorites.", "error");
+      console.error('Error removing from favorites:', error);
+      Swal.fire('Error!', 'Could not remove the accessory from favorites.', 'error');
     }
     window.location.reload();
   };
-  
 
   const handleCardClick = () => {
     navigate(`/customer/accessoryView/${accessoryDetails.accessoryId}`);
@@ -323,13 +316,11 @@ function FavoriteCard({ accessoryId, customerId }) {
             handleRemoveFromFavorites();
           }}
         >
-          
           <Checkbox
             icon={<FavoriteBorder />}
-            checkedIcon={<Favorite color="error"  />}
+            checkedIcon={<Favorite color="error" />}
             checked={isFavorite}
-            inputProps={{ "aria-label": "favorite accessory" }}
-            
+            inputProps={{ 'aria-label': 'favorite accessory' }}
           />
         </IconButton>
       </CardActions>

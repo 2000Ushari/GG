@@ -46,7 +46,6 @@
 //   }
 // ];
 
-
 // function Carousal() {
 //   const theme = useTheme();
 //   const [activeStep, setActiveStep] = React.useState(0);
@@ -153,12 +152,12 @@ import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 
 import carousal1 from '../images/carousal/carousal1.jpg';
-import carousal8 from '../images/carousal/carousal8.png'
-import carousal3 from '../images/carousal/carousal3.jpg'
-import carousal4 from '../images/carousal/carousal4.jpg'
-import carousal5 from '../images/carousal/carousal5.jpg'
-import carousal6 from '../images/carousal/carousal6.jpg'
-import carousal7 from '../images/carousal/carousal7.jpg'
+import carousal8 from '../images/carousal/carousal8.png';
+import carousal3 from '../images/carousal/carousal3.jpg';
+import carousal4 from '../images/carousal/carousal4.jpg';
+import carousal5 from '../images/carousal/carousal5.jpg';
+import carousal6 from '../images/carousal/carousal6.jpg';
+import carousal7 from '../images/carousal/carousal7.jpg';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -170,22 +169,21 @@ const images = [
     imgPath: carousal1,
   },
   {
-    imgPath:carousal3,
+    imgPath: carousal3,
   },
   {
-    imgPath:carousal4,
+    imgPath: carousal4,
   },
   {
-    imgPath:carousal5,
+    imgPath: carousal5,
   },
   {
-    imgPath:carousal6,
+    imgPath: carousal6,
   },
   {
-    imgPath:carousal7,
-  }
+    imgPath: carousal7,
+  },
 ];
-
 
 function Carousal() {
   const theme = useTheme();
@@ -205,7 +203,7 @@ function Carousal() {
   };
 
   return (
-    <Box sx={{ minWidth: 400, maxWidth:1000, minHeight: 400,maxHeight: 800, flexGrow: 1 }}>
+    <Box sx={{ minWidth: 400, maxWidth: 1000, minHeight: 400, maxHeight: 800, flexGrow: 1 }}>
       <Paper
         square
         elevation={0}
@@ -250,26 +248,14 @@ function Carousal() {
         position="static"
         activeStep={activeStep}
         nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
+          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
             Next
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
           </Button>
         }
         backButton={
           <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
+            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
             Back
           </Button>
         }

@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { Box, TextField, Button } from "@mui/material";
-import EmployeeNavbar from "./employeeComponents/EmployeeNavbar";
-import EmployeeSidenav from "./employeeComponents/EmployeeSidenav";
+import React, { useState } from 'react';
+import { Box, TextField, Button } from '@mui/material';
+import EmployeeNavbar from './employeeComponents/EmployeeNavbar';
+import EmployeeSidenav from './employeeComponents/EmployeeSidenav';
 
 const EmployeeProfile = ({ userDetails, onSave }) => {
-  const [employeeDetails, setEmployeeDetails] = useState(
-    userDetails.roleDetails
-  );
+  const [employeeDetails, setEmployeeDetails] = useState(userDetails.roleDetails);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,51 +39,46 @@ const EmployeeProfile = ({ userDetails, onSave }) => {
             <TextField
               label="Date of Birth"
               name="employeeDob"
-              value={employeeDetails.employeeDob || ""}
+              value={employeeDetails.employeeDob || ''}
               onChange={handleChange}
             />
             <TextField
               label="Contact"
               name="employeeContact"
-              value={employeeDetails.employeeContact || ""}
+              value={employeeDetails.employeeContact || ''}
               onChange={handleChange}
             />
             <TextField
               label="NIC"
               name="employeeNIC"
-              value={employeeDetails.employeeNIC || ""}
+              value={employeeDetails.employeeNIC || ''}
               onChange={handleChange}
             />
             <TextField
               label="Gender"
               name="employeeGender"
-              value={employeeDetails.employeeGender || ""}
+              value={employeeDetails.employeeGender || ''}
               onChange={handleChange}
             />
             <TextField
               label="Address"
               name="employeeAddress"
-              value={employeeDetails.employeeAddress || ""}
+              value={employeeDetails.employeeAddress || ''}
               onChange={handleChange}
             />
             <TextField
               label="Working Status"
               name="workingStatus"
-              value={employeeDetails.workingStatus || ""}
+              value={employeeDetails.workingStatus || ''}
               onChange={handleChange}
             />
             <TextField
               label="Start Date"
               name="startDate"
-              value={employeeDetails.startDate || ""}
+              value={employeeDetails.startDate || ''}
               onChange={handleChange}
             />
-            <TextField
-              label="End Date"
-              name="endDate"
-              value={employeeDetails.endDate || ""}
-              onChange={handleChange}
-            />
+            <TextField label="End Date" name="endDate" value={employeeDetails.endDate || ''} onChange={handleChange} />
             <Button onClick={handleSave}>Save</Button>
           </Box>
         </Box>

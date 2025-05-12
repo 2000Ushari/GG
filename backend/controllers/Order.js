@@ -1,7 +1,7 @@
-import connection from "../dbConnection.js";
+import connection from '../dbConnection.js';
 
 export const getOrder = (req, res) => {
-  const query = "SELECT * FROM orders";
+  const query = 'SELECT * FROM orders';
   connection.query(query, (err, result) => {
     if (err) {
       console.log(err);
@@ -41,16 +41,16 @@ export const getOrderById = (req, res) => {
   const orderId = req.params.oid;
 
   // Query to get order details by orderId
-  const orderQuery = "SELECT * FROM orders WHERE orderId = ?";
+  const orderQuery = 'SELECT * FROM orders WHERE orderId = ?';
 
   connection.query(orderQuery, [orderId], (err, orderResult) => {
     if (err) {
       console.log(err);
-      return res.status(500).send({ error: "Error fetching order details" });
+      return res.status(500).send({ error: 'Error fetching order details' });
     }
 
     if (orderResult.length === 0) {
-      return res.status(404).send({ message: "Order not found" });
+      return res.status(404).send({ message: 'Order not found' });
     }
 
     // Extract deliveryDistrictId and giftboxId from the order result
@@ -58,21 +58,21 @@ export const getOrderById = (req, res) => {
     const giftboxId = orderResult[0].giftboxId;
 
     // Query to get district name by deliveryDistrictId
-    const districtQuery = "SELECT deliveryDistrictName FROM delivery_districts WHERE deliveryDistrictId = ?";
+    const districtQuery = 'SELECT deliveryDistrictName FROM delivery_districts WHERE deliveryDistrictId = ?';
 
     connection.query(districtQuery, [deliveryDistrictId], (districtErr, districtResult) => {
       if (districtErr) {
         console.log(districtErr);
-        return res.status(500).send({ error: "Error fetching district details" });
+        return res.status(500).send({ error: 'Error fetching district details' });
       }
 
       // Query to get giftbox name by giftboxId
-      const giftboxQuery = "SELECT giftboxName FROM giftbox WHERE giftboxId = ?";
+      const giftboxQuery = 'SELECT giftboxName FROM giftbox WHERE giftboxId = ?';
 
       connection.query(giftboxQuery, [giftboxId], (giftboxErr, giftboxResult) => {
         if (giftboxErr) {
           console.log(giftboxErr);
-          return res.status(500).send({ error: "Error fetching giftbox details" });
+          return res.status(500).send({ error: 'Error fetching giftbox details' });
         }
 
         // Combine order details with district and giftbox name
@@ -88,9 +88,8 @@ export const getOrderById = (req, res) => {
   });
 };
 
-
 export const addOrder = (req, res) => {
-  const query = "INSERT INTO order_list SET ?";
+  const query = 'INSERT INTO order_list SET ?';
   connection.query(query, [req.body], (err, result) => {
     if (err) {
       console.log(err);
@@ -101,7 +100,7 @@ export const addOrder = (req, res) => {
 };
 
 export const updateOrder = (req, res) => {
-  const query = "UPDATE order_list SET ? WHERE id = ?";
+  const query = 'UPDATE order_list SET ? WHERE id = ?';
   connection.query(query, [req.body, req.params.id], (err, result) => {
     if (err) {
       console.log(err);
@@ -112,7 +111,7 @@ export const updateOrder = (req, res) => {
 };
 
 export const deleteOrder = (req, res) => {
-  const query = "DELETE FROM order_list WHERE id = ?";
+  const query = 'DELETE FROM order_list WHERE id = ?';
   connection.query(query, [req.params.id], (err, result) => {
     if (err) {
       console.log(err);
@@ -123,7 +122,7 @@ export const deleteOrder = (req, res) => {
 };
 
 export const getDistricts = (req, res) => {
-  const query = "SELECT * FROM delivery_districts";
+  const query = 'SELECT * FROM delivery_districts';
   connection.query(query, (err, result) => {
     if (err) {
       console.log(err);
@@ -135,7 +134,7 @@ export const getDistricts = (req, res) => {
 
 export const getDistrictById = (req, res) => {
   const districtId = req.params.did;
-  const query = "SELECT * FROM delivery_districts WHERE deliveryDistrictId = ?";
+  const query = 'SELECT * FROM delivery_districts WHERE deliveryDistrictId = ?';
   connection.query(query, [districtId], (err, result) => {
     if (err) {
       console.log(err);
@@ -151,13 +150,10 @@ export const getDeliveryFee = (req, res) => {
   // Step 1: Retrieve delivery distance for the given district
   connection
     .promise()
-    .query(
-      `SELECT deliveryDistance FROM delivery_districts WHERE deliveryDistrictName = ?`,
-      [selectedDistrict]
-    )
+    .query(`SELECT deliveryDistance FROM delivery_districts WHERE deliveryDistrictName = ?`, [selectedDistrict])
     .then(([districtResult]) => {
       if (districtResult.length === 0) {
-        return res.status(404).json({ message: "District not found" });
+        return res.status(404).json({ message: 'District not found' });
       }
 
       const deliveryDistance = districtResult[0].deliveryDistance;
@@ -168,7 +164,7 @@ export const getDeliveryFee = (req, res) => {
         .query(`SELECT ratePerOneKm FROM delivery_rates LIMIT 1`)
         .then(([rateResult]) => {
           if (rateResult.length === 0) {
-            return res.status(404).json({ message: "Rate not found" });
+            return res.status(404).json({ message: 'Rate not found' });
           }
 
           const ratePerOneKm = rateResult[0].ratePerOneKm;
@@ -181,8 +177,8 @@ export const getDeliveryFee = (req, res) => {
         });
     })
     .catch((error) => {
-      console.error("Error calculating delivery fee:", error);
-      res.status(500).json({ message: "Server error" });
+      console.error('Error calculating delivery fee:', error);
+      res.status(500).json({ message: 'Server error' });
     });
 };
 
@@ -193,14 +189,12 @@ export const getWrappingFee = (req, res) => {
   const getGiftboxCapacityQuery = `SELECT giftboxCapacity FROM giftbox WHERE giftboxId = ?`;
   connection.query(getGiftboxCapacityQuery, [giftboxId], (err, result) => {
     if (err) {
-      console.error("Error fetching giftbox capacity:", err);
-      return res
-        .status(500)
-        .json({ error: "Database error while fetching giftbox capacity." });
+      console.error('Error fetching giftbox capacity:', err);
+      return res.status(500).json({ error: 'Database error while fetching giftbox capacity.' });
     }
 
     if (result.length === 0) {
-      return res.status(404).json({ message: "Giftbox not found." });
+      return res.status(404).json({ message: 'Giftbox not found.' });
     }
 
     // Retrieve giftbox capacity from the result
@@ -210,14 +204,12 @@ export const getWrappingFee = (req, res) => {
     const getCapacityQuery = `SELECT * FROM giftbox_capacity ORDER BY capacityInUnits ASC`;
     connection.query(getCapacityQuery, (err, capacities) => {
       if (err) {
-        console.error("Error fetching giftbox capacity limits:", err);
-        return res
-          .status(500)
-          .json({ error: "Database error while fetching capacity limits." });
+        console.error('Error fetching giftbox capacity limits:', err);
+        return res.status(500).json({ error: 'Database error while fetching capacity limits.' });
       }
 
       let wrappingFee = null;
-      let message = "";
+      let message = '';
 
       // Determine the wrapping fee based on the giftbox capacity
       if (giftboxCapacity <= capacities[0].capacityInUnits) {
@@ -227,8 +219,7 @@ export const getWrappingFee = (req, res) => {
       } else if (giftboxCapacity <= capacities[2].capacityInUnits) {
         wrappingFee = capacities[2].wrappingCharge;
       } else {
-        message =
-          "Giftbox capacity exceeds the maximum capacity, please create a new giftbox!";
+        message = 'Giftbox capacity exceeds the maximum capacity, please create a new giftbox!';
       }
 
       // Send the result back to the client
@@ -242,30 +233,17 @@ export const getWrappingFee = (req, res) => {
 };
 
 export const saveOrder = (req, res) => {
-  const {
-    giftboxId,
-    quantity,
-    price,
-    orderDate,
-    orderStatus,
-    dueDate,
-    customerId,
-  } = req.body;
+  const { giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId } = req.body;
   const query =
-    "INSERT INTO orders (giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
-  connection.query(
-    query,
-    [giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
+    'INSERT INTO orders (giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  connection.query(query, [giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId], (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
     }
-  );
+  });
 };
-
 
 export const placeOrder = (req, res) => {
   const {
@@ -281,28 +259,18 @@ export const placeOrder = (req, res) => {
   } = req.body;
 
   const query =
-    "INSERT INTO orders (giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId, shippingAddress, deliveryDistrictId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    'INSERT INTO orders (giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId, shippingAddress, deliveryDistrictId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
   connection.query(
     query,
-    [
-      giftboxId,
-      quantity,
-      price,
-      orderDate,
-      orderStatus,
-      dueDate,
-      customerId,
-      shippingAddress,
-      deliveryDistrictId,
-    ],
+    [giftboxId, quantity, price, orderDate, orderStatus, dueDate, customerId, shippingAddress, deliveryDistrictId],
     (err, result) => {
       if (err) {
         console.log(err);
-        res.status(500).send({ message: "Error placing order", error: err });
+        res.status(500).send({ message: 'Error placing order', error: err });
       } else {
         const orderId = result.insertId; // Retrieve the newly created order ID
-        res.status(201).send({ message: "Order placed successfully", orderId });
+        res.status(201).send({ message: 'Order placed successfully', orderId });
       }
     }
   );
@@ -310,7 +278,8 @@ export const placeOrder = (req, res) => {
 
 export const getOrdersByCustomerId = (req, res) => {
   const customerId = req.params.cid;
-  const query = "SELECT * FROM orders WHERE customerId = ? AND orderStatus != 'Cancelled' AND orderStatus != 'Completed' ;";
+  const query =
+    "SELECT * FROM orders WHERE customerId = ? AND orderStatus != 'Cancelled' AND orderStatus != 'Completed' ;";
   connection.query(query, [customerId], (err, result) => {
     if (err) {
       console.log(err);
@@ -318,7 +287,7 @@ export const getOrdersByCustomerId = (req, res) => {
       res.json(result);
     }
   });
-}
+};
 
 export const updateOrderStatusAfterPaid = (req, res) => {
   const orderId = req.params.oid;
@@ -357,7 +326,7 @@ export const getOrderHistoryByCustomerId = (req, res) => {
       res.json(result);
     }
   });
-}
+};
 
 export const getCancelledOrdersByCustomerId = (req, res) => {
   const customerId = req.params.cid;
@@ -369,8 +338,7 @@ export const getCancelledOrdersByCustomerId = (req, res) => {
       res.json(result);
     }
   });
-}
-
+};
 
 export default {
   getOrder,
@@ -387,5 +355,5 @@ export default {
   placeOrder,
   getOrdersByCustomerId,
   updateOrderStatusWhenCancelled,
-  getOrderHistoryByCustomerId
+  getOrderHistoryByCustomerId,
 };

@@ -102,13 +102,13 @@
 
 // export default MyFavorites;
 
-import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import NavbarCustomerAfterSignedIn from "./customerComponent/NavbarCustomerAfterSignedIn";
-import CustomerSidenav from "./customerComponent/CustomerSidenav";
-import FavoriteCard from "./FavoriteCard"; // Assuming you have an AccessoryCard component to display the accessories
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import NavbarCustomerAfterSignedIn from './customerComponent/NavbarCustomerAfterSignedIn';
+import CustomerSidenav from './customerComponent/CustomerSidenav';
+import FavoriteCard from './FavoriteCard'; // Assuming you have an AccessoryCard component to display the accessories
 
 function MyFavorites() {
   const navigate = useNavigate();
@@ -120,14 +120,14 @@ function MyFavorites() {
   // Authentication check
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/auth/authenticated", {
+      .get('http://localhost:3001/api/auth/authenticated', {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === "customer") {
+        if (res.data.authenticated && res.data.user.role === 'customer') {
           setUserId(res.data.user.id); // Set user ID if authenticated
         } else {
-          navigate("/login"); // Redirect to login if not authenticated
+          navigate('/login'); // Redirect to login if not authenticated
         }
       })
       .catch((err) => {
@@ -145,16 +145,14 @@ function MyFavorites() {
   // Fetch customerId by userId
   const getCustomerIdByUserId = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/user/getCustomerIdByUserId/${userId}`
-      );
+      const response = await fetch(`http://localhost:3001/api/user/getCustomerIdByUserId/${userId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch customer ID");
+        throw new Error('Failed to fetch customer ID');
       }
       const data = await response.json();
       setCustomerId(data.customerId); // Set customerId state
     } catch (error) {
-      console.error("Error fetching customer ID:", error);
+      console.error('Error fetching customer ID:', error);
     }
   };
 
@@ -168,19 +166,17 @@ function MyFavorites() {
   // Function to fetch the favorite accessories
   const fetchFavorites = async (customerId) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/accessory/getFavorites/${customerId}`
-      );
+      const response = await fetch(`http://localhost:3001/api/accessory/getFavorites/${customerId}`);
       if (!response.ok) {
-        throw new Error("Failed to fetch favorites");
+        throw new Error('Failed to fetch favorites');
       }
       const favoritesData = await response.json();
       setFavorites(favoritesData.favorites); // Set favorites
-      console.log("#########Response", favoritesData.favorites);
+      console.log('#########Response', favoritesData.favorites);
       //console.log("#########Response",favoritesData.favorites[0]);
       setLoading(false); // Set loading to false
     } catch (error) {
-      console.error("Error fetching favorites:", error);
+      console.error('Error fetching favorites:', error);
       setLoading(false);
     }
   };
@@ -189,7 +185,7 @@ function MyFavorites() {
     <>
       <NavbarCustomerAfterSignedIn />
       <Box height={30} />
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CustomerSidenav />
         {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <h1>My Favorites</h1>
@@ -203,7 +199,7 @@ function MyFavorites() {
           {loading ? (
             <p>Loading favorites...</p>
           ) : (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
               {favorites.length > 0 ? (
                 favorites.map((favorite) => (
                   <FavoriteCard

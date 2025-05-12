@@ -191,7 +191,7 @@
 //         >
 //           {/* <Badge badgeContent={17} color="error">
 //             <NotificationsIcon />
-            
+
 //           </Badge> */}
 
 // <ShoppingCartIcon />
@@ -207,7 +207,7 @@
 //           color="inherit"
 //         >
 //           <AccountCircle />
-          
+
 //         </IconButton> */}
 //         <IconButton
 //           size="small">
@@ -276,7 +276,7 @@
 //               color="inherit"
 //             >
 //               <AccountCircle />
-              
+
 //             </IconButton> */}
 
 //             <IconButton
@@ -308,7 +308,6 @@
 //     </Box>
 //   );
 // }
-
 
 // import * as React from 'react';
 // import { styled, alpha } from '@mui/material/styles';
@@ -565,7 +564,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../appStore';
 import UserAvatar from './UserAvatar';
 
-
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
 }));
@@ -675,10 +673,20 @@ export default function NavbarCustomerAfterSignedIn() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => { handleProfileClick(); handleMenuClose(); }}>
+      <MenuItem
+        onClick={() => {
+          handleProfileClick();
+          handleMenuClose();
+        }}
+      >
         View My Profile
       </MenuItem>
-      <MenuItem onClick={() => { handleLogout(); handleMenuClose(); }}>
+      <MenuItem
+        onClick={() => {
+          handleLogout();
+          handleMenuClose();
+        }}
+      >
         Logout
       </MenuItem>
     </Menu>
@@ -739,28 +747,24 @@ export default function NavbarCustomerAfterSignedIn() {
             <MenuIcon />
           </IconButton>
           <Button
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{
-                display: { xs: "none", sm: "block" },
-                fontSize: 30,
-                fontWeight: 500,
-                fontFamily: "fantasy",
-              }}
-              onClick={() => navigate("/customer/home")} // Correct path to home
-              
-            >
-              The Glitter Gallery
-            </Button>
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              fontSize: 30,
+              fontWeight: 500,
+              fontFamily: 'fantasy',
+            }}
+            onClick={() => navigate('/customer/home')} // Correct path to home
+          >
+            The Glitter Gallery
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -774,12 +778,26 @@ export default function NavbarCustomerAfterSignedIn() {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <IconButton size="large" edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true" onClick={handleProfileMenuOpen}>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+            >
               <UserAvatar />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton size="large" aria-label="show more" aria-controls={mobileMenuId} aria-haspopup="true" onClick={handleMobileMenuOpen} color="inherit">
+            <IconButton
+              size="large"
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
               <MoreIcon />
             </IconButton>
           </Box>

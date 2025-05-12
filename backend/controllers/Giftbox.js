@@ -1,6 +1,6 @@
-import connection from "../dbConnection.js";
-import { GiftboxService } from "../services/GiftboxService.js";
-import { AccessoryService } from "../services/AccessoryService.js";
+import connection from '../dbConnection.js';
+import { GiftboxService } from '../services/GiftboxService.js';
+import { AccessoryService } from '../services/AccessoryService.js';
 
 const getGiftbox = (req, res) => {
   const query = "SELECT * FROM giftbox WHERE giftboxType='Default'";
@@ -18,19 +18,19 @@ const getGiftboxById = async (req, res) => {
 
   try {
     if (!giftboxId) {
-      throw new Error("Please provide a valid giftbox ID.");
+      throw new Error('Please provide a valid giftbox ID.');
     }
 
     // Await the result from the service
     const [giftbox] = await GiftboxService.getGiftboxById(giftboxId);
 
     if (giftbox.length === 0) {
-      return res.status(404).json({ message: "No such giftbox existing." });
+      return res.status(404).json({ message: 'No such giftbox existing.' });
     }
 
     res.status(200).json(giftbox);
   } catch (error) {
-    console.error("Error fetching giftbox:", error);
+    console.error('Error fetching giftbox:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -73,37 +73,19 @@ const getGiftboxById = async (req, res) => {
 //   };
 
 const addGiftbox = (req, res) => {
-  const { giftboxName, noteContent, boxColorId, giftboxPrice, accessories } =
-    req.body;
-  console.log(
-    giftboxName,
-    noteContent,
-    boxColorId,
-    giftboxPrice,
-    accessories,
-    Array.isArray(accessories)
-  );
+  const { giftboxName, noteContent, boxColorId, giftboxPrice, accessories } = req.body;
+  console.log(giftboxName, noteContent, boxColorId, giftboxPrice, accessories, Array.isArray(accessories));
   // Validation
-  if (
-    !giftboxName ||
-    !noteContent ||
-    !boxColorId ||
-    !giftboxPrice ||
-    !accessories ||
-    !Array.isArray(accessories)
-  ) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "Please provide name, note content, color, price, and the accessory/accessories with quantities.",
-      });
+  if (!giftboxName || !noteContent || !boxColorId || !giftboxPrice || !accessories || !Array.isArray(accessories)) {
+    return res.status(400).json({
+      error: 'Please provide name, note content, color, price, and the accessory/accessories with quantities.',
+    });
   }
 
   // Start transaction
   connection.beginTransaction((err) => {
     if (err) {
-      return res.status(500).json({ error: "Error starting transaction." });
+      return res.status(500).json({ error: 'Error starting transaction.' });
     }
 
     // Insert the new giftbox into the database
@@ -111,66 +93,52 @@ const addGiftbox = (req, res) => {
           INSERT INTO giftbox (giftboxName, noteContent, boxColorId, giftboxPrice)
           VALUES (?, ?, ?, ?)
       `;
-    connection.query(
-      giftboxQuery,
-      [giftboxName, noteContent, boxColorId, giftboxPrice],
-      (err, result) => {
-        if (err) {
-          return connection.rollback(() => {
-            console.error("Error adding giftbox:", err);
-            res.status(500).json({ error: "Error adding giftbox." });
-          });
-        }
+    connection.query(giftboxQuery, [giftboxName, noteContent, boxColorId, giftboxPrice], (err, result) => {
+      if (err) {
+        return connection.rollback(() => {
+          console.error('Error adding giftbox:', err);
+          res.status(500).json({ error: 'Error adding giftbox.' });
+        });
+      }
 
-        const giftboxId = result.insertId;
+      const giftboxId = result.insertId;
 
-        // Insert each accessory into giftbox_accessories
-        const accessoriesQuery = `
+      // Insert each accessory into giftbox_accessories
+      const accessoriesQuery = `
               INSERT INTO giftboxaccessories (giftboxId, accessoryId, quantity)
               VALUES ?
           `;
-        //map each item in accessories array to an array of values for the query
-        const accessoriesValues = accessories.map((item) => [
-          giftboxId,
-          item.accessory.accessoryId,
-          item.quantity,
-        ]);
-        console.log(accessoriesValues);
-        connection.query(accessoriesQuery, [accessoriesValues], (err) => {
+      //map each item in accessories array to an array of values for the query
+      const accessoriesValues = accessories.map((item) => [giftboxId, item.accessory.accessoryId, item.quantity]);
+      console.log(accessoriesValues);
+      connection.query(accessoriesQuery, [accessoriesValues], (err) => {
+        if (err) {
+          return connection.rollback(() => {
+            console.error('Error adding accessories to giftbox:', err);
+            res.status(500).json({ error: 'Error adding accessories to giftbox.' });
+          });
+        }
+
+        // Commit transaction
+        connection.commit((err) => {
           if (err) {
             return connection.rollback(() => {
-              console.error("Error adding accessories to giftbox:", err);
-              res
-                .status(500)
-                .json({ error: "Error adding accessories to giftbox." });
+              console.error('Error committing transaction:', err);
+              res.status(500).json({ error: 'Error committing transaction.' });
             });
           }
 
-          // Commit transaction
-          connection.commit((err) => {
-            if (err) {
-              return connection.rollback(() => {
-                console.error("Error committing transaction:", err);
-                res
-                  .status(500)
-                  .json({ error: "Error committing transaction." });
-              });
-            }
-
-            res
-              .status(201)
-              .json({
-                id: giftboxId,
-                giftboxName,
-                noteContent,
-                boxColorId,
-                giftboxPrice,
-                accessories,
-              });
+          res.status(201).json({
+            id: giftboxId,
+            giftboxName,
+            noteContent,
+            boxColorId,
+            giftboxPrice,
+            accessories,
           });
         });
-      }
-    );
+      });
+    });
   });
 };
 
@@ -223,12 +191,7 @@ const addGiftbox = (req, res) => {
 
 const updateGiftbox = async (req, res) => {
   const giftboxId = req.params.gid;
-  const {
-    giftboxName,
-    giftboxDescription,
-    noteContent,
-    giftboxPrice,
-  } = req.body;
+  const { giftboxName, giftboxDescription, noteContent, giftboxPrice } = req.body;
 
   try {
     // Call the service method with the required parameters
@@ -242,13 +205,13 @@ const updateGiftbox = async (req, res) => {
 
     // Check if any rows were affected (i.e., if the giftbox was updated)
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Giftbox not found" });
+      return res.status(404).json({ error: 'Giftbox not found' });
     }
 
-    res.status(200).json({ message: "Giftbox updated successfully" });
+    res.status(200).json({ message: 'Giftbox updated successfully' });
   } catch (error) {
-    console.error("Error updating giftbox:", error);
-    res.status(500).json({ error: "Error updating giftbox" });
+    console.error('Error updating giftbox:', error);
+    res.status(500).json({ error: 'Error updating giftbox' });
   }
 };
 
@@ -257,25 +220,25 @@ const deleteGiftbox = (req, res) => {
     const giftboxId = req.params.id;
 
     if (!giftboxId) {
-      return res.status(400).json({ error: "giftbox ID is required." });
+      return res.status(400).json({ error: 'giftbox ID is required.' });
     }
 
-    const query = "DELETE FROM giftbox WHERE giftboxId = ?";
+    const query = 'DELETE FROM giftbox WHERE giftboxId = ?';
     connection.query(query, [giftboxId], (err, result) => {
       if (err) {
-        console.error("Error deleting giftbox:", err);
-        return res.status(500).json({ error: "Failed to delete giftbox." });
+        console.error('Error deleting giftbox:', err);
+        return res.status(500).json({ error: 'Failed to delete giftbox.' });
       }
 
       if (result.affectedRows === 0) {
-        return res.status(404).json({ error: "Giftbox not found." });
+        return res.status(404).json({ error: 'Giftbox not found.' });
       }
 
-      res.json({ message: "Giftbox deleted successfully." });
+      res.json({ message: 'Giftbox deleted successfully.' });
     });
   } catch (error) {
-    console.error("Error in deleteGiftbox function:", error);
-    res.status(500).json({ error: "Internal server error." });
+    console.error('Error in deleteGiftbox function:', error);
+    res.status(500).json({ error: 'Internal server error.' });
   }
 };
 
@@ -325,17 +288,14 @@ const deleteGiftbox = (req, res) => {
 //   );
 // };
 
-
 const createMyGiftbox = (req, res) => {
   const { giftboxName, userId, giftboxDescription, noteContent, boxColorId } = req.body;
-  const giftboxType = "Customized";
+  const giftboxType = 'Customized';
   console.log(giftboxName, userId, giftboxDescription, noteContent, boxColorId);
 
   // Validation
   if (!giftboxName) {
-    return res
-      .status(400)
-      .json({ error: "Please provide a name for the giftbox." });
+    return res.status(400).json({ error: 'Please provide a name for the giftbox.' });
   }
 
   // Insert the new giftbox into the database
@@ -343,7 +303,7 @@ const createMyGiftbox = (req, res) => {
     INSERT INTO giftbox (giftboxName, userId, giftboxType, giftboxDescription, noteContent, boxColorId)
     VALUES (?, ?, ?, ?, ?, ?)
   `;
-  
+
   connection.query(
     giftboxQuery,
     [
@@ -356,8 +316,8 @@ const createMyGiftbox = (req, res) => {
     ],
     (err, result) => {
       if (err) {
-        console.error("Error adding giftbox:", err);
-        return res.status(500).json({ error: "Error adding giftbox." });
+        console.error('Error adding giftbox:', err);
+        return res.status(500).json({ error: 'Error adding giftbox.' });
       }
 
       const giftboxId = result.insertId;
@@ -373,11 +333,11 @@ const createMyGiftbox = (req, res) => {
         )
         WHERE g.giftboxId = ?;
       `;
-      
+
       connection.query(updatePriceQuery, [giftboxId], (updateErr) => {
         if (updateErr) {
-          console.error("Error updating giftbox price:", updateErr);
-          return res.status(500).json({ error: "Error updating giftbox price." });
+          console.error('Error updating giftbox price:', updateErr);
+          return res.status(500).json({ error: 'Error updating giftbox price.' });
         }
 
         // Send response after successful insertion and price update
@@ -395,13 +355,12 @@ const createMyGiftbox = (req, res) => {
   );
 };
 
-
 export const getBoxColors = async (req, res) => {
   try {
     const colors = await GiftboxService.getBoxColors();
     res.status(200).json(colors);
   } catch (error) {
-    console.error("Error fetching box colors:", error);
+    console.error('Error fetching box colors:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -411,13 +370,13 @@ export const getBoxColorByGiftboxId = async (req, res) => {
     const giftboxId = req.params.gid;
 
     if (!giftboxId) {
-      throw new Error("Please provide a valid giftbox ID.");
+      throw new Error('Please provide a valid giftbox ID.');
     }
 
     const colors = await GiftboxService.getBoxColorByGiftboxId(giftboxId);
     res.status(200).json(colors[0]);
   } catch (error) {
-    console.error("Error fetching box color by giftbox ID:", error);
+    console.error('Error fetching box color by giftbox ID:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -427,17 +386,17 @@ const getGiftboxColorById = async (req, res) => {
 
   try {
     if (!boxColorId) {
-      throw new Error("Please provide a valid box color ID.");
+      throw new Error('Please provide a valid box color ID.');
     }
 
     const [boxColor] = await GiftboxService.getGiftboxColorById(boxColorId);
 
     if (boxColor.length === 0) {
-      return res.status(404).json({ message: "No such box color existing." });
+      return res.status(404).json({ message: 'No such box color existing.' });
     }
     res.status(200).json(boxColor);
   } catch (error) {
-    console.error("Error fetching box color:", error);
+    console.error('Error fetching box color:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -456,7 +415,7 @@ const getCustomizedGiftbox = (req, res) => {
 const putBoxcolorId = (req, res) => {
   const giftboxId = req.params.gid;
   const boxColorId = req.body.boxcolorId;
-  const query = "UPDATE giftbox SET boxColorId = ? WHERE giftboxId = ?";
+  const query = 'UPDATE giftbox SET boxColorId = ? WHERE giftboxId = ?';
   connection.query(query, [boxColorId, giftboxId], (err, result) => {
     if (err) {
       console.log(err);
@@ -465,7 +424,6 @@ const putBoxcolorId = (req, res) => {
     }
   });
 };
-
 
 const getMyGiftboxes = (req, res) => {
   const userId = req.params.id;
@@ -484,40 +442,38 @@ const getMyGiftboxes = (req, res) => {
 
   connection.query(updatePriceQuery, [userId], (updateErr) => {
     if (updateErr) {
-      console.error("Error updating giftbox prices:", updateErr);
-      return res.status(500).json({ error: "Error updating giftbox prices." });
+      console.error('Error updating giftbox prices:', updateErr);
+      return res.status(500).json({ error: 'Error updating giftbox prices.' });
     }
 
     // Fetch all giftboxes for the user after updating prices
-    const query = "SELECT * FROM giftbox WHERE userId = ?";
+    const query = 'SELECT * FROM giftbox WHERE userId = ?';
     connection.query(query, [userId], (err, result) => {
       if (err) {
-        console.error("Error fetching giftboxes:", err);
-        return res.status(500).json({ error: "Error fetching giftboxes." });
+        console.error('Error fetching giftboxes:', err);
+        return res.status(500).json({ error: 'Error fetching giftboxes.' });
       }
-      
+
       res.status(200).json(result);
     });
   });
 };
 
-
-const getGiftboxAccessories = async(req, res) => {
+const getGiftboxAccessories = async (req, res) => {
   try {
     const giftboxId = req.params.gid;
 
     if (!giftboxId) {
-      throw new Error("Please provide a valid giftbox ID.");
+      throw new Error('Please provide a valid giftbox ID.');
     }
 
     const accessories = await GiftboxService.getGiftboxAccessories(giftboxId);
     res.status(200).json(accessories[0]);
   } catch (error) {
-    console.error("Error fetching giftbox accessories:", error);
+    console.error('Error fetching giftbox accessories:', error);
     res.status(500).json({ error: error.message });
   }
-}
-
+};
 
 // const getGiftboxTotalValue = async (req, res) => {
 //   const giftboxId = req.params.gid;
@@ -544,42 +500,38 @@ const getGiftboxAccessories = async(req, res) => {
 //   }
 // };
 
-const removeAccessoryFromGiftbox = async(req, res) => {
+const removeAccessoryFromGiftbox = async (req, res) => {
   try {
     const accessoryId = req.params.aid;
     const giftboxId = req.params.gid;
 
     if (!accessoryId || !giftboxId) {
-      return res.status(400).json({ error: "Accessory ID and giftbox ID are required." });
+      return res.status(400).json({ error: 'Accessory ID and giftbox ID are required.' });
     }
 
     const result = await GiftboxService.removeAccessoryFromGiftbox(giftboxId, accessoryId);
     if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Accessory not found in giftbox." });
+      return res.status(404).json({ error: 'Accessory not found in giftbox.' });
     }
 
     const accessoryDetails = await AccessoryService.getAccessoryById(accessoryId);
-          console.log("Accessory details", accessoryDetails[0][0]);
+    console.log('Accessory details', accessoryDetails[0][0]);
 
     const accessoryInGiftbox = await GiftboxService.getAllFromGiftboxAccessories(giftboxId);
-          console.log("Accessory in giftbox", accessoryInGiftbox[0][0]);
-        // update the giftbox capacity
-        const updateCapacityQuery = `UPDATE giftbox SET giftboxCapacity = giftboxCapacity - ? WHERE giftboxId = ?`;
-        await connection
-          .promise()
-          .query(updateCapacityQuery, [
-             (accessoryInGiftbox[0][0].quantity * accessoryDetails[0][0].units),
-            giftboxId,
-          ]);
-        console.log("Accessory capacity updated in giftbox");
+    console.log('Accessory in giftbox', accessoryInGiftbox[0][0]);
+    // update the giftbox capacity
+    const updateCapacityQuery = `UPDATE giftbox SET giftboxCapacity = giftboxCapacity - ? WHERE giftboxId = ?`;
+    await connection
+      .promise()
+      .query(updateCapacityQuery, [accessoryInGiftbox[0][0].quantity * accessoryDetails[0][0].units, giftboxId]);
+    console.log('Accessory capacity updated in giftbox');
 
-        res.status(200).json({ message: "Accessory removed from giftbox successfully." });
-  }
-  catch (error) {
-    console.error("Error removing accessory from giftbox:", error);
+    res.status(200).json({ message: 'Accessory removed from giftbox successfully.' });
+  } catch (error) {
+    console.error('Error removing accessory from giftbox:', error);
     res.status(500).json({ error: error.message });
   }
-}
+};
 
 // export const updateGiftboxAccessories = async (req, res) => {
 
@@ -590,7 +542,7 @@ const removeAccessoryFromGiftbox = async(req, res) => {
 //     await GiftboxService.updateGiftboxAccessories(giftboxId, giftboxAccessories);
 
 //     res.status(200).json({ message: "Giftbox accessories updated successfully." });
-    
+
 //   } then {    const query = `UPDATE giftbox g
 //     JOIN (
 //       SELECT SUM(ga.quantity * a.units) AS totalUnits
@@ -609,7 +561,7 @@ const removeAccessoryFromGiftbox = async(req, res) => {
 
 export const updateGiftboxAccessories = async (req, res) => {
   const { giftboxId, giftboxAccessories } = req.body;
-  console.log("giftboxAccessories", giftboxAccessories);
+  console.log('giftboxAccessories', giftboxAccessories);
 
   try {
     // Call the service method to update the giftbox accessories
@@ -627,20 +579,16 @@ export const updateGiftboxAccessories = async (req, res) => {
       SET g.giftboxCapacity = subquery.totalUnits;
     `;
 
-    await connection
-      .promise()
-      .query(updateCapacityQuery, [giftboxId, giftboxId]);
+    await connection.promise().query(updateCapacityQuery, [giftboxId, giftboxId]);
 
-    console.log("Accessory capacity updated in giftbox");
+    console.log('Accessory capacity updated in giftbox');
 
-    res.status(200).json({ message: "Giftbox accessories updated successfully." });
+    res.status(200).json({ message: 'Giftbox accessories updated successfully.' });
   } catch (error) {
-    console.error("Error updating giftbox accessories:", error);
+    console.error('Error updating giftbox accessories:', error);
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 export {
   getGiftbox,

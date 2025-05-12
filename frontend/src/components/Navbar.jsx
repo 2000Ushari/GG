@@ -17,10 +17,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../appStore';
 
-const AppBar = styled(MuiAppBar, {
-  })(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-  }));
+const AppBar = styled(
+  MuiAppBar,
+  {}
+)(({ theme }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+}));
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -136,11 +138,7 @@ export default function Navbar() {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
+        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
           <Badge badgeContent={17} color="error">
             <NotificationsIcon />
           </Badge>
@@ -164,7 +162,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation={0} sx={{backgroundColor:"#ffffff",color:"#2f2f2f"}} >
+      <AppBar position="fixed" elevation={0} sx={{ backgroundColor: '#ffffff', color: '#2f2f2f' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -180,7 +178,7 @@ export default function Navbar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block', fontSize: 30, fontWeight: 500,fontFamily: 'fantasy' } }}
+            sx={{ display: { xs: 'none', sm: 'block', fontSize: 30, fontWeight: 500, fontFamily: 'fantasy' } }}
           >
             The Glitter Gallery
           </Typography>
@@ -188,10 +186,7 @@ export default function Navbar() {
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
+            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -200,11 +195,7 @@ export default function Navbar() {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
+            <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
