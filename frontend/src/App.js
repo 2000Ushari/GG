@@ -23,6 +23,7 @@ import AdminEmployees from './admin/AdminEmployees.jsx';
 import AdminCustomers from './admin/AdminCustomers.jsx';
 import CustomerList from './admin/adminCustomer/CustomerList.jsx';
 import Configurations from './admin/adminConfigurations/Configurations.jsx';
+import EditStocks from './admin/adminConfigurations/EditStocks.jsx';
 
 import CustomerHome from './customer/CustomerHome';
 import AccessoryView from './customer/customerAccessory/AccessoryView';
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/admin/categories" exact element={<AdminCategories />} />
         <Route path="/admin/giftboxes" exact element={<AdminGiftboxes />} />
         <Route path="/admin/configurations" exact element={<Configurations />} />
+        <Route path="/admin/configurations/editStocks" exact element={<EditStocks />} />
 
         {/* Admin employee routes */}
         <Route path="/admin/employees" exact element={<AdminEmployees />} />

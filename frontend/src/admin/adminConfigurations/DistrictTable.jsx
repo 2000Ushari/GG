@@ -89,12 +89,22 @@ function DistrictTable() {
       'Delivery Distance (km)': row.deliveryDistance,
       'Delivery Fee (LKR)': row.deliveryDistance * deliveryRate,
     }));
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'District Delivery Rates');
-    XLSX.writeFile(workbook, 'DistrictDeliveryRates.xlsx');
-    Swal.fire('Downloaded', 'Excel file has been downloaded.', 'success');
-  };
+
+  const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Delivery rates");
+
+  // Add timestamp to filename
+  const now = new Date();
+  const timestamp = now.toLocaleDateString('en-GB').split('/').reverse().join('-') + '_' +
+                    now.toLocaleTimeString('en-GB', { hour12: false }).replace(/:/g, '-');
+
+  const fileName = `DeliveryRates_${timestamp}.xlsx`;
+
+  XLSX.writeFile(workbook, fileName);
+
+  Swal.fire("Downloaded", "Excel file has been downloaded.", "success");
+};
 
   useEffect(() => {
     fetchDistricts();

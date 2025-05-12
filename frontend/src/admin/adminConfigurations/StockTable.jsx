@@ -40,68 +40,47 @@ function StockTable() {
   const [newRate, setNewRate] = useState("");
   const navigate = useNavigate();
 
-  const fetchDistricts = async () => {
+  const fetchStocks = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/configurations/getDistricts");
-      if (!response.ok) throw new Error("Failed to fetch districts");
+      const response = await fetch("http://localhost:3001/api/configurations/getStockDetails");
+      if (!response.ok) throw new Error("Failed to fetch stocks");
       const data = await response.json();
       setRows(data);
     } catch (error) {
-      console.error("Error fetching districts:", error);
+      console.error("Error fetching stocks:", error);
     }
   };
 
-  const fetchDeliveryRate = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/api/configurations/getDeliveryRate");
-      if (response.status === 200) {
-        setDeliveryRate(response.data[0].ratePerOneKm);
-        setModifiedOn(response.data[0].modifiedOn);
-      }
-    } catch (error) {
-      console.error("Error fetching delivery rate:", error);
-    }
-  };
 
-  const updateDeliveryRate = async () => {
-    if (!newRate || isNaN(newRate) || Number(newRate) <= 0) {
-      Swal.fire("Invalid input", "Please enter a valid positive number for the rate.", "warning");
-      return;
-    }
+//exporting the table as a report
+const exportToExcel = () => {
+  const formattedData = rows.map(row => ({
+    "Accessory Name": row.accessoryName,
+    "Size": row.size,
+    "Current Stocks Available": row.quantity,
+  }));
 
-    try {
-      const response = await axios.post(`http://localhost:3001/api/configurations/updateDeliveryRate/${newRate}`, {
-        ratePerOneKm: newRate,
-      });
-      if (response.status === 200) {
-        Swal.fire("Success", "Rate updated successfully.", "success");
-        fetchDeliveryRate();
-        setOpen(false);
-        setNewRate("");
-      }
-    } catch (error) {
-      console.error("Error updating rate:", error);
-      Swal.fire("Error", "Something went wrong while updating.", "error");
-    }
-  };
+  const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Stock Details");
 
-  const exportToExcel = () => {
-    const formattedData = rows.map(row => ({
-      District: row.deliveryDistrictName,
-      "Delivery Distance (km)": row.deliveryDistance,
-      "Delivery Fee (LKR)": row.deliveryDistance * deliveryRate
-    }));
-    const worksheet = XLSX.utils.json_to_sheet(formattedData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "District Delivery Rates");
-    XLSX.writeFile(workbook, "DistrictDeliveryRates.xlsx");
-    Swal.fire("Downloaded", "Excel file has been downloaded.", "success");
-  };
+  // Add timestamp to filename
+  const now = new Date();
+  const timestamp = now.toLocaleDateString('en-GB').split('/').reverse().join('-') + '_' +
+                    now.toLocaleTimeString('en-GB', { hour12: false }).replace(/:/g, '-');
+
+  const fileName = `Stocks_${timestamp}.xlsx`;
+
+  XLSX.writeFile(workbook, fileName);
+
+  Swal.fire("Downloaded", "Excel file has been downloaded.", "success");
+};
+
+
 
   useEffect(() => {
-    fetchDistricts();
-    fetchDeliveryRate();
-  }, []);
+  fetchStocks();
+}, []);
 
   return (
     <>
@@ -111,57 +90,37 @@ function StockTable() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell align="left" style={{ fontWeight: "bold" }}>District</TableCell>
-                <TableCell align="left" style={{ fontWeight: "bold" }}>Delivery Distance</TableCell>
-                <TableCell align="left" style={{ fontWeight: "bold" }}>Delivery Fee (LKR)</TableCell>
+                <TableCell align="left" style={{ fontWeight: "bold" }}>Accessory Name</TableCell>
+                <TableCell align="left" style={{ fontWeight: "bold" }}>Size</TableCell>
+                <TableCell align="left" style={{ fontWeight: "bold" }}>Existing Stock</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                <TableRow hover key={row.id}>
-                  <TableCell align="left">{row.deliveryDistrictName}</TableCell>
-                  <TableCell align="right">{row.deliveryDistance} km</TableCell>
-                  <TableCell align="right">{row.deliveryDistance * deliveryRate}.00</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+  {rows.map((row) => (
+    <TableRow hover key={row.stockId}>
+      <TableCell align="left">{row.accessoryName}</TableCell>
+      <TableCell align="left">{row.size}</TableCell>
+      <TableCell align="right">{row.quantity}</TableCell>
+    </TableRow>
+  ))}
+</TableBody>
+
+
           </Table>
         </TableContainer>
       </Paper>
       <Box height={20} />
-      <Typography variant="h6" sx={{ ml: 2, fontWeight: "bold" }}>
-        Current rate per Km = {deliveryRate} LKR
-      </Typography>
-      <Typography variant="h6" sx={{ ml: 2, fontWeight: "bold" }}>
-        Last modified on {modifiedOn}
-      </Typography>
-      <Box sx={{ ml: 2, mt: 2 }}>
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mr: 2 }}>
-          Change Rate per KM
+        <Button variant="contained" color="primary" onClick={() => navigate("/admin/configurations/editStocks")} sx={{ mr: 2 }}>
+          Edit Stock
         </Button>
+      
         <Button variant="outlined" color="success" onClick={exportToExcel}>
           Export
         </Button>
-      </Box>
-
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box sx={style}>
-          <Typography variant="h6" gutterBottom>Update Delivery Rate per KM</Typography>
-          <TextField
-            fullWidth
-            label="New Rate (LKR)"
-            type="number"
-            value={newRate}
-            onChange={(e) => setNewRate(e.target.value)}
-            margin="normal"
-          />
-          <Button variant="contained" onClick={updateDeliveryRate}>Update</Button>
-        </Box>
-      </Modal>
 
       <Box height={20} />
     </>
   );
 }
 
-export default DistrictTable;
+export default StockTable;

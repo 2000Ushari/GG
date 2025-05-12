@@ -35,5 +35,76 @@ export const updateDeliveryRate = async (req, res) => {
   }
 };
 
+//stockTable details
+export const getStockDetails = async (req, res) => {
+  try {
+    const [stocks] = await AdminConfigService.getStockDetails();
+    res.status(200).json(stocks);
+  } catch (error) {
+    console.error("Error fetching stock details:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
-    
+//update stock status
+export const updateStockStatus = async (req, res) => {
+  try {
+    const stockId = req.params.stockId;
+    const status = req.body.status;
+    await AdminConfigService.updateStockStatus(stockId, status);
+    res.status(200).json({ message: 'Stock status updated successfully' });
+  } catch (error) {
+    console.error("Error updating stock status:", error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+//update stock quantity
+export const updateStockQuantity = async (req, res) => {
+  const stockId = req.params.stockId;
+  const { quantityToAdd } = req.body;
+
+  if (!quantityToAdd || isNaN(quantityToAdd)) {
+    return res.status(400).json({ error: 'Invalid quantity to add' });
+  }
+
+  try {
+    await AdminConfigService.updateStockQuantity(stockId, parseInt(quantityToAdd));
+    res.status(200).json({ message: 'Stock quantity updated successfully' });
+  } catch (error) {
+    console.error("Error updating stock quantity:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//get the sizes
+export const getSizes = async (req, res) => {
+  try {
+    const [sizes] = await AdminConfigService.getSizes();
+    res.status(200).json(sizes);
+  } catch (error) {
+    console.error('Error fetching sizes:', error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
+export const addSize = async (req, res) => {
+  const { size } = req.body;
+
+  if (!size || typeof size !== 'string' || !size.trim()) {
+    return res.status(400).json({ error: 'Invalid size value' });
+  }
+
+  try {
+    await AdminConfigService.addSize(size.trim().toUpperCase());
+    res.status(201).json({ message: 'Size added successfully' });
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ error: 'This size already exists.' });
+    }
+    console.error('Error adding size:', error);
+    res.status(500).json({ error: 'Failed to add size' });
+  }
+};
+
+

@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import AdminSidenav from '../adminComponents/AdminSidenav';
 import AdminNavbar from '../adminComponents/AdminNavbar';
 import DistrictTable from './DistrictTable';
+import StockTable from './StockTable';
+import SizesTable from './SizesTable';
 import { Button } from '@mui/material';
 
 // //css components
@@ -57,8 +59,14 @@ function Configurations() {
             <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
               Configurations
             </Typography>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <DistrictTable />
+            </Grid>
+            <Grid item xs={6}>
+              <StockTable />
+            </Grid>
+            <Grid item xs={6}>
+              <SizesTable />
             </Grid>
             <Grid item xs={12} />
           </Box>
