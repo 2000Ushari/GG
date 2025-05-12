@@ -2,6 +2,7 @@ import connection from "../dbConnection.js";
 
 export class AdminConfigService {
 
+    //Districts Table and rates
      static async getDistricts() {
     try {
       const query = "SELECT * FROM delivery_districts";
@@ -34,5 +35,15 @@ export class AdminConfigService {
         }
     }
 
+    //get all stock details
+    static async getAllStockDetails() {
+        try {
+            const query = "SELECT * FROM stock";
+            return await connection.promise().query(query);
+        } catch (error) {
+            console.error("Error fetching stock details:", error);
+            throw error;
+        }
+    }
 
 }

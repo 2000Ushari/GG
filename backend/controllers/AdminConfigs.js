@@ -1,5 +1,6 @@
 import { AdminConfigService } from "../services/AdminConfigService.js";      
 
+//DistrictTable and delivery rates
 export const getDistricts = async (req, res) => {
   try {
     const [districts] = await AdminConfigService.getDistricts();
@@ -34,7 +35,15 @@ export const updateDeliveryRate = async (req, res) => {
     }
 }
 
-export default {
-    getDistricts
-}
-    
+//stockTable details
+export const getStockDetails = async (req, res) => {
+  try {
+    const [stocks] = await AdminConfigService.getAllStockDetails();
+    res.status(200).json(stocks);
+  } catch (error) {
+    console.error("Error fetching stock details:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
