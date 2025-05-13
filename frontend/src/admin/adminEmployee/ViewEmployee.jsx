@@ -1,3 +1,5 @@
+//When employee card is clicked this component will be rendered
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, TextField, Button, Typography, Grid } from '@mui/material';

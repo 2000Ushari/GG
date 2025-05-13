@@ -135,4 +135,87 @@ export const getUserDetails = (req, res) => {
       res.json(userDetails);
     });
   });
+}
+
+//   //employee registration by the admin
+// export const registerEmployee = async (req, res) => {
+//   const { userEmail, userRole, password } = req.body;
+
+//   // Basic validation
+//   if (!userEmail || !userRole || !password) {
+//     return res.status(400).json({ error: 'Missing email, role, or password.' });
+//   }
+
+//   try {
+//     // Hash the password
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const userPassword = hashedPassword;
+
+//     // Insert user into DB
+//     const query = `
+//       INSERT INTO users (userEmail, userRole, userPassword)
+//       VALUES (?, ?, ?)
+//     `;
+//     await connection.promise().query(query, [userEmail, userRole, userPassword]);
+
+//     res.status(201).json({ message: 'Employee registered successfully.' });
+//   } catch (error) {
+//     console.error('Error registering employee:', error);
+//     if (error.code === 'ER_DUP_ENTRY') {
+//       res.status(409).json({ error: 'Email already exists.' });
+//     } else {
+//       res.status(500).json({ error: 'Failed to register employee.' });
+//     }
+//   }
+// };
+
+export const registerEmployee = async (req, res) => {
+  const {
+    userEmail, userRole, password,
+    firstName, lastName, contact
+  } = req.body;
+
+  if (!userEmail || !userRole || !password || !firstName || !lastName || !contact) {
+    return res.status(400).json({ error: 'Missing required fields.' });
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert into users table
+    const insertUserQuery = `
+      INSERT INTO users (userEmail, userRole, userPassword)
+      VALUES (?, ?, ?)
+    `;
+    const [userResult] = await connection.promise().query(insertUserQuery, [userEmail, userRole, hashedPassword]);
+
+    const userId = userResult.insertId;
+
+    if (userRole.toLowerCase() === 'employee') {
+      const insertEmployeeQuery = `
+        INSERT INTO employee (userId, employeeFirstName, employeeLastName, employeeContact)
+        VALUES (?, ?, ?, ?)
+      `;
+      await connection.promise().query(insertEmployeeQuery, [userId, firstName, lastName, contact]);
+    } else if (userRole.toLowerCase() === 'admin') {
+      const insertAdminQuery = `
+        INSERT INTO admin (userId, adminFirstName, adminLastName, adminContact)
+        VALUES (?, ?, ?, ?)
+      `;
+      await connection.promise().query(insertAdminQuery, [userId, firstName, lastName, contact]);
+    } else {
+      return res.status(400).json({ error: 'Invalid user role provided.' });
+    }
+
+    res.status(201).json({ message: 'User registered successfully.' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    if (error.code === 'ER_DUP_ENTRY') {
+      res.status(409).json({ error: 'Email already exists.' });
+    } else {
+      res.status(500).json({ error: 'Failed to register user.' });
+    }
+  }
 };
+
+

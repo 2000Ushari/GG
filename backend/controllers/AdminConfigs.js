@@ -107,4 +107,64 @@ export const addSize = async (req, res) => {
   }
 };
 
+/////CAPACITY TABLE///////
+//get the capacity
+export const getCapacity = async (req, res) => {
+  try {
+    const [capacity] = await AdminConfigService.getCapacity();
+    res.status(200).json(capacity);
+  } catch (error) {
+    console.error('Error fetching capacity:', error);
+    res.status(500).json({ error: error.message });
+  }
+}
 
+// Add capacity with duplicate check
+
+export const addCapacity = async (req, res) => {
+  const { capacityInUnits, wrappingCharge } = req.body;
+
+  if (
+    !capacityInUnits || isNaN(capacityInUnits) || capacityInUnits <= 0 ||
+    !wrappingCharge || isNaN(wrappingCharge) || wrappingCharge < 0
+  ) {
+    return res.status(400).json({ error: 'Invalid input for capacity or wrapping charge' });
+  }
+
+  try {
+    await AdminConfigService.addCapacity(parseInt(capacityInUnits), parseFloat(wrappingCharge));
+    res.status(201).json({ message: 'Capacity added successfully' });
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      res.status(409).json({ error: 'This capacity already exists' });
+    } else {
+      console.error("Error adding capacity:", error);
+      res.status(500).json({ error: 'Failed to add capacity' });
+    }
+  }
+};
+
+// UPDATE capacity 
+export const updateCapacity = async (req, res) => {
+  const { giftboxCapacityId } = req.params;
+  const { capacityInUnits, wrappingCharge } = req.body;
+
+  if (
+    !capacityInUnits || isNaN(capacityInUnits) || capacityInUnits <= 0 ||
+    !wrappingCharge || isNaN(wrappingCharge) || wrappingCharge < 0
+  ) {
+    return res.status(400).json({ error: 'Invalid input for capacity or wrapping charge' });
+  }
+
+  try {
+    await AdminConfigService.updateCapacity(
+      giftboxCapacityId,
+      parseInt(capacityInUnits),
+      parseFloat(wrappingCharge)
+    );
+    res.status(200).json({ message: 'Capacity updated successfully' });
+  } catch (error) {
+    console.error('Error updating capacity:', error);
+    res.status(500).json({ error: 'Failed to update capacity' });
+  }
+};

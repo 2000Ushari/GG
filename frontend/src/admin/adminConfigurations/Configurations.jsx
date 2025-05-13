@@ -11,6 +11,7 @@ import AdminNavbar from '../adminComponents/AdminNavbar';
 import DistrictTable from './DistrictTable';
 import StockTable from './StockTable';
 import SizesTable from './SizesTable';
+import CapacityTable from './CapacityTable';
 import { Button } from '@mui/material';
 
 // //css components
@@ -67,6 +68,9 @@ function Configurations() {
             </Grid>
             <Grid item xs={6}>
               <SizesTable />
+            </Grid>
+            <Grid item xs={6}>
+              <CapacityTable />
             </Grid>
             <Grid item xs={12} />
           </Box>

@@ -41,6 +41,7 @@ import CateWiseAccessoriesPage from './pages/CateWiseAccessoriesPage.jsx';
 
 import EditEmployee from './admin/adminEmployee/EditEmployee.jsx';
 import ViewEmployee from './admin/adminEmployee/ViewEmployee.jsx';
+import ManageEmployees from './admin/adminEmployee/ManageEmployees.jsx';
 
 import EmployeeHome from './employee/EmployeeHome.jsx';
 import EmployeeOrders from './employee/EmployeeOrders.jsx';
@@ -77,6 +78,7 @@ export default function App() {
         <Route path="/admin/employees" exact element={<AdminEmployees />} />
         {/* <Route path="/admin/employees/edit/:employeeId" element={<EditEmployee />} /> */}
         <Route path="/admin/employees/view/:employeeId" element={<ViewEmployee />} />
+        <Route path="/admin/manageEmployees" exact element={<ManageEmployees />} />
 
         <Route path="/admin/customers" element={<AdminCustomers />} />
 

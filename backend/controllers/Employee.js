@@ -1,6 +1,6 @@
 import connection from '../dbConnection.js';
 
-const getEmployee = (req, res) => {
+const getEmployees = (req, res) => {
   const query = 'SELECT * FROM employee';
   connection.query(query, (err, result) => {
     if (err) {
@@ -81,15 +81,18 @@ const addEmployee = (req, res) => {
 };
 
 const updateEmployee = (req, res) => {
-  const employeeId = req.params.id;
+  const employeeId = req.params.employeeId;
   const {
     employeeFirstName,
     employeeLastName,
     employeeContact,
+    employeeDob,
     employeeGender,
     employeeNIC,
     employeeAddress,
     workingStatus,
+    startDate,
+    endDate,
   } = req.body;
   const query = `
       UPDATE employee
@@ -97,10 +100,13 @@ const updateEmployee = (req, res) => {
         employeeFirstName = ?,
         employeeLastName = ?,
         employeeContact = ?,
+        employeeDob = ?,
         employeeGender = ?,
         employeeNIC = ?,
         employeeAddress = ?,
         workingStatus = ?
+      ${startDate ? ', startDate = ?' : ''}
+      ${endDate ? ', endDate = ?' : ''}
       WHERE employeeId = ?
     `;
   connection.query(
@@ -109,11 +115,14 @@ const updateEmployee = (req, res) => {
       employeeFirstName,
       employeeLastName,
       employeeContact,
+      employeeDob,
       employeeGender,
       employeeNIC,
       employeeAddress,
       workingStatus,
-      employeeId,
+      ...(startDate ? [startDate] : []),
+      ...(endDate ? [endDate] : []),
+      employeeId, // employeeId is the last parameter for the WHERE clause
     ],
     (err, result) => {
       if (err) {
@@ -157,4 +166,4 @@ const updateEmployee = (req, res) => {
 //     }
 // };
 
-export { getEmployee, getEmployeeById, addEmployee, updateEmployee };
+export { getEmployees, getEmployeeById, addEmployee, updateEmployee };

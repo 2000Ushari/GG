@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
 import Stack from '@mui/material/Stack';
+import moment from 'moment';
 
 import AdminNavbar from '../adminComponents/AdminNavbar';
 import AdminSidenav from '../adminComponents/AdminSidenav';
@@ -91,7 +92,7 @@ function EditStocks() {
       Size: row.size,
       'Current Stocks Available': row.quantity,
       Status: row.status,
-      'Last Modified On': row.modifiedOn,
+      'Last Modified On': moment(row.modifiedOn).format('YYYY-MM-DD HH:mm:ss'),
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
@@ -165,7 +166,7 @@ function EditStocks() {
                         <TableCell align="left">{row.size}</TableCell>
                         <TableCell align="right">{row.quantity}</TableCell>
                         <TableCell align="right">{row.status}</TableCell>
-                        <TableCell align="right">{row.modifiedOn}</TableCell>
+                        <TableCell align="right">{moment(row.modifiedOn).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
                         <TableCell align={'right'}>
                           <Stack spacing={2}>
                             <Grid container spacing={1}>

@@ -1008,7 +1008,7 @@ function BuyGiftbox() {
                   Due Date
                 </Typography>
                 <Typography variant="body2" component="div" gutterBottom color={'darkred'}>
-                  Please note that additional charges may apply for late orders.
+                  Please note that additional charges may apply for urgent orders.
                 </Typography>
                 <TextField
                   fullWidth

@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import * as XLSX from 'xlsx';
 import Swal from 'sweetalert2';
+import moment from 'moment';
 
 const style = {
   position: 'absolute',
@@ -90,21 +91,23 @@ function DistrictTable() {
       'Delivery Fee (LKR)': row.deliveryDistance * deliveryRate,
     }));
 
-  const worksheet = XLSX.utils.json_to_sheet(formattedData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Delivery rates");
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Delivery rates');
 
-  // Add timestamp to filename
-  const now = new Date();
-  const timestamp = now.toLocaleDateString('en-GB').split('/').reverse().join('-') + '_' +
-                    now.toLocaleTimeString('en-GB', { hour12: false }).replace(/:/g, '-');
+    // Add timestamp to filename
+    const now = new Date();
+    const timestamp =
+      now.toLocaleDateString('en-GB').split('/').reverse().join('-') +
+      '_' +
+      now.toLocaleTimeString('en-GB', { hour12: false }).replace(/:/g, '-');
 
-  const fileName = `DeliveryRates_${timestamp}.xlsx`;
+    const fileName = `DeliveryRates_${timestamp}.xlsx`;
 
-  XLSX.writeFile(workbook, fileName);
+    XLSX.writeFile(workbook, fileName);
 
-  Swal.fire("Downloaded", "Excel file has been downloaded.", "success");
-};
+    Swal.fire('Downloaded', 'Excel file has been downloaded.', 'success');
+  };
 
   useEffect(() => {
     fetchDistricts();
@@ -147,7 +150,7 @@ function DistrictTable() {
         Current rate per Km = {deliveryRate} LKR
       </Typography>
       <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
-        Last modified on {modifiedOn}
+        Last modified on {moment(modifiedOn).format('YYYY-MM-DD HH:mm:ss')}
       </Typography>
       <Box sx={{ ml: 2, mt: 2 }}>
         <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ mr: 2 }}>

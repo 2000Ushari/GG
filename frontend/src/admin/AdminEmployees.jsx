@@ -8,6 +8,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 
 import AdminSidenav from './adminComponents/AdminSidenav';
 import AdminNavbar from './adminComponents/AdminNavbar';
@@ -46,6 +48,9 @@ export default function AdminEmployees() {
             <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
               Employees
             </Typography>
+            <Button variant="contained"   onClick={() => navigate('/admin/manageEmployees')}>
+                  Manage Employees
+                </Button>
             {/* <Grid container spacing={2}> */}
             <Grid item xs={12}>
               <EmployeeList />

@@ -100,5 +100,29 @@ export class AdminConfigService {
     await connection.promise().query(query, [size]);
   }
 
+  //get the capacity from the db
+  static async getCapacity() {
+    try {
+      const query = 'SELECT * FROM giftbox_capacity';
+      return await connection.promise().query(query);
+    } catch (error) {
+      console.error('Error fetching capacity:', error);
+      throw error;
+    }
+  }
+
+  //add capacity to the db
+static async addCapacity(capacityInUnits, wrappingCharge) {
+  const query = `INSERT INTO giftbox_capacity (capacityInUnits, wrappingCharge) VALUES (?, ?)`;
+  await connection.promise().query(query, [capacityInUnits, wrappingCharge]);
+}
+
+//update capacity by admin
+static async updateCapacity(capacityId, capacityInUnits, wrappingCharge) {
+  const query = `UPDATE giftbox_capacity SET capacityInUnits = ?, wrappingCharge = ? WHERE giftboxCapacityId = ?`;
+  await connection.promise().query(query, [capacityInUnits, wrappingCharge, capacityId]);
+}
+
+
 }
 

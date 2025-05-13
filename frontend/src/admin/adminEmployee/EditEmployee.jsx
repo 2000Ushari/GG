@@ -1,12 +1,4 @@
-// import React from 'react'
 
-// function EditEmployee() {
-//   return (
-//     <div>EditEmployee</div>
-//   )
-// }
-
-// export default EditEmployee
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

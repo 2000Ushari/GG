@@ -1,4 +1,5 @@
 import connection from '../dbConnection.js';
+import bcrypt from 'bcrypt';
 
 export class UserService {
   static async getCustomerIdByUserId(userId) {
@@ -22,4 +23,6 @@ export class UserService {
       throw error;
     }
   }
+
+  
 }

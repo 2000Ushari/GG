@@ -34,6 +34,7 @@ const getCustomerEmail = async (req, res) => {
     console.error('Error fetching customer email:', error);
     res.status(500).json({ error: error.message });
   }
+  
 };
 
 export { getCustomerIdByUserId, getCustomerEmail };
