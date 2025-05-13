@@ -13,6 +13,7 @@ import {
   removeFromFavorites,
   getFavorites,
   getAccessoryByCategory,
+  updateAccessoryStatus,
 } from '../controllers/Accessory.js';
 
 const router = express.Router();
@@ -30,6 +31,7 @@ router.get('/checkIfFavorite/:customerId/:accessoryId', checkIfFavorite);
 router.post('/removeFromFavorites', removeFromFavorites);
 router.get('/getFavorites/:customerId', getFavorites);
 router.get('/getAccessoryByCategory/:cid', getAccessoryByCategory);
+router.put('/updateStatus/:accessoryId', updateAccessoryStatus);
 
 // router.put("/:id", updateAccessory);
 // router.delete("/:id", deleteAccessory);

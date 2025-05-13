@@ -2,7 +2,6 @@
 // import { useNavigate } from 'react-router-dom'
 // import axios from 'axios'
 
-
 // function UpdateEmployee() {
 //     const [employeeFirstName, setEmployeeFirstName] = useState("");
 //     const [employeeLastName, setEmployeeLastName] = useState("");
@@ -34,35 +33,33 @@
 //       });
 //   }, [navigate]);
 
-
-
 //     const genderOptions = ["Female", "Male", "Preferred not to mention"];
 //     const workingStatusOptions = ["Active", "Inactive"];
-  
+
 //     const handleFirstNameChange = (event) => {
 //       setEmployeeFirstName(event.target.value);
 //     };
-  
+
 //     const handleLastNameChange = (event) => {
 //       setEmployeeLastName(event.target.value);
 //     };
-  
+
 //     const handleContactChange = (event) => {
 //       setEmployeeContact(event.target.value);
 //     };
-  
+
 //     // const handleGenderChange = (event) => {
 //     //   setEmployeeGender(event.target.value);
 //     // };
-  
+
 //     const handleNICChange = (event) => {
 //       setEmployeeNIC(event.target.value);
 //     };
-  
+
 //     const handleAddressChange = (event) => {
 //       setEmployeeAddress(event.target.value);
 //     };
-  
+
 //     // const handleWorkingStatusChange = (event) => {
 //     //   setWorkingStatus(event.target.value);
 //     // };
@@ -91,16 +88,13 @@
 //           console.error("Error fetching employee details:", error);
 //         }
 //       };
-    
+
 //       getEmployee();
-    
-      
+
 //   return (
 //     <div>updateEmployee</div>
 //   )
 // }
-
-
 
 // }
 // export default UpdateEmployee;

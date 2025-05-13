@@ -129,7 +129,12 @@ function EditStocks() {
               Stock Management
             </Typography>
 
-            <Button variant="outlined" color="success" onClick={exportToExcel} sx={{ marginBottom: '20px', marginLeft: '10px' }}>
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={exportToExcel}
+              sx={{ marginBottom: '20px', marginLeft: '10px' }}
+            >
               Export
             </Button>
 
@@ -194,7 +199,6 @@ function EditStocks() {
               </TableContainer>
             </Paper>
             <Box height={20} />
-            
 
             <Modal
               open={!!selectedStock}

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
@@ -46,43 +44,45 @@ function SizesTable() {
 
   const addNewSize = async () => {
     if (!newSize || newSize.trim() === '') {
-      Swal.fire("Invalid Input", "Please enter a valid size (e.g., XS, S, M, XL).", "warning");
+      Swal.fire('Invalid Input', 'Please enter a valid size (e.g., XS, S, M, XL).', 'warning');
       return;
     }
 
     try {
       await axios.post('http://localhost:3001/api/configurations/addSize', {
-        size: newSize.trim().toUpperCase()
+        size: newSize.trim().toUpperCase(),
       });
-      Swal.fire("Success", "New size added successfully!", "success");
+      Swal.fire('Success', 'New size added successfully!', 'success');
       setNewSize('');
       setOpen(false);
       fetchSizes();
     } catch (error) {
       if (error.response?.status === 409) {
-        Swal.fire("Duplicate", "This size already exists.", "info");
+        Swal.fire('Duplicate', 'This size already exists.', 'info');
       } else {
-        Swal.fire("Error", "Failed to add size.", "error");
+        Swal.fire('Error', 'Failed to add size.', 'error');
       }
     }
   };
 
   const exportToExcel = () => {
-    const formattedData = rows.map(row => ({
-      "Size ID": row.sizeId,
-      "Size": row.size
+    const formattedData = rows.map((row) => ({
+      'Size ID': row.sizeId,
+      Size: row.size,
     }));
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sizes");
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sizes');
 
     const now = new Date();
-    const timestamp = now.toLocaleDateString('en-GB').split('/').reverse().join('-') + '_' +
+    const timestamp =
+      now.toLocaleDateString('en-GB').split('/').reverse().join('-') +
+      '_' +
       now.toLocaleTimeString('en-GB', { hour12: false }).replace(/:/g, '-');
     const fileName = `Sizes_${timestamp}.xlsx`;
 
     XLSX.writeFile(workbook, fileName);
-    Swal.fire("Downloaded", "Excel file has been downloaded.", "success");
+    Swal.fire('Downloaded', 'Excel file has been downloaded.', 'success');
   };
 
   useEffect(() => {
@@ -134,7 +134,9 @@ function SizesTable() {
             onChange={(e) => setNewSize(e.target.value)}
             margin="normal"
           />
-          <Button variant="contained" onClick={addNewSize}>Add</Button>
+          <Button variant="contained" onClick={addNewSize}>
+            Add
+          </Button>
         </Box>
       </Modal>
     </>

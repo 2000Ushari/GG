@@ -401,4 +401,10 @@ export class AccessoryService {
       throw error;
     }
   }
+
+  static async updateAccessoryStatus(accessoryId, acsStatus) {
+    const query = 'UPDATE accessory SET acsStatus = ? WHERE accessoryId = ?';
+    await connection.promise().query(query, [acsStatus, accessoryId]);
+  }
+  
 }

@@ -56,37 +56,37 @@ function EmployeeTable() {
     }
   };
 
-    const UpdateEmployee = async () => {
+  const UpdateEmployee = async () => {
     try {
-        const response = await fetch(`http://localhost:3001/api/employee/updateEmployee/${selectedEmployee.employeeId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                employeeFirstName: editFirstName,
-                employeeLastName: editLastName,
-                employeeContact: editContact,
-                employeeDob: editDob,
-                employeeNIC: editNIC,
-                employeeGender: editGender,
-                employeeAddress: editAddress,
-                workingStatus: editWorkingStatus,
-                startDate: editStartDate,
-                endDate: editEndDate,
-            }),
-        });
-        if (response.ok) {
-            Swal.fire('Success', 'Employee updated successfully', 'success');
-            fetchEmployees(); // Refresh the employee list
-            setSelectedEmployee(null); // Close the modal
-        } else {
-            const errorData = await response.json();
-            Swal.fire('Error', errorData.message || 'Failed to update employee', 'error');
-        }
+      const response = await fetch(`http://localhost:3001/api/employee/updateEmployee/${selectedEmployee.employeeId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          employeeFirstName: editFirstName,
+          employeeLastName: editLastName,
+          employeeContact: editContact,
+          employeeDob: editDob,
+          employeeNIC: editNIC,
+          employeeGender: editGender,
+          employeeAddress: editAddress,
+          workingStatus: editWorkingStatus,
+          startDate: editStartDate,
+          endDate: editEndDate,
+        }),
+      });
+      if (response.ok) {
+        Swal.fire('Success', 'Employee updated successfully', 'success');
+        fetchEmployees(); // Refresh the employee list
+        setSelectedEmployee(null); // Close the modal
+      } else {
+        const errorData = await response.json();
+        Swal.fire('Error', errorData.message || 'Failed to update employee', 'error');
+      }
     } catch (error) {
-        console.error('Error updating employee:', error);
-        Swal.fire('Error', 'Failed to update employee', 'error');
+      console.error('Error updating employee:', error);
+      Swal.fire('Error', 'Failed to update employee', 'error');
     }
   };
 
@@ -96,11 +96,11 @@ function EmployeeTable() {
       'Employee Id': row.employeeId,
       'First Name': row.employeeFirstName,
       'Last Name': row.employeeLastName,
-      'Contact': row.employeeContact,
+      Contact: row.employeeContact,
       'Date of Birth': moment(row.employeeDob).format('YYYY-MM-DD'),
-      'NIC': row.employeeNIC,
-      'Gender': row.employeeGender,
-      'Address': row.employeeAddress,
+      NIC: row.employeeNIC,
+      Gender: row.employeeGender,
+      Address: row.employeeAddress,
       'Working Status': row.workingStatus,
       'Working Started On': moment(row.startDate).format('YYYY-MM-DD'),
       'Working Ended On': moment(row.endDate).format('YYYY-MM-DD'),
@@ -209,126 +209,126 @@ function EmployeeTable() {
               Update Employee Details
             </Typography>
             <Grid container spacing={2}>
-            <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="First Name"
-              type="text"
-              value={editFirstName}
-              onChange={(e) => setEditFirstName(e.target.value)}
-            />
-            </Grid>
-            <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Last Name"
-              type="text"
-              value={editLastName}
-              onChange={(e) => setEditLastName(e.target.value)}
-            />
-            </Grid>
-            <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="Contact"
-              type="number"
-              value={editContact}
-              onChange={(e) => setEditContact(e.target.value)}
-            />
-            </Grid>
-            <Grid item xs={6}>
-            <TextField
-              fullWidth
-              label="NIC number"
-              type="text"
-              value={editNIC}
-              onChange={(e) => setEditNIC(e.target.value)}
-            />
-            </Grid>
-            <Grid item xs={6}>
-            <TextField
-            label="Date of Birth"
-                fullWidth
-                type="date"
-                variant="outlined"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={editDob}
-                onChange={(e) => setEditDob(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                options={genderOptions}
-                value={editGender}
-                onChange={(event, newValue) => setEditGender(newValue)} // Corrected this line
-                renderInput={(params) => (
-                  <TextField
-                    {...params} // This spreads all the necessary props to the TextField
-                    label="Gender"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Address"
-              type="text"
-              value={editAddress}
-              onChange={(e) => setEditAddress(e.target.value)}
-            />
-            </Grid>
-            <Grid item xs={6}>
-              <Autocomplete
-                options={workingStatusOptions}
-                value={editWorkingStatus}
-                onChange={(event, newValue) => setEditWorkingStatus(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params} // This spreads all the necessary props to the TextField
-                    label="Working Status"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                  />
-                )}
-              />
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  type="text"
+                  value={editFirstName}
+                  onChange={(e) => setEditFirstName(e.target.value)}
+                />
               </Grid>
-            <Grid item xs={3}>
-              <TextField
-              label="Start Date"
-                fullWidth
-                type="date"
-                variant="outlined"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={editStartDate}
-                onChange={(e) => setEditStartDate(e.target.value)}
-              />
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  type="text"
+                  value={editLastName}
+                  onChange={(e) => setEditLastName(e.target.value)}
+                />
               </Grid>
-            <Grid item xs={3}>
-              <TextField
-                label="End Date"
-                fullWidth
-                type="date"
-                variant="outlined"
-                size="small"
-                InputLabelProps={{ shrink: true }}
-                value={editEndDate}
-                onChange={(e) => setEditEndDate(e.target.value)}
-              />
-            </Grid>
-            <Grid spacing={1} item xs={12}>
-            <Box mt={2} textAlign="right">
-              <Button variant="contained" onClick={UpdateEmployee}>
-                Update
-              </Button>
-            </Box>
-            </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="Contact"
+                  type="number"
+                  value={editContact}
+                  onChange={(e) => setEditContact(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  label="NIC number"
+                  type="text"
+                  value={editNIC}
+                  onChange={(e) => setEditNIC(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Date of Birth"
+                  fullWidth
+                  type="date"
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                  value={editDob}
+                  onChange={(e) => setEditDob(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  options={genderOptions}
+                  value={editGender}
+                  onChange={(event, newValue) => setEditGender(newValue)} // Corrected this line
+                  renderInput={(params) => (
+                    <TextField
+                      {...params} // This spreads all the necessary props to the TextField
+                      label="Gender"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Address"
+                  type="text"
+                  value={editAddress}
+                  onChange={(e) => setEditAddress(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  options={workingStatusOptions}
+                  value={editWorkingStatus}
+                  onChange={(event, newValue) => setEditWorkingStatus(newValue)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params} // This spreads all the necessary props to the TextField
+                      label="Working Status"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  label="Start Date"
+                  fullWidth
+                  type="date"
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                  value={editStartDate}
+                  onChange={(e) => setEditStartDate(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  label="End Date"
+                  fullWidth
+                  type="date"
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                  value={editEndDate}
+                  onChange={(e) => setEditEndDate(e.target.value)}
+                />
+              </Grid>
+              <Grid spacing={1} item xs={12}>
+                <Box mt={2} textAlign="right">
+                  <Button variant="contained" onClick={UpdateEmployee}>
+                    Update
+                  </Button>
+                </Box>
+              </Grid>
             </Grid>
           </Box>
         </Modal>

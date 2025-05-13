@@ -460,6 +460,24 @@ const getAccessoryByCategory = async (req, res) => {
   }
 };
 
+// Update accessory status
+export const updateAccessoryStatus = async (req, res) => {
+  const { accessoryId } = req.params;
+  const { acsStatus } = req.body;
+
+  if (!accessoryId || !acsStatus) {
+    return res.status(400).json({ error: 'Missing accessoryId or acsStatus' });
+  }
+
+  try {
+    await AccessoryService.updateAccessoryStatus(accessoryId, acsStatus);
+    res.status(200).json({ message: 'Accessory status updated successfully' });
+  } catch (error) {
+    console.error('Error updating accessory status:', error);
+    res.status(500).json({ error: 'Failed to update accessory status' });
+  }
+};
+
 export {
   getAccessory,
   getAccessoryById,

@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Card,
@@ -321,7 +319,6 @@
 //   );
 // }
 
-
 // This is a revised version of your AddAccessory component based on the requirements.
 // Main changes:
 // 1. Removed the inline quantity field.
@@ -330,8 +327,18 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Card, Grid, Typography, Box, TextField, Autocomplete, CircularProgress,
-  Button, RadioGroup, FormControlLabel, Radio, Modal
+  Card,
+  Grid,
+  Typography,
+  Box,
+  TextField,
+  Autocomplete,
+  CircularProgress,
+  Button,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Modal,
 } from '@mui/material';
 import { green } from '@mui/material/colors';
 import Swal from 'sweetalert2';
@@ -361,12 +368,14 @@ export default function AddAccessory() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/auth/authenticated', { withCredentials: true })
+    axios
+      .get('http://localhost:3001/api/auth/authenticated', { withCredentials: true })
       .then((res) => {
         if (!(res.data.authenticated && res.data.user.role === 'admin')) {
           navigate('/login');
         }
-      }).catch(() => navigate('/login'));
+      })
+      .catch(() => navigate('/login'));
 
     fetchCategories();
     fetchSizes();
@@ -410,7 +419,7 @@ export default function AddAccessory() {
         if (hasSizes === 'yes') {
           stockData = Object.entries(sizeQuantities).map(([sizeId, qty]) => ({
             sizeId: parseInt(sizeId, 10),
-            quantity: parseInt(qty, 10)
+            quantity: parseInt(qty, 10),
           }));
         } else if (hasSizes === 'no') {
           stockData = [{ sizeId: 1, quantity: parseInt(naQuantity, 10) }];
@@ -461,22 +470,84 @@ export default function AddAccessory() {
       <Box sx={{ display: 'flex' }}>
         <AdminSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Typography variant="h5" fontWeight="bold" mb={2}>Accessories</Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>
+            Accessories
+          </Typography>
           <Card sx={{ padding: 2 }}>
-            <Typography variant="h6" color="grey" mb={2}>Add Accessory</Typography>
+            <Typography variant="h6" color="grey" mb={2}>
+              Add Accessory
+            </Typography>
             <Grid container spacing={2}>
               {/* Fields */}
-              <Grid item xs={6}><TextField label="Accessory Name" size="small" value={accessoryName} onChange={(e) => setAccessoryName(e.target.value)} fullWidth /></Grid>
-              <Grid item xs={6}><TextField label="Accessory Price" size="small" type="number" value={accessoryPrice} onChange={(e) => setAccessoryPrice(e.target.value)} fullWidth /></Grid>
-              <Grid item xs={6}><TextField label="Description" size="small" value={accessoryDescription} onChange={(e) => setAccessoryDescription(e.target.value)} fullWidth /></Grid>
-              <Grid item xs={6}><TextField label="Accessory Color" size="small" value={accessoryColor} onChange={(e) => setAccessoryColor(e.target.value)} fullWidth /></Grid>
-              <Grid item xs={6}><Autocomplete options={categories} getOptionLabel={(option) => option.categoryName || ''} value={selectedCategory} onChange={(event, newValue) => setSelectedCategory(newValue)} renderInput={(params) => <TextField {...params} label="Category" size="small" />} fullWidth /></Grid>
-              <Grid item xs={6}><TextField label="Units" size="small" type="number" value={units} onChange={(e) => setUnits(e.target.value)} fullWidth /></Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Accessory Name"
+                  size="small"
+                  value={accessoryName}
+                  onChange={(e) => setAccessoryName(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Accessory Price"
+                  size="small"
+                  type="number"
+                  value={accessoryPrice}
+                  onChange={(e) => setAccessoryPrice(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Description"
+                  size="small"
+                  value={accessoryDescription}
+                  onChange={(e) => setAccessoryDescription(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Accessory Color"
+                  size="small"
+                  value={accessoryColor}
+                  onChange={(e) => setAccessoryColor(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <Autocomplete
+                  options={categories}
+                  getOptionLabel={(option) => option.categoryName || ''}
+                  value={selectedCategory}
+                  onChange={(event, newValue) => setSelectedCategory(newValue)}
+                  renderInput={(params) => <TextField {...params} label="Category" size="small" />}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  label="Units"
+                  size="small"
+                  type="number"
+                  value={units}
+                  onChange={(e) => setUnits(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
 
               {/* Radio Buttons */}
               <Grid item xs={12}>
                 <Typography variant="subtitle1">Has Sizes?</Typography>
-                <RadioGroup row value={hasSizes} onChange={(e) => { setHasSizes(e.target.value); setModalOpen(true); }}>
+                <RadioGroup
+                  row
+                  value={hasSizes}
+                  onChange={(e) => {
+                    setHasSizes(e.target.value);
+                    setModalOpen(true);
+                  }}
+                >
                   <FormControlLabel value="yes" control={<Radio />} label="Yes" />
                   <FormControlLabel value="no" control={<Radio />} label="No" />
                 </RadioGroup>
@@ -484,10 +555,28 @@ export default function AddAccessory() {
 
               <Grid item xs={12}>
                 <Box sx={{ position: 'relative' }}>
-                  <Button fullWidth variant="contained" sx={{ ...success && { bgcolor: green[500], '&:hover': { bgcolor: green[700] } } }} onClick={handleClick} disabled={loading}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    sx={{ ...(success && { bgcolor: green[500], '&:hover': { bgcolor: green[700] } }) }}
+                    onClick={handleClick}
+                    disabled={loading}
+                  >
                     Proceed
                   </Button>
-                  {loading && <CircularProgress size={24} sx={{ color: green[500], position: 'absolute', top: '50%', left: '50%', mt: '-12px', ml: '-12px' }} />}
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        mt: '-12px',
+                        ml: '-12px',
+                      }}
+                    />
+                  )}
                 </Box>
               </Grid>
             </Grid>
@@ -498,7 +587,9 @@ export default function AddAccessory() {
             <Box sx={style}>
               {hasSizes === 'yes' ? (
                 <>
-                  <Typography variant="h6" mb={2}>Enter Quantity for Each Size</Typography>
+                  <Typography variant="h6" mb={2}>
+                    Enter Quantity for Each Size
+                  </Typography>
                   {sizes.map(({ sizeId, size }) => (
                     <TextField
                       key={sizeId}
@@ -514,7 +605,9 @@ export default function AddAccessory() {
                 </>
               ) : (
                 <>
-                  <Typography variant="h6" mb={2}>Enter Quantity for N/A Size</Typography>
+                  <Typography variant="h6" mb={2}>
+                    Enter Quantity for N/A Size
+                  </Typography>
                   <TextField
                     label="Quantity"
                     type="number"
@@ -525,7 +618,9 @@ export default function AddAccessory() {
                   />
                 </>
               )}
-              <Button variant="contained" onClick={handleModalSubmit} sx={{ mt: 2 }}>Save</Button>
+              <Button variant="contained" onClick={handleModalSubmit} sx={{ mt: 2 }}>
+                Save
+              </Button>
             </Box>
           </Modal>
         </Box>
