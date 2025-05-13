@@ -1,10 +1,8 @@
 //This is the EmployeeList.jsx file of the admin panel
 
-
 import React, { useEffect, useState } from 'react';
 import { Card, CardActions, CardContent, CardMedia, Button, Typography, Modal, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';

@@ -8,9 +8,9 @@ function RegisterEmployee() {
   const [userEmail, setUserEmail] = useState('');
   const [userRole, setUserRole] = useState('');
   const [password, setPassword] = useState('');
-    const [firstName, setFirstNamel] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [contact, setContact] = useState('');
+  const [firstName, setFirstNamel] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [contact, setContact] = useState('');
 
   const roleOptions = ['employee', 'admin'];
 
@@ -67,7 +67,7 @@ function RegisterEmployee() {
           onChange={(e) => setUserEmail(e.target.value)}
           margin="normal"
         />
-<TextField
+        <TextField
           fullWidth
           label="Contact"
           value={contact}

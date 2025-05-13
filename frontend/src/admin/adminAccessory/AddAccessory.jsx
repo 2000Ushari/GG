@@ -1,772 +1,6 @@
-// import React, { useState, useEffect } from "react";
-// import { Card, Grid, IconButton, Typography } from "@mui/material";
-// import Box from "@mui/material/Box";
-// import TextField from "@mui/material/TextField";
-// import Button from "@mui/material/Button";
-// import CloseIcon from "@mui/icons-material/Close";
-// import Swal from "sweetalert2";
-// import Autocomplete from "@mui/material/Autocomplete";
-// import { useNavigate } from "react-router-dom";
-// import FormGroup from "@mui/material/FormGroup";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Switch from "@mui/material/Switch";
-// import axios from "axios";
 
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-// import { blueGrey } from "@mui/material/colors";
 
-// ///
-// import CircularProgress from "@mui/material/CircularProgress";
-// import { green } from "@mui/material/colors";
-// import Fab from "@mui/material/Fab";
-// import CheckIcon from "@mui/icons-material/Check";
-// import SaveIcon from "@mui/icons-material/Save";
-
-// function AddAccessory() {
-//   const navigate = useNavigate();
-
-//   // Authentication check
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (res.data.authenticated && res.data.user.role === "admin") {
-//           // setUser(res.data.user); // Set user data if authenticated
-//           // customerId(res.data.user.id);
-//         } else {
-//           navigate("/login"); // Redirect to login if not authenticated
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   }, [navigate]);
-
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [units, setUnits] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-
-//   const [error, setError] = useState("");
-
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-
-//   ////
-//   const [loading, setLoading] = React.useState(false);
-//   const [success, setSuccess] = React.useState(false);
-//   const timer = React.useRef(undefined);
-
-//   const handleNameChange = (event) => {
-//     setAccessoryName(event.target.value);
-//   };
-
-//   const handlePriceChange = (event) => {
-//     setAccessoryPrice(event.target.value);
-//   };
-
-//   const handleDescriptionChange = (event) => {
-//     setAccessoryDescription(event.target.value);
-//   };
-
-//   const handleUnitsChange = (event) => {
-//     setUnits(event.target.value);
-//   };
-
-//   const handleColorChange = (event) => {
-//     setAccessoryColor(event.target.value);
-//   };
-
-//   const handleSubmit = () => {
-//     // Make POST request to backend
-//     fetch("http://localhost:3001/api/accessory/addAccessory", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         accessoryName,
-//         accessoryPrice,
-//         accessoryDescription,
-//         units,
-//         accessoryColor,
-//         categoryId: selectedCategory.categoryId,
-//       }),
-//     })
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error("Failed to add accessory");
-//         }
-//         return response.json();
-//       })
-//       .then((data) => {
-//         console.log("Accessory created:", data);
-//         Swal.fire("Success!", "Accessory added successfully.", "success");
-//         // Close the modal after success
-//         // closeEvent();
-//         window.location.reload();
-//       })
-//       .catch((error) => {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         // Close the modal even if there's an error
-//         // closeEvent();
-//       });
-//   };
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchCategories();
-//   }, []);
-
-//   /////
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   React.useEffect(() => {
-//     return () => {
-//       clearTimeout(timer.current);
-//     };
-//   }, []);
-
-//   const handleButtonClick = () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       timer.current = setTimeout(() => {
-//         setSuccess(true);
-//         setLoading(false);
-//       }, 2000);
-//     }
-//   };
-
-//   return (
-//     <>
-//       {/* <Modal
-//       open={open}
-//       onClose={closeEvent}
-//       aria-labelledby="add-accessory-modal-title"
-//       aria-describedby="add-accessory-modal-description"
-//       style={backdropStyle}
-//     > */}
-//       {/* <Box sx={modalStyle}> */}
-//       {/* <IconButton
-//           style={{ position: "absolute", top: 10, right: 10 }}
-//           onClick={closeEvent}
-//         >
-//           <CloseIcon />
-//         </IconButton> */}
-
-//       <div className="bgcolor">
-//         <AdminNavbar />
-//         <Box height={60} />
-//         <Box sx={{ display: "flex" }}>
-//           <AdminSidenav />
-//           <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//             <Typography
-//               gutterBottom
-//               variant="h5"
-//               component="div"
-//               sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//             >
-//               Accessories
-//             </Typography>
-//             <Card sx={{ padding: 2 }}>
-//               <Typography
-//                 variant="h6"
-//                 align="left"
-//                 id="add-accessory-modal-title"
-//                 marginLeft={2}
-//                 color="grey"
-//               >
-//                 Add Accessory
-//               </Typography>
-
-//               <Box height={20}></Box>
-//               <Grid container spacing={2} padding={2}>
-//                 <Grid item xs={12}>
-//                   <TextField
-//                     id="outlined-basic"
-//                     label="Accessory Name"
-//                     variant="outlined"
-//                     size="small"
-//                     value={accessoryName}
-//                     onChange={handleNameChange}
-//                     sx={{ width: "100%" }}
-//                   />
-//                 </Grid>
-
-//                 <Grid item xs={6}>
-//                   <Autocomplete
-//                     value={selectedCategory}
-//                     onChange={(event, newValue) => {
-//                       setSelectedCategory(newValue);
-//                     }}
-//                     id="category-select"
-//                     options={categories}
-//                     getOptionLabel={(option) => option.categoryName}
-//                     renderInput={(params) => (
-//                       <TextField
-//                         {...params}
-//                         label="Category"
-//                         variant="outlined"
-//                         size="small"
-//                       />
-//                     )}
-//                   />
-//                 </Grid>
-
-//                 <Grid item xs={6}>
-//                   <TextField
-//                     id="color"
-//                     label="Color"
-//                     variant="outlined"
-//                     size="small"
-//                     value={accessoryColor}
-//                     onChange={handleColorChange}
-//                     fullWidth
-//                   />
-//                 </Grid>
-
-//                 <Grid item xs={12}>
-//                   <TextField
-//                     id="description"
-//                     label="Description"
-//                     variant="outlined"
-//                     size="small"
-//                     value={accessoryDescription}
-//                     onChange={handleDescriptionChange}
-//                     fullWidth
-//                     multiline
-//                     rows={4}
-//                   />
-//                 </Grid>
-
-//                 <Grid item xs={6}>
-//                   <TextField
-//                     id="price"
-//                     label="Price"
-//                     variant="outlined"
-//                     size="small"
-//                     type="number"
-//                     value={accessoryPrice}
-//                     onChange={handlePriceChange}
-//                     InputProps={{
-//                       startAdornment: "Rs.",
-//                     }}
-//                     fullWidth
-//                   />
-//                 </Grid>
-
-//                 <Grid item xs={6}>
-//                   <TextField
-//                     id="units"
-//                     label="Units"
-//                     variant="outlined"
-//                     size="small"
-//                     type="number"
-//                     value={units}
-//                     onChange={handleUnitsChange}
-//                     InputProps={{
-//                       endAdornment: "units",
-//                     }}
-//                     fullWidth
-//                   />
-//                 </Grid>
-//                 <FormGroup>
-//                 <FormControlLabel
-//                   required
-//                   control={<Switch />}
-//                   label="Sizes Available"
-//                 />
-//               </FormGroup>
-//                 {error && (
-//                   <Typography variant="body2" color="error" align="center">
-//                     {error}
-//                   </Typography>
-//                 )}
-//                 {/* <Grid item xs={12}>
-//                   <Typography variant="h5" align="center">
-//                     <Button variant="contained" onClick={handleSubmit}>
-//                       Submit Accessory
-//                     </Button>
-//                   </Typography>
-//                 </Grid> */}
-
-//               </Grid>
-
-//               {/* New button */}
-//               <Box sx={{ display: "flex", alignItems: "center" }}>
-//                 <Box sx={{ m: 1, position: "relative" }}>
-//                   <Fab
-//                     aria-label="save"
-//                     color="primary"
-//                     sx={buttonSx}
-//                     onClick={handleButtonClick}
-//                   >
-//                     {success ? <CheckIcon /> : <SaveIcon />}
-//                   </Fab>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={68}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: -6,
-//                         left: -6,
-//                         zIndex: 1,
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//                 <Box sx={{ m: 1, position: "relative" }}>
-//                   <Button
-//                     variant="contained"
-//                     sx={buttonSx}
-//                     disabled={loading}
-//                     onClick={handleButtonClick}
-//                   >
-//                     Proceed
-//                   </Button>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={24}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//               </Box>
-//               {/* Over button */}
-//               <Box sx={{ m: 2 }}></Box>
-//               {/* </Box> */}
-//               {/* </Modal> */}
-//             </Card>
-//           </Box>
-//         </Box>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default AddAccessory;
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   Grid,
-//   Typography,
-//   Box,
-//   TextField,
-//   Autocomplete,
-//   CircularProgress,
-//   Button,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import CheckIcon from "@mui/icons-material/Check";
-// import SaveIcon from "@mui/icons-material/Save";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import FormGroup from "@mui/material/FormGroup";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Switch from "@mui/material/Switch";
-// import Checkbox from "@mui/material/Checkbox";
-
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-
-// export default function AddAccessory() {
-//   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [units, setUnits] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [error, setError] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         navigate("/login");
-//       });
-
-//     fetchCategories();
-//   }, [navigate]);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   const handleClick = async () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       try {
-//         const response = await fetch(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               accessoryName,
-//               accessoryPrice,
-//               accessoryDescription,
-//               units,
-//               accessoryColor,
-//               categoryId: selectedCategory.categoryId,
-//             }),
-//           }
-//         );
-
-//         if (!response.ok) {
-//           throw new Error("Failed to add accessory");
-//         }
-
-//         const data = await response.json();
-//         console.log("Accessory created:", data);
-//         // Swal.fire("Success!", "Accessory added successfully.", "success");
-//         setSuccess(true);
-//         // Reset form fields here if needed
-//         // setAccessoryName("");
-//         // setAccessoryPrice("");
-//         // setAccessoryDescription("");
-//         // setUnits("");
-//         // setAccessoryColor("");
-//         // setSelectedCategory(null);
-//       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         // Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         setSuccess(false);
-//       } finally {
-//         setTimeout(() => {
-//           setLoading(false);
-//         }, 1000); // Delay to show the success state for a moment
-//       }
-//     }
-//   };
-
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   return (
-//     <div className="bgcolor">
-//       <AdminNavbar />
-//       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
-//         <AdminSidenav />
-//         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
-//             Accessories
-//           </Typography>
-//           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               id="add-accessory-modal-title"
-//               marginLeft={2}
-//               color="grey"
-//             >
-//               Add Accessory
-//             </Typography>
-//             <Box height={20} />
-//             <Grid container spacing={2} padding={2}>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Accessory Name"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryName}
-//                   onChange={(e) => setAccessoryName(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <Autocomplete
-//                   value={selectedCategory}
-//                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName}
-//                   renderInput={(params) => (
-//                     <TextField
-//                       {...params}
-//                       label="Category"
-//                       variant="outlined"
-//                       size="small"
-//                     />
-//                   )}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Color"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryColor}
-//                   onChange={(e) => setAccessoryColor(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Description"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryDescription}
-//                   onChange={(e) => setAccessoryDescription(e.target.value)}
-//                   fullWidth
-//                   multiline
-//                   rows={4}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Price"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={accessoryPrice}
-//                   onChange={(e) => setAccessoryPrice(e.target.value)}
-//                   InputProps={{
-//                     startAdornment: "Rs.",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Capacity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               {error && (
-//                 <Grid item xs={12}>
-//                   <Typography variant="body2" color="error" align="center">
-//                     {error}
-//                   </Typography>
-//                 </Grid>
-//               )}
-
-//               <FormGroup>
-//                 <FormControlLabel
-//                   control={<Switch />}
-//                   label="Sizes available"
-//                 />
-//               </FormGroup>
-
-//               <Grid item xs={12}>
-//                 <Box
-//                   sx={{
-//                     display: "flex",
-//                     alignItems: "center",
-//                     justifyContent: "center",
-//                   }}
-//                 >
-//                   <Box sx={{ m: 1, position: "relative" }}>
-//                     <Button
-//                       variant="contained"
-//                       sx={buttonSx}
-//                       disabled={loading}
-//                       onClick={handleClick}
-//                     >
-//                       {success ? "Proceeded" : "Proceed"}
-//                     </Button>
-
-//                     {loading && (
-//                       <CircularProgress
-//                         size={24}
-//                         sx={{
-//                           color: green[500],
-//                           position: "absolute",
-//                           top: "50%",
-//                           left: "50%",
-//                           marginTop: "-12px",
-//                           marginLeft: "-12px",
-//                         }}
-//                       />
-//                     )}
-//                   </Box>
-//                 </Box>
-//               </Grid>
-//               <Grid item xs={12}>
-//               <FormGroup>
-//                 <Grid item xs={3}>
-//                 <FormControlLabel
-//                   control={<Checkbox defaultChecked />}
-//                   label="XS"
-//                 />
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={3}>
-//                 <FormControlLabel
-//                   control={<Checkbox defaultChecked />}
-//                   label="S"
-//                 />
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={3}>
-//                 <FormControlLabel
-//                   control={<Checkbox defaultChecked />}
-//                   label="M"
-//                 />
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={3}>
-//                 <FormControlLabel
-//                   control={<Checkbox defaultChecked />}
-//                   label="L"
-//                 />
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={3}>
-//                 <FormControlLabel
-//                   control={<Checkbox defaultChecked />}
-//                   label="XL"
-//                 />
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               </FormGroup>
-//             </Grid>
-//             </Grid>
-//           </Card>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
-
-// import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from 'react';
 // import {
 //   Card,
 //   Grid,
@@ -777,817 +11,31 @@
 //   CircularProgress,
 //   Button,
 //   FormGroup,
+//   Checkbox,
 //   FormControlLabel,
 //   Switch,
-//   Checkbox,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+// } from '@mui/material';
+// import { green } from '@mui/material/colors';
+// import Swal from 'sweetalert2';
+// import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
 
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
+// import AdminNavbar from '../adminComponents/AdminNavbar';
+// import AdminSidenav from '../adminComponents/AdminSidenav';
 
 // export default function AddAccessory() {
 //   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [quantity, setQuantity] = useState("");
-//   const [error, setError] = useState("");
+//   const [accessoryName, setAccessoryName] = useState('');
+//   const [accessoryPrice, setAccessoryPrice] = useState('');
+//   const [accessoryDescription, setAccessoryDescription] = useState('');
+//   const [accessoryColor, setAccessoryColor] = useState('');
+//   const [quantity, setQuantity] = useState('');
+//   const [error, setError] = useState('');
 //   const [selectedCategory, setSelectedCategory] = useState(null);
 //   const [categories, setCategories] = useState([]);
 //   const [loading, setLoading] = useState(false);
 //   const [success, setSuccess] = useState(false);
-//   const [units, setUnits] = useState("");
-
-//   const [sizesAvailable, setSizesAvailable] = useState(false);
-//   const [sizes, setSizes] = useState({
-//     XS: { checked: false, units: "" },
-//     S: { checked: false, units: "" },
-//     M: { checked: false, units: "" },
-//     L: { checked: false, units: "" },
-//     XL: { checked: false, units: "" },
-//   });
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         navigate("/login");
-//       });
-
-//     fetchCategories();
-//   }, [navigate]);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   const handleClick = async () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       try {
-//         const response = await fetch(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               accessoryName,
-//               accessoryPrice,
-//               accessoryDescription,
-//               accessoryColor,
-//               categoryId: selectedCategory.categoryId,
-//               units,
-//               // sizesAvailable,
-//               // sizes: sizesAvailable ? sizes : null,
-//             }),
-//           }
-//         );
-
-//         if (!response.ok) {
-//           throw new Error("Failed to add accessory");
-//         }
-
-//         const data = await response.json();
-//         console.log("Accessory created:", data);
-//         Swal.fire("Success!", "Accessory added successfully.", "success");
-//         setSuccess(true);
-//       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         setSuccess(false);
-//       } finally {
-//         setTimeout(() => {
-//           setLoading(false);
-//         }, 1000);
-//       }
-//     }
-//   };
-
-//   // const handleSubmit = () => {
-//   //       fetch("http://localhost:3001/api/accessory/addToStock"), {
-//   //         method: "POST",
-//   //         headers: {
-//   //           "Content-Type": "application/json",
-//   //         },
-//   //         body: JSON.stringify({
-//   //           accessoryId: data.accessoryId,
-//   //           accessoryQuantity,
-//   //           sizeId: selectedSize.sizeId,
-//   //         }),
-//   //         }
-//   //         .then((response) => {
-//   //           if (!response.ok) {
-//   //             throw new Error("Failed to add accessory to giftbox");
-//   //           }
-//   //           return response.json();
-//   //         })
-//   //         .then((data) => {
-//   //           console.log("Accessory added to giftbox:", data);
-//   //           Swal.fire("Success!", "Accessory added to giftbox successfully.", "success");
-//   //           // Close the modal after success
-//   //           // closeEvent();
-//   //           window.location.reload();
-//   //         })
-//   //         .catch((error) => {
-//   //           console.error("Error adding accessory to giftbox:", error);
-//   //           Swal.fire("Error!", "Failed to add the accessory to giftbox.", "error");
-//   //           // Close the modal even if there's an error
-//   //           // closeEvent();
-
-//   //         });
-//   // };
-
-//   const handleSizeChange = (size) => (event) => {
-//     setSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [size]: { ...prevSizes[size], checked: event.target.checked },
-//     }));
-//   };
-
-//   const handleUnitsChange = (size) => (event) => {
-//     setSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [size]: { ...prevSizes[size], units: event.target.value },
-//     }));
-//   };
-
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   return (
-//     <div className="bgcolor">
-//       <AdminNavbar />
-//       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
-//         <AdminSidenav />
-//         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
-//             Accessories
-//           </Typography>
-//           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               id="add-accessory-modal-title"
-//               marginLeft={2}
-//               color="grey"
-//             >
-//               Add Accessory
-//             </Typography>
-//             <Box height={20} />
-//             <Grid container spacing={2} padding={2}>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Accessory Name"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryName}
-//                   onChange={(e) => setAccessoryName(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <Autocomplete
-//                   value={selectedCategory}
-//                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName}
-//                   renderInput={(params) => (
-//                     <TextField
-//                       {...params}
-//                       label="Category"
-//                       variant="outlined"
-//                       size="small"
-//                     />
-//                   )}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Color"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryColor}
-//                   onChange={(e) => setAccessoryColor(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Description"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryDescription}
-//                   onChange={(e) => setAccessoryDescription(e.target.value)}
-//                   fullWidth
-//                   multiline
-//                   rows={4}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Price"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={accessoryPrice}
-//                   onChange={(e) => setAccessoryPrice(e.target.value)}
-//                   InputProps={{
-//                     startAdornment: "Rs.",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Capacity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               {error && (
-//                 <Grid item xs={12}>
-//                   <Typography variant="body2" color="error" align="center">
-//                     {error}
-//                   </Typography>
-//                 </Grid>
-//               )}
-//               <Grid item xs={12}>
-//                 <Box sx={{ m: 1, position: "relative" }}>
-//                   <Button
-//                     variant="contained"
-//                     sx={buttonSx}
-//                     disabled={loading}
-//                     onClick={handleClick}
-//                   >
-//                     {success ? "Proceeded" : "Proceed"}
-//                   </Button>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={24}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   <FormControlLabel
-//                     control={
-//                       <Switch
-//                         checked={sizesAvailable}
-//                         onChange={(e) => setSizesAvailable(e.target.checked)}
-//                       />
-//                     }
-//                     label="Sizes available"
-//                   />
-//                 </FormGroup>
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Quantity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={quantity}
-//                   onChange={(e) => setQuantity(e.target.value)}
-//                   fullWidth
-//                   disabled={sizesAvailable}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   {Object.entries(sizes).map(([size, { checked, units }]) => (
-//                     <Grid item xs={12} key={size} sx={{ marginBottom: 2 }}>
-//                       <FormControlLabel
-//                         control={
-//                           <Checkbox
-//                             checked={checked}
-//                             onChange={handleSizeChange(size)}
-//                             disabled={!sizesAvailable}
-//                           />
-//                         }
-//                         label={size}
-//                       />
-//                       <TextField
-//                         label="Units"
-//                         variant="outlined"
-//                         size="small"
-//                         type="number"
-//                         value={units}
-//                         onChange={handleUnitsChange(size)}
-//                         disabled={!sizesAvailable || !checked}
-//                         sx={{ width: "120px", marginLeft: 2 }}
-//                       />
-//                     </Grid>
-//                   ))}
-//                 </FormGroup>
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <Box
-//                   sx={{
-//                     display: "flex",
-//                     alignItems: "center",
-//                     justifyContent: "center",
-//                   }}
-//                 >
-//                   <Grid item xs={12}>
-//                     <Typography variant="h5" align="center">
-//                       <Button variant="contained">
-//                         Submit Accessory{" "}
-//                       </Button>{" "}
-//                     </Typography>
-//                   </Grid>
-//                 </Box>
-//               </Grid>
-//             </Grid>
-//           </Card>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   Grid,
-//   Typography,
-//   Box,
-//   TextField,
-//   Autocomplete,
-//   CircularProgress,
-//   Button,
-//   FormGroup,
-//   FormControlLabel,
-//   Switch,
-//   Checkbox,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-
-// export default function AddAccessory() {
-//   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [quantity, setQuantity] = useState("");
-//   const [error, setError] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [units, setUnits] = useState("");
-
-//   const [sizesAvailable, setSizesAvailable] = useState(false);
-//   const [sizes, setSizes] = useState({
-//     XS: { checked: false, units: "" },
-//     S: { checked: false, units: "" },
-//     M: { checked: false, units: "" },
-//     L: { checked: false, units: "" },
-//     XL: { checked: false, units: "" },
-//   });
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         navigate("/login");
-//       });
-
-//     fetchCategories();
-//   }, [navigate]);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   const handleClick = async () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       try {
-//         const response = await fetch(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               accessoryName,
-//               accessoryPrice,
-//               accessoryDescription,
-//               accessoryColor,
-//               categoryId: selectedCategory.categoryId,
-//               units,
-//             }),
-//           }
-//         );
-
-//         if (!response.ok) {
-//           throw new Error("Failed to add accessory");
-//         }
-
-//         const data = await response.json();
-//         console.log("Accessory created:", data);
-//         Swal.fire("Success!", "Accessory added successfully.", "success");
-//         setSuccess(true);
-
-//         // Add to stock
-//         await addToStock(data.accessoryId);
-//       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         setSuccess(false);
-//       } finally {
-//         setTimeout(() => {
-//           setLoading(false);
-//         }, 1000);
-//       }
-//     }
-//   };
-
-//   const addToStock = async (accessoryId) => {
-//     try {
-//       if (!sizesAvailable) {
-//         await fetch("http://localhost:3001/api/accessory/addToStock", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             accessoryId,
-//             quantity,
-//             sizeId: 1,
-//           }),
-//         });
-//       } else {
-//         const sizeMap = { XS: 2, S: 3, M: 4, L: 5, XL: 6 };
-//         for (const [size, { checked, units }] of Object.entries(sizes)) {
-//           if (checked && units) {
-//             await fetch("http://localhost:3001/api/accessory/addToStock", {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify({
-//                 accessoryId,
-//                 quantity: units,
-//                 sizeId: sizeMap[size],
-//               }),
-//             });
-//           }
-//         }
-//       }
-//       console.log("Stock added successfully");
-//     } catch (error) {
-//       console.error("Error adding stock:", error);
-//       throw error;
-//     }
-//   };
-
-//   const handleSizeChange = (size) => (event) => {
-//     setSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [size]: { ...prevSizes[size], checked: event.target.checked },
-//     }));
-//   };
-
-//   const handleUnitsChange = (size) => (event) => {
-//     setSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [size]: { ...prevSizes[size], units: event.target.value },
-//     }));
-//   };
-
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   return (
-//     <div className="bgcolor">
-//       <AdminNavbar />
-//       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
-//         <AdminSidenav />
-//         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
-//             Accessories
-//           </Typography>
-//           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               id="add-accessory-modal-title"
-//               marginLeft={2}
-//               color="grey"
-//             >
-//               Add Accessory
-//             </Typography>
-//             <Box height={20} />
-//             <Grid container spacing={2} padding={2}>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Accessory Name"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryName}
-//                   onChange={(e) => setAccessoryName(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <Autocomplete
-//                   value={selectedCategory}
-//                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName}
-//                   renderInput={(params) => (
-//                     <TextField
-//                       {...params}
-//                       label="Category"
-//                       variant="outlined"
-//                       size="small"
-//                     />
-//                   )}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Color"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryColor}
-//                   onChange={(e) => setAccessoryColor(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               <Grid item xs={12}>
-//                 <TextField
-//                   label="Description"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryDescription}
-//                   onChange={(e) => setAccessoryDescription(e.target.value)}
-//                   fullWidth
-//                   multiline
-//                   rows={4}
-//                 />
-//               </Grid>
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Price"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={accessoryPrice}
-//                   onChange={(e) => setAccessoryPrice(e.target.value)}
-//                   InputProps={{
-//                     startAdornment: "Rs.",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Capacity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   InputProps={{
-//                     endAdornment: "units",
-//                   }}
-//                   fullWidth
-//                 />
-//               </Grid>
-//               {error && (
-//                 <Grid item xs={12}>
-//                   <Typography variant="body2" color="error" align="center">
-//                     {error}
-//                   </Typography>
-//                 </Grid>
-//               )}
-//               <Grid item xs={12}>
-//                 <Box sx={{ m: 1, position: "relative" }}>
-//                   <Button
-//                     variant="contained"
-//                     sx={buttonSx}
-//                     disabled={loading}
-//                     onClick={handleClick}
-//                   >
-//                     {success ? "Proceeded" : "Proceed"}
-//                   </Button>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={24}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   <FormControlLabel
-//                     control={
-//                       <Switch
-//                         checked={sizesAvailable}
-//                         onChange={(e) => setSizesAvailable(e.target.checked)}
-//                       />
-//                     }
-//                     label="Sizes available"
-//                   />
-//                 </FormGroup>
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Quantity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={quantity}
-//                   onChange={(e) => setQuantity(e.target.value)}
-//                   fullWidth
-//                   disabled={sizesAvailable}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   {Object.entries(sizes).map(([size, { checked, units }]) => (
-//                     <Grid item xs={12} key={size} sx={{ marginBottom: 2 }}>
-//                       <FormControlLabel
-//                         control={
-//                           <Checkbox
-//                             checked={checked}
-//                             onChange={handleSizeChange(size)}
-//                             disabled={!sizesAvailable}
-//                           />
-//                         }
-//                         label={size}
-//                       />
-//                       <TextField
-//                         label="Units"
-//                         variant="outlined"
-//                         size="small"
-//                         type="number"
-//                         value={units}
-//                         onChange={handleUnitsChange(size)}
-//                         disabled={!sizesAvailable || !checked}
-//                         sx={{ width: "120px", marginLeft: 2 }}
-//                       />
-//                     </Grid>
-//                   ))}
-//                 </FormGroup>
-//               </Grid>
-//             </Grid>
-//           </Card>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   Grid,
-//   Typography,
-//   Box,
-//   TextField,
-//   Autocomplete,
-//   CircularProgress,
-//   Button,
-//   FormGroup,
-//   FormControlLabel,
-//   Switch,
-//   Checkbox,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-
-// export default function AddAccessory() {
-//   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [quantity, setQuantity] = useState("");
-//   const [error, setError] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [units, setUnits] = useState("");
+//   const [units, setUnits] = useState('');
 
 //   const [sizesAvailable, setSizesAvailable] = useState(false);
 //   const [sizes, setSizes] = useState([]);
@@ -1595,17 +43,17 @@
 
 //   useEffect(() => {
 //     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
+//       .get('http://localhost:3001/api/auth/authenticated', {
 //         withCredentials: true,
 //       })
 //       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
+//         if (!(res.data.authenticated && res.data.user.role === 'admin')) {
+//           navigate('/login');
 //         }
 //       })
 //       .catch((err) => {
 //         console.log(err);
-//         navigate("/login");
+//         navigate('/login');
 //       });
 
 //     fetchCategories();
@@ -1614,764 +62,27 @@
 
 //   const fetchCategories = async () => {
 //     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
+//       const response = await fetch('http://localhost:3001/api/category/getCategory');
 //       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
+//         throw new Error('Failed to fetch categories');
 //       }
 //       const data = await response.json();
 //       setCategories(data);
 //     } catch (error) {
-//       console.error("Error fetching categories:", error);
+//       console.error('Error fetching categories:', error);
 //     }
 //   };
 
 //   const fetchSizes = async () => {
 //     try {
-//       const response = await fetch("http://localhost:3001/api/accessory/getSizes/all");
+//       const response = await fetch('http://localhost:3001/api/accessory/getSizes/all');
 //       if (!response.ok) {
-//         throw new Error("Failed to fetch sizes");
+//         throw new Error('Failed to fetch sizes');
 //       }
 //       const data = await response.json();
 //       setSizes(data);
 //     } catch (error) {
-//       console.error("Error fetching sizes:", error);
-//     }
-//   };
-
-//   const handleClick = async () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       try {
-//         const response = await fetch(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               accessoryName,
-//               accessoryPrice,
-//               accessoryDescription,
-//               accessoryColor,
-//               categoryId: selectedCategory?.categoryId,
-//               units,
-//             }),
-//           }
-//         );
-
-//         if (!response.ok) {
-//           throw new Error("Failed to add accessory");
-//         }
-
-//         const data = await response.json();
-//         console.log("Accessory created:", data);
-//         Swal.fire("Success!", "Accessory added successfully.", "success");
-//         setSuccess(true);
-
-//         // Add to stock
-//         await addToStock(data.accessoryId);
-//       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         setSuccess(false);
-//       } finally {
-//         setTimeout(() => {
-//           setLoading(false);
-//         }, 1000);
-//       }
-//     }
-//   };
-
-//   const addToStock = async (accessoryId) => {
-//     try {
-//       if (!sizesAvailable) {
-//         // If sizes are not available, add a single entry with sizeId 1 (N/A)
-//         await fetch("http://localhost:3001/api/accessory/addToStock", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             accessoryId,
-//             quantity,
-//             sizeId: 1,
-//           }),
-//         });
-//       } else {
-//         // Add entries for each selected size with its respective quantity
-//         for (const [sizeId, quantity] of Object.entries(selectedSizes)) {
-//           if (quantity) {
-//             await fetch("http://localhost:3001/api/accessory/addToStock", {
-//               method: "POST",
-//               headers: {
-//                 "Content-Type": "application/json",
-//               },
-//               body: JSON.stringify({
-//                 accessoryId,
-//                 quantity,
-//                 sizeId: parseInt(sizeId, 10),
-//               }),
-//             });
-//           }
-//         }
-//       }
-//       console.log("Stock added successfully");
-//     } catch (error) {
-//       console.error("Error adding stock:", error);
-//       throw error;
-//     }
-//   };
-
-//   const handleSizeQuantityChange = (sizeId) => (event) => {
-//     setSelectedSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [sizeId]: event.target.value,
-//     }));
-//   };
-
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   return (
-//     <div className="bgcolor">
-//       <AdminNavbar />
-//       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
-//         <AdminSidenav />
-//         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
-//             Accessories
-//           </Typography>
-//           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               marginLeft={2}
-//               color="grey"
-//             >
-//               Add Accessory
-//             </Typography>
-//             <Box height={20} />
-//             <Grid container spacing={2} padding={2}>
-//               {/* Basic Accessory Details */}
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Name"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryName}
-//                   onChange={(e) => setAccessoryName(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Price"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={accessoryPrice}
-//                   onChange={(e) => setAccessoryPrice(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Description"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryDescription}
-//                   onChange={(e) => setAccessoryDescription(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Color"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryColor}
-//                   onChange={(e) => setAccessoryColor(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <Autocomplete
-//                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName || ""}
-//                   value={selectedCategory}
-//                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   renderInput={(params) => (
-//                     <TextField {...params} label="Category" variant="outlined" size="small" />
-//                   )}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Quantity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={quantity}
-//                   onChange={(e) => setQuantity(e.target.value)}
-//                   fullWidth
-//                   disabled={sizesAvailable}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   <FormControlLabel
-//                     control={
-//                       <Switch
-//                         checked={sizesAvailable}
-//                         onChange={(e) => setSizesAvailable(e.target.checked)}
-//                       />
-//                     }
-//                     label="Sizes available"
-//                   />
-//                 </FormGroup>
-//               </Grid>
-
-//               {/* Dynamic Size Quantity Input */}
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   {sizesAvailable && sizes.map(({ sizeId, size }) => (
-//                     <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
-//                       <FormControlLabel
-//                         control={
-//                           <Checkbox
-//                             checked={Boolean(selectedSizes[sizeId])}
-//                             onChange={(e) =>
-//                               handleSizeQuantityChange(sizeId)(e)
-//                             }
-//                           />
-//                         }
-//                         label={size}
-//                       />
-//                       <TextField
-//                         label="Quantity"
-//                         variant="outlined"
-//                         size="small"
-//                         type="number"
-//                         value={selectedSizes[sizeId] || ""}
-//                         onChange={handleSizeQuantityChange(sizeId)}
-//                         fullWidth
-//                         disabled={!Boolean(selectedSizes[sizeId])}
-//                       />
-//                     </Grid>
-//                   ))}
-//                 </FormGroup>
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <Box sx={{ position: "relative" }}>
-//                   <Button
-//                     variant="contained"
-//                     color="primary"
-//                     sx={buttonSx}
-//                     disabled={loading}
-//                     onClick={handleClick}
-//                     fullWidth
-//                   >
-//                     Proceed
-//                   </Button>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={24}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//               </Grid>
-//             </Grid>
-//           </Card>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   Grid,
-//   Typography,
-//   Box,
-//   TextField,
-//   Autocomplete,
-//   CircularProgress,
-//   Button,
-//   FormGroup,
-//   FormControlLabel,
-//   Switch,
-//   Checkbox,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-
-// export default function AddAccessory() {
-//   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [quantity, setQuantity] = useState("");
-//   const [error, setError] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [units, setUnits] = useState("");
-
-//   const [sizesAvailable, setSizesAvailable] = useState(false);
-//   const [sizes, setSizes] = useState([]);
-//   const [selectedSizes, setSelectedSizes] = useState({});
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         navigate("/login");
-//       });
-
-//     fetchCategories();
-//     fetchSizes();
-//   }, [navigate]);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   const fetchSizes = async () => {
-//     try {
-//       const response = await fetch("http://localhost:3001/api/accessory/getSizes/all");
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch sizes");
-//       }
-//       const data = await response.json();
-//       setSizes(data);
-//     } catch (error) {
-//       console.error("Error fetching sizes:", error);
-//     }
-//   };
-
-//   const handleClick = async () => {
-//     if (!loading) {
-//       setSuccess(false);
-//       setLoading(true);
-//       try {
-//         const accessoryData = {
-//           accessoryName,
-//           accessoryPrice,
-//           accessoryDescription,
-//           accessoryColor,
-//           categoryId: selectedCategory?.categoryId,
-//           units,
-//         };
-
-//         const response = await axios.post(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           accessoryData
-//         );
-
-//         if (response.status === 201) {
-//           const accessoryId = response.data.accessoryId;
-//           await addToStock(accessoryId);
-//           Swal.fire("Success!", "Accessory added successfully.", "success");
-//           setSuccess(true);
-//         } else {
-//           throw new Error("Failed to add accessory");
-//         }
-//       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
-//         setError(error.message);
-//       } finally {
-//         setTimeout(() => {
-//           setLoading(false);
-//         }, 1000);
-//       }
-//     }
-//   };
-
-//   const addToStock = async (accessoryId) => {
-//     try {
-//       const stockPromises = Object.entries(selectedSizes).map(
-//         ([sizeId, quantity]) => {
-//           if (quantity) {
-//             return axios.post(
-//               "http://localhost:3001/api/accessory/addToStock",
-//               {
-//                 accessoryId,
-//                 quantity,
-//                 sizeId: parseInt(sizeId, 10),
-//               }
-//             );
-//           }
-//           return Promise.resolve(); // Skip if quantity is empty
-//         }
-//       );
-
-//       await Promise.all(stockPromises);
-//       console.log("Stock added successfully");
-//     } catch (error) {
-//       console.error("Error adding stock:", error);
-//       throw error;
-//     }
-//   };
-
-//   const handleSizeQuantityChange = (sizeId) => (event) => {
-//     setSelectedSizes((prevSizes) => ({
-//       ...prevSizes,
-//       [sizeId]: event.target.value,
-//     }));
-//   };
-
-//   const buttonSx = {
-//     ...(success && {
-//       bgcolor: green[500],
-//       "&:hover": {
-//         bgcolor: green[700],
-//       },
-//     }),
-//   };
-
-//   return (
-//     <div className="bgcolor">
-//       <AdminNavbar />
-//       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
-//         <AdminSidenav />
-//         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
-//             Accessories
-//           </Typography>
-//           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               marginLeft={2}
-//               color="grey"
-//             >
-//               Add Accessory
-//             </Typography>
-//             <Box height={20} />
-//             <Grid container spacing={2} padding={2}>
-//               {/* Basic Accessory Details */}
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Name"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryName}
-//                   onChange={(e) => setAccessoryName(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Price"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={accessoryPrice}
-//                   onChange={(e) => setAccessoryPrice(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Description"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryDescription}
-//                   onChange={(e) => setAccessoryDescription(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Accessory Color"
-//                   variant="outlined"
-//                   size="small"
-//                   value={accessoryColor}
-//                   onChange={(e) => setAccessoryColor(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <Autocomplete
-//                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName || ""}
-//                   value={selectedCategory}
-//                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   renderInput={(params) => (
-//                     <TextField {...params} label="Category" variant="outlined" size="small" />
-//                   )}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Units"
-//                   variant="outlined"
-//                   size="small"
-//                   value={units}
-//                   onChange={(e) => setUnits(e.target.value)}
-//                   fullWidth
-//                 />
-//               </Grid>
-
-//               <Grid item xs={6}>
-//                 <TextField
-//                   label="Quantity"
-//                   variant="outlined"
-//                   size="small"
-//                   type="number"
-//                   value={quantity}
-//                   onChange={(e) => setQuantity(e.target.value)}
-//                   fullWidth
-//                   disabled={sizesAvailable}
-//                 />
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   <FormControlLabel
-//                     control={
-//                       <Switch
-//                         checked={sizesAvailable}
-//                         onChange={(e) => setSizesAvailable(e.target.checked)}
-//                       />
-//                     }
-//                     label="Sizes available"
-//                   />
-//                 </FormGroup>
-//               </Grid>
-
-//               {/* Dynamic Size Quantity Input */}
-//               <Grid item xs={12}>
-//                 <FormGroup>
-//                   {sizesAvailable && sizes.map(({ sizeId, size }) => (
-//                     <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
-//                       <FormControlLabel
-//                         control={
-//                           <Checkbox
-//                             checked={Boolean(selectedSizes[sizeId])}
-//                             onChange={handleSizeQuantityChange(sizeId)}
-//                           />
-//                         }
-//                         label={size}
-//                       />
-//                       <TextField
-//                         label="Quantity"
-//                         variant="outlined"
-//                         size="small"
-//                         type="number"
-//                         value={selectedSizes[sizeId] || ""}
-//                         onChange={handleSizeQuantityChange(sizeId)}
-//                         fullWidth
-//                         disabled={!Boolean(selectedSizes[sizeId])}
-//                       />
-//                     </Grid>
-//                   ))}
-//                 </FormGroup>
-//               </Grid>
-
-//               <Grid item xs={12}>
-//                 <Box sx={{ position: "relative" }}>
-//                   <Button
-//                     variant="contained"
-//                     color="primary"
-//                     sx={buttonSx}
-//                     disabled={loading}
-//                     onClick={handleClick}
-//                     fullWidth
-//                   >
-//                     Proceed
-//                   </Button>
-//                   {loading && (
-//                     <CircularProgress
-//                       size={24}
-//                       sx={{
-//                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
-//                       }}
-//                     />
-//                   )}
-//                 </Box>
-//               </Grid>
-//             </Grid>
-//           </Card>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// }
-
-// import React, { useState, useEffect } from "react";
-// import {
-//   Card,
-//   Grid,
-//   Typography,
-//   Box,
-//   TextField,
-//   Autocomplete,
-//   CircularProgress,
-//   Button,
-//   FormGroup,
-//   FormControlLabel,
-//   Switch,
-//   Checkbox,
-// } from "@mui/material";
-// import { green } from "@mui/material/colors";
-// import Swal from "sweetalert2";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// import AdminNavbar from "../adminComponents/AdminNavbar";
-// import AdminSidenav from "../adminComponents/AdminSidenav";
-
-// export default function AddAccessory() {
-//   const navigate = useNavigate();
-//   const [accessoryName, setAccessoryName] = useState("");
-//   const [accessoryPrice, setAccessoryPrice] = useState("");
-//   const [accessoryDescription, setAccessoryDescription] = useState("");
-//   const [accessoryColor, setAccessoryColor] = useState("");
-//   const [quantity, setQuantity] = useState("");
-//   const [error, setError] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState(null);
-//   const [categories, setCategories] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//   const [units, setUnits] = useState("");
-
-//   const [sizesAvailable, setSizesAvailable] = useState(false);
-//   const [sizes, setSizes] = useState([]);
-//   const [selectedSizes, setSelectedSizes] = useState({});
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:3001/api/auth/authenticated", {
-//         withCredentials: true,
-//       })
-//       .then((res) => {
-//         if (!(res.data.authenticated && res.data.user.role === "admin")) {
-//           navigate("/login");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         navigate("/login");
-//       });
-
-//     fetchCategories();
-//     fetchSizes();
-//   }, [navigate]);
-
-//   const fetchCategories = async () => {
-//     try {
-//       const response = await fetch(
-//         "http://localhost:3001/api/category/getCategory"
-//       );
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch categories");
-//       }
-//       const data = await response.json();
-//       setCategories(data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//     }
-//   };
-
-//   const fetchSizes = async () => {
-//     try {
-//       const response = await fetch("http://localhost:3001/api/accessory/getSizes/all");
-//       if (!response.ok) {
-//         throw new Error("Failed to fetch sizes");
-//       }
-//       const data = await response.json();
-//       setSizes(data);
-//     } catch (error) {
-//       console.error("Error fetching sizes:", error);
+//       console.error('Error fetching sizes:', error);
 //     }
 //   };
 
@@ -2389,26 +100,29 @@
 //           categoryId: selectedCategory?.categoryId,
 //         };
 
-//         const response = await axios.post(
-//           "http://localhost:3001/api/accessory/addAccessory",
-//           {
-//             ...accessoryData,
-//             sizes: Object.entries(selectedSizes).map(([sizeId, quantity]) => ({
+//         // Handle stock data based on size selection
+//         const stockData = sizesAvailable
+//           ? Object.entries(selectedSizes).map(([sizeId, quantity]) => ({
 //               sizeId: parseInt(sizeId, 10),
-//               quantity: parseInt(quantity, 10), // Ensure quantity is a number
-//             })),
-//           }
-//         );
+//               quantity: parseInt(quantity, 10),
+//             }))
+//           : [{ sizeId: 1, quantity: parseInt(quantity, 10) }];
+
+//         const response = await axios.post('http://localhost:3001/api/accessory/addAccessory', {
+//           ...accessoryData,
+//           sizes: stockData,
+//         });
 
 //         if (response.status === 201) {
-//           Swal.fire("Success!", "Accessory added successfully.", "success");
+//           Swal.fire('Success!', 'Accessory added successfully.', 'success');
 //           setSuccess(true);
+//           navigate('/admin/accessories');
 //         } else {
-//           throw new Error("Failed to add accessory");
+//           throw new Error('Failed to add accessory');
 //         }
 //       } catch (error) {
-//         console.error("Error adding accessory:", error);
-//         Swal.fire("Error!", "Failed to add the accessory.", "error");
+//         console.error('Error adding accessory:', error);
+//         Swal.fire('Error!', 'Failed to add the accessory.', 'error');
 //         setError(error.message);
 //       } finally {
 //         setTimeout(() => {
@@ -2428,7 +142,7 @@
 //   const buttonSx = {
 //     ...(success && {
 //       bgcolor: green[500],
-//       "&:hover": {
+//       '&:hover': {
 //         bgcolor: green[700],
 //       },
 //     }),
@@ -2438,24 +152,14 @@
 //     <div className="bgcolor">
 //       <AdminNavbar />
 //       <Box height={60} />
-//       <Box sx={{ display: "flex" }}>
+//       <Box sx={{ display: 'flex' }}>
 //         <AdminSidenav />
 //         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-//           <Typography
-//             gutterBottom
-//             variant="h5"
-//             component="div"
-//             sx={{ marginLeft: "10px", fontWeight: "bold" }}
-//           >
+//           <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
 //             Accessories
 //           </Typography>
 //           <Card sx={{ padding: 2 }}>
-//             <Typography
-//               variant="h6"
-//               align="left"
-//               marginLeft={2}
-//               color="grey"
-//             >
+//             <Typography variant="h6" align="left" marginLeft={2} color="grey">
 //               Add Accessory
 //             </Typography>
 //             <Box height={20} />
@@ -2500,6 +204,7 @@
 //                   label="Accessory Color"
 //                   variant="outlined"
 //                   size="small"
+//                   type="text"
 //                   value={accessoryColor}
 //                   onChange={(e) => setAccessoryColor(e.target.value)}
 //                   fullWidth
@@ -2509,12 +214,10 @@
 //               <Grid item xs={6}>
 //                 <Autocomplete
 //                   options={categories}
-//                   getOptionLabel={(option) => option.categoryName || ""}
+//                   getOptionLabel={(option) => option.categoryName || ''}
 //                   value={selectedCategory}
 //                   onChange={(event, newValue) => setSelectedCategory(newValue)}
-//                   renderInput={(params) => (
-//                     <TextField {...params} label="Category" variant="outlined" size="small" />
-//                   )}
+//                   renderInput={(params) => <TextField {...params} label="Category" variant="outlined" size="small" />}
 //                   fullWidth
 //                 />
 //               </Grid>
@@ -2524,6 +227,7 @@
 //                   label="Units"
 //                   variant="outlined"
 //                   size="small"
+//                   type="number"
 //                   value={units}
 //                   onChange={(e) => setUnits(e.target.value)}
 //                   fullWidth
@@ -2546,12 +250,7 @@
 //               <Grid item xs={12}>
 //                 <FormGroup>
 //                   <FormControlLabel
-//                     control={
-//                       <Switch
-//                         checked={sizesAvailable}
-//                         onChange={(e) => setSizesAvailable(e.target.checked)}
-//                       />
-//                     }
+//                     control={<Switch checked={sizesAvailable} onChange={(e) => setSizesAvailable(e.target.checked)} />}
 //                     label="Sizes available"
 //                   />
 //                 </FormGroup>
@@ -2560,34 +259,35 @@
 //               {/* Dynamic Size Quantity Input */}
 //               <Grid item xs={12}>
 //                 <FormGroup>
-//                   {sizesAvailable && sizes.map(({ sizeId, size }) => (
-//                     <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
-//                       <FormControlLabel
-//                         control={
-//                           <Checkbox
-//                             checked={Boolean(selectedSizes[sizeId])}
-//                             onChange={handleSizeQuantityChange(sizeId)}
-//                           />
-//                         }
-//                         label={size}
-//                       />
-//                       <TextField
-//                         label="Quantity"
-//                         variant="outlined"
-//                         size="small"
-//                         type="number"
-//                         value={selectedSizes[sizeId] || ""}
-//                         onChange={handleSizeQuantityChange(sizeId)}
-//                         fullWidth
-//                         disabled={!Boolean(selectedSizes[sizeId])}
-//                       />
-//                     </Grid>
-//                   ))}
+//                   {sizesAvailable &&
+//                     sizes.map(({ sizeId, size }) => (
+//                       <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
+//                         <FormControlLabel
+//                           control={
+//                             <Checkbox
+//                               checked={Boolean(selectedSizes[sizeId])}
+//                               onChange={handleSizeQuantityChange(sizeId)}
+//                             />
+//                           }
+//                           label={size}
+//                         />
+//                         <TextField
+//                           label="Quantity"
+//                           variant="outlined"
+//                           size="small"
+//                           type="number"
+//                           value={selectedSizes[sizeId] || ''}
+//                           onChange={handleSizeQuantityChange(sizeId)}
+//                           fullWidth
+//                           disabled={!Boolean(selectedSizes[sizeId])}
+//                         />
+//                       </Grid>
+//                     ))}
 //                 </FormGroup>
 //               </Grid>
 
 //               <Grid item xs={12}>
-//                 <Box sx={{ position: "relative" }}>
+//                 <Box sx={{ position: 'relative' }}>
 //                   <Button
 //                     variant="contained"
 //                     color="primary"
@@ -2603,11 +303,11 @@
 //                       size={24}
 //                       sx={{
 //                         color: green[500],
-//                         position: "absolute",
-//                         top: "50%",
-//                         left: "50%",
-//                         marginTop: "-12px",
-//                         marginLeft: "-12px",
+//                         position: 'absolute',
+//                         top: '50%',
+//                         left: '50%',
+//                         marginTop: '-12px',
+//                         marginLeft: '-12px',
 //                       }}
 //                     />
 //                   )}
@@ -2620,21 +320,18 @@
 //     </div>
 //   );
 // }
+
+
+// This is a revised version of your AddAccessory component based on the requirements.
+// Main changes:
+// 1. Removed the inline quantity field.
+// 2. Replaced the toggle switch with radio buttons.
+// 3. Showed a modal when "Has Sizes?" is answered.
 
 import React, { useState, useEffect } from 'react';
 import {
-  Card,
-  Grid,
-  Typography,
-  Box,
-  TextField,
-  Autocomplete,
-  CircularProgress,
-  Button,
-  FormGroup,
-  Checkbox,
-  FormControlLabel,
-  Switch,
+  Card, Grid, Typography, Box, TextField, Autocomplete, CircularProgress,
+  Button, RadioGroup, FormControlLabel, Radio, Modal
 } from '@mui/material';
 import { green } from '@mui/material/colors';
 import Swal from 'sweetalert2';
@@ -2650,32 +347,26 @@ export default function AddAccessory() {
   const [accessoryPrice, setAccessoryPrice] = useState('');
   const [accessoryDescription, setAccessoryDescription] = useState('');
   const [accessoryColor, setAccessoryColor] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [error, setError] = useState('');
+  const [units, setUnits] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [units, setUnits] = useState('');
+  const [error, setError] = useState('');
 
-  const [sizesAvailable, setSizesAvailable] = useState(false);
+  const [hasSizes, setHasSizes] = useState(null); // 'yes' or 'no'
   const [sizes, setSizes] = useState([]);
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const [sizeQuantities, setSizeQuantities] = useState({});
+  const [naQuantity, setNaQuantity] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/auth/authenticated', {
-        withCredentials: true,
-      })
+    axios.get('http://localhost:3001/api/auth/authenticated', { withCredentials: true })
       .then((res) => {
         if (!(res.data.authenticated && res.data.user.role === 'admin')) {
           navigate('/login');
         }
-      })
-      .catch((err) => {
-        console.log(err);
-        navigate('/login');
-      });
+      }).catch(() => navigate('/login'));
 
     fetchCategories();
     fetchSizes();
@@ -2684,26 +375,20 @@ export default function AddAccessory() {
   const fetchCategories = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/category/getCategory');
-      if (!response.ok) {
-        throw new Error('Failed to fetch categories');
-      }
       const data = await response.json();
       setCategories(data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
+    } catch (err) {
+      console.error('Error fetching categories:', err);
     }
   };
 
   const fetchSizes = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/accessory/getSizes/all');
-      if (!response.ok) {
-        throw new Error('Failed to fetch sizes');
-      }
       const data = await response.json();
       setSizes(data);
-    } catch (error) {
-      console.error('Error fetching sizes:', error);
+    } catch (err) {
+      console.error('Error fetching sizes:', err);
     }
   };
 
@@ -2721,13 +406,15 @@ export default function AddAccessory() {
           categoryId: selectedCategory?.categoryId,
         };
 
-        // Handle stock data based on size selection
-        const stockData = sizesAvailable
-          ? Object.entries(selectedSizes).map(([sizeId, quantity]) => ({
-              sizeId: parseInt(sizeId, 10),
-              quantity: parseInt(quantity, 10),
-            }))
-          : [{ sizeId: 1, quantity: parseInt(quantity, 10) }];
+        let stockData = [];
+        if (hasSizes === 'yes') {
+          stockData = Object.entries(sizeQuantities).map(([sizeId, qty]) => ({
+            sizeId: parseInt(sizeId, 10),
+            quantity: parseInt(qty, 10)
+          }));
+        } else if (hasSizes === 'no') {
+          stockData = [{ sizeId: 1, quantity: parseInt(naQuantity, 10) }];
+        }
 
         const response = await axios.post('http://localhost:3001/api/accessory/addAccessory', {
           ...accessoryData,
@@ -2746,27 +433,25 @@ export default function AddAccessory() {
         Swal.fire('Error!', 'Failed to add the accessory.', 'error');
         setError(error.message);
       } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setTimeout(() => setLoading(false), 1000);
       }
     }
   };
 
-  const handleSizeQuantityChange = (sizeId) => (event) => {
-    setSelectedSizes((prevSizes) => ({
-      ...prevSizes,
-      [sizeId]: event.target.value,
-    }));
+  const handleModalSubmit = () => {
+    setModalOpen(false);
   };
 
-  const buttonSx = {
-    ...(success && {
-      bgcolor: green[500],
-      '&:hover': {
-        bgcolor: green[700],
-      },
-    }),
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    borderRadius: 2,
+    boxShadow: 24,
+    p: 4,
   };
 
   return (
@@ -2776,166 +461,73 @@ export default function AddAccessory() {
       <Box sx={{ display: 'flex' }}>
         <AdminSidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <Typography gutterBottom variant="h5" component="div" sx={{ marginLeft: '10px', fontWeight: 'bold' }}>
-            Accessories
-          </Typography>
+          <Typography variant="h5" fontWeight="bold" mb={2}>Accessories</Typography>
           <Card sx={{ padding: 2 }}>
-            <Typography variant="h6" align="left" marginLeft={2} color="grey">
-              Add Accessory
-            </Typography>
-            <Box height={20} />
-            <Grid container spacing={2} padding={2}>
-              {/* Basic Accessory Details */}
-              <Grid item xs={6}>
-                <TextField
-                  label="Accessory Name"
-                  variant="outlined"
-                  size="small"
-                  value={accessoryName}
-                  onChange={(e) => setAccessoryName(e.target.value)}
-                  fullWidth
-                />
-              </Grid>
+            <Typography variant="h6" color="grey" mb={2}>Add Accessory</Typography>
+            <Grid container spacing={2}>
+              {/* Fields */}
+              <Grid item xs={6}><TextField label="Accessory Name" size="small" value={accessoryName} onChange={(e) => setAccessoryName(e.target.value)} fullWidth /></Grid>
+              <Grid item xs={6}><TextField label="Accessory Price" size="small" type="number" value={accessoryPrice} onChange={(e) => setAccessoryPrice(e.target.value)} fullWidth /></Grid>
+              <Grid item xs={6}><TextField label="Description" size="small" value={accessoryDescription} onChange={(e) => setAccessoryDescription(e.target.value)} fullWidth /></Grid>
+              <Grid item xs={6}><TextField label="Accessory Color" size="small" value={accessoryColor} onChange={(e) => setAccessoryColor(e.target.value)} fullWidth /></Grid>
+              <Grid item xs={6}><Autocomplete options={categories} getOptionLabel={(option) => option.categoryName || ''} value={selectedCategory} onChange={(event, newValue) => setSelectedCategory(newValue)} renderInput={(params) => <TextField {...params} label="Category" size="small" />} fullWidth /></Grid>
+              <Grid item xs={6}><TextField label="Units" size="small" type="number" value={units} onChange={(e) => setUnits(e.target.value)} fullWidth /></Grid>
 
-              <Grid item xs={6}>
-                <TextField
-                  label="Accessory Price"
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  value={accessoryPrice}
-                  onChange={(e) => setAccessoryPrice(e.target.value)}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  label="Description"
-                  variant="outlined"
-                  size="small"
-                  value={accessoryDescription}
-                  onChange={(e) => setAccessoryDescription(e.target.value)}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  label="Accessory Color"
-                  variant="outlined"
-                  size="small"
-                  type="text"
-                  value={accessoryColor}
-                  onChange={(e) => setAccessoryColor(e.target.value)}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <Autocomplete
-                  options={categories}
-                  getOptionLabel={(option) => option.categoryName || ''}
-                  value={selectedCategory}
-                  onChange={(event, newValue) => setSelectedCategory(newValue)}
-                  renderInput={(params) => <TextField {...params} label="Category" variant="outlined" size="small" />}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  label="Units"
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  value={units}
-                  onChange={(e) => setUnits(e.target.value)}
-                  fullWidth
-                />
-              </Grid>
-
-              <Grid item xs={6}>
-                <TextField
-                  label="Quantity"
-                  variant="outlined"
-                  size="small"
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  fullWidth
-                  disabled={sizesAvailable}
-                />
-              </Grid>
-
+              {/* Radio Buttons */}
               <Grid item xs={12}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Switch checked={sizesAvailable} onChange={(e) => setSizesAvailable(e.target.checked)} />}
-                    label="Sizes available"
-                  />
-                </FormGroup>
-              </Grid>
-
-              {/* Dynamic Size Quantity Input */}
-              <Grid item xs={12}>
-                <FormGroup>
-                  {sizesAvailable &&
-                    sizes.map(({ sizeId, size }) => (
-                      <Grid item xs={12} key={sizeId} sx={{ marginBottom: 2 }}>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={Boolean(selectedSizes[sizeId])}
-                              onChange={handleSizeQuantityChange(sizeId)}
-                            />
-                          }
-                          label={size}
-                        />
-                        <TextField
-                          label="Quantity"
-                          variant="outlined"
-                          size="small"
-                          type="number"
-                          value={selectedSizes[sizeId] || ''}
-                          onChange={handleSizeQuantityChange(sizeId)}
-                          fullWidth
-                          disabled={!Boolean(selectedSizes[sizeId])}
-                        />
-                      </Grid>
-                    ))}
-                </FormGroup>
+                <Typography variant="subtitle1">Has Sizes?</Typography>
+                <RadioGroup row value={hasSizes} onChange={(e) => { setHasSizes(e.target.value); setModalOpen(true); }}>
+                  <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                  <FormControlLabel value="no" control={<Radio />} label="No" />
+                </RadioGroup>
               </Grid>
 
               <Grid item xs={12}>
                 <Box sx={{ position: 'relative' }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={buttonSx}
-                    disabled={loading}
-                    onClick={handleClick}
-                    fullWidth
-                  >
+                  <Button fullWidth variant="contained" sx={{ ...success && { bgcolor: green[500], '&:hover': { bgcolor: green[700] } } }} onClick={handleClick} disabled={loading}>
                     Proceed
                   </Button>
-                  {loading && (
-                    <CircularProgress
-                      size={24}
-                      sx={{
-                        color: green[500],
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: '-12px',
-                        marginLeft: '-12px',
-                      }}
-                    />
-                  )}
+                  {loading && <CircularProgress size={24} sx={{ color: green[500], position: 'absolute', top: '50%', left: '50%', mt: '-12px', ml: '-12px' }} />}
                 </Box>
               </Grid>
             </Grid>
           </Card>
+
+          {/* Modal */}
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Box sx={style}>
+              {hasSizes === 'yes' ? (
+                <>
+                  <Typography variant="h6" mb={2}>Enter Quantity for Each Size</Typography>
+                  {sizes.map(({ sizeId, size }) => (
+                    <TextField
+                      key={sizeId}
+                      label={size}
+                      type="number"
+                      size="small"
+                      value={sizeQuantities[sizeId] || ''}
+                      onChange={(e) => setSizeQuantities({ ...sizeQuantities, [sizeId]: e.target.value })}
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    />
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Typography variant="h6" mb={2}>Enter Quantity for N/A Size</Typography>
+                  <TextField
+                    label="Quantity"
+                    type="number"
+                    size="small"
+                    value={naQuantity}
+                    onChange={(e) => setNaQuantity(e.target.value)}
+                    fullWidth
+                  />
+                </>
+              )}
+              <Button variant="contained" onClick={handleModalSubmit} sx={{ mt: 2 }}>Save</Button>
+            </Box>
+          </Modal>
         </Box>
       </Box>
     </div>
