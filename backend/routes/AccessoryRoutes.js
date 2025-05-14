@@ -14,6 +14,7 @@ import {
   getFavorites,
   getAccessoryByCategory,
   updateAccessoryStatus,
+  updateAccessory,
 } from '../controllers/Accessory.js';
 
 const router = express.Router();
@@ -33,7 +34,7 @@ router.get('/getFavorites/:customerId', getFavorites);
 router.get('/getAccessoryByCategory/:cid', getAccessoryByCategory);
 router.put('/updateStatus/:accessoryId', updateAccessoryStatus);
 
-// router.put("/:id", updateAccessory);
+router.put("/:id", updateAccessory);
 // router.delete("/:id", deleteAccessory);
 
 export default router;

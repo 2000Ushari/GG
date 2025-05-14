@@ -125,54 +125,118 @@ export class AccessoryService {
     }
   }
 
+  // static async updateAccessory(accessoryId, accessory) {
+  //   try {
+  //     const { accessoryName, accessoryDescription, accessoryColor, accessoryPrice, categoryId } =
+  //       accessory;
+
+  //     if ((await this.getAccessoryById(accessoryId)).length === 0) {
+  //       throw new Error('Accessory not found');
+  //     }
+
+  //     // Validation
+  //     if (
+  //       !accessoryName ||
+  //       !accessoryDescription ||
+  //       !accessoryColor ||
+  //       !accessoryPrice ||
+  //       !categoryId
+  //     ) {
+  //       throw new Error('Please provide name, description, color, quantity, price, and categoryId.');
+  //     }
+
+  //     // Additional Validation
+  //     if (accessoryPrice < 0 ) {
+  //       throw new Error('Price and quantity must be non-negative.');
+  //     }
+
+  //     // Update the accessory in the database
+  //     const query = `
+  //               UPDATE accessory
+  //               SET accessoryName = ?, accessoryDescription = ?, accessoryColor = ?, accessoryPrice = ?, categoryId = ?
+  //               WHERE accessoryId = ?
+  //           `;
+  //     return await connection
+  //       .promise()
+  //       .query(query, [
+  //         accessoryName,
+  //         accessoryDescription,
+  //         accessoryColor,
+  //         accessoryPrice,
+  //         categoryId,
+  //         accessoryId,
+  //       ]);
+  //   } catch (error) {
+  //     console.error('Error updating accessory:', error);
+  //     throw error;
+  //   }
+  // }
+
+
   static async updateAccessory(accessoryId, accessory) {
-    try {
-      const { accessoryName, accessoryDescription, accessoryColor, accessoryQuantity, accessoryPrice, categoryId } =
-        accessory;
+  try {
+    const {
+      accessoryName,
+      accessoryDescription,
+      accessoryColor,
+      accessoryPrice,
+      capacityUnits,
+      categoryId
+    } = accessory;
 
-      if ((await this.getAccessoryById(accessoryId)).length === 0) {
-        throw new Error('Accessory not found');
-      }
-
-      // Validation
-      if (
-        !accessoryName ||
-        !accessoryDescription ||
-        !accessoryColor ||
-        !accessoryQuantity ||
-        !accessoryPrice ||
-        !categoryId
-      ) {
-        throw new Error('Please provide name, description, color, quantity, price, and categoryId.');
-      }
-
-      // Additional Validation
-      if (accessoryPrice < 0 || accessoryQuantity < 0) {
-        throw new Error('Price and quantity must be non-negative.');
-      }
-
-      // Update the accessory in the database
-      const query = `
-                UPDATE accessory
-                SET accessoryName = ?, accessoryDescription = ?, accessoryColor = ?, accessoryQuantity = ?, accessoryPrice = ?, categoryId = ?
-                WHERE accessoryId = ?
-            `;
-      return await connection
-        .promise()
-        .query(query, [
-          accessoryName,
-          accessoryDescription,
-          accessoryColor,
-          accessoryQuantity,
-          accessoryPrice,
-          categoryId,
-          accessoryId,
-        ]);
-    } catch (error) {
-      console.error('Error updating accessory:', error);
-      throw error;
+    // Validate presence of all fields
+    if (
+      !accessoryName ||
+      !accessoryDescription ||
+      !accessoryColor ||
+      accessoryPrice == null ||
+      capacityUnits == null ||
+      !categoryId
+    ) {
+      throw new Error('Please provide all required fields: name, description, color, price, units, and categoryId.');
     }
+
+    // Additional validation
+    if (accessoryPrice < 0 || capacityUnits < 0) {
+      throw new Error('Price and units must be non-negative.');
+    }
+
+    // Check if accessory exists
+    const [existing] = await connection
+      .promise()
+      .query('SELECT * FROM accessory WHERE accessoryId = ?', [accessoryId]);
+
+    if (existing.length === 0) {
+      throw new Error('Accessory not found');
+    }
+
+    // Update query
+    const query = `
+      UPDATE accessory
+      SET accessoryName = ?, accessoryDescription = ?, accessoryColor = ?, accessoryPrice = ?, capacityUnits = ?, categoryId = ?
+      WHERE accessoryId = ?
+    `;
+
+    const [result] = await connection
+      .promise()
+      .query(query, [
+        accessoryName,
+        accessoryDescription,
+        accessoryColor,
+        accessoryPrice,
+        capacityUnits,
+        categoryId,
+        accessoryId,
+      ]);
+
+    return result;
+
+  } catch (error) {
+    console.error('Service Error updating accessory:', error);
+    throw error;
   }
+}
+
 
   static async deleteAccessory(accessoryId) {
     try {

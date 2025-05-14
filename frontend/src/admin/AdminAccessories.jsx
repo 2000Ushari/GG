@@ -60,34 +60,7 @@ export default function AdminAccessories() {
       <div>
         <Box sx={{ display: 'flex' }}>
           <Box component="main" sx={{ flexGrow: 1, p: 2 }}>
-            <Grid container spacing={2}>
-              {cardData.map((bin) => (
-                <Grid item xs={12} sm={6} md={4} key={bin.bin_id}>
-                  <Stack direction="row" spacing={2}>
-                    <Card
-                      sx={{ width: '100%' }}
-                      className="gradient"
-                      // onClick={() => handleOpenAddModal(bin.bin_id)}
-                    >
-                      <CardContent>
-                        <div>
-                          <CreditCardIcon sx={{ color: 'white', marginTop: 2 }} />
-                        </div>
-                        <Typography gutterBottom variant="h5" component="div" align="center">
-                          {bin.bin_name}
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div">
-                          {bin.type_name}
-                        </Typography>
-                        <Typography gutterBottom variant="body2" component="div" sx={{ color: 'gray' }}>
-                          {bin.address}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Stack>
-                </Grid>
-              ))}
-            </Grid>
+            
             <Box height={30} />
           </Box>
         </Box>

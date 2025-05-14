@@ -71,19 +71,39 @@ const addAccessory = async (req, res) => {
   }
 };
 
+// const updateAccessory = async (req, res) => {
+//   try {
+//     const result = await AccessoryService.updateAccessory(req.params.id, req.body);
+//     if (result && result[0][0].affectedRows > 0) {
+//       res.status(200).json({ message: 'Accessory updated successfully' });
+//     } else {
+//       res.status(400).json({ error: 'Error updating accessory' });
+//     }
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 const updateAccessory = async (req, res) => {
   try {
     const result = await AccessoryService.updateAccessory(req.params.id, req.body);
-    if (result && result[0][0].affectedRows > 0) {
+
+    if (result && result.affectedRows > 0) {
       res.status(200).json({ message: 'Accessory updated successfully' });
     } else {
-      res.status(400).json({ error: 'Error updating accessory' });
+      res.status(404).json({ error: 'Accessory not found or no changes made' });
     }
   } catch (error) {
-    console.error(error.message);
+    console.error('Controller Error:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
+
+
+
+
 
 const deleteAccessory = async (req, res) => {
   try {

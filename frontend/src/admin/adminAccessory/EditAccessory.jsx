@@ -1,5 +1,15 @@
+
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Grid, TextField, Button, Typography, Autocomplete, IconButton } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  Autocomplete,
+  IconButton,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -15,26 +25,22 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.authenticated && res.data.user.role === 'admin') {
-          // setUser(res.data.user); // Set user data if authenticated
-          // customerId(res.data.user.id);
-        } else {
-          navigate('/login'); // Redirect to login if not authenticated
+        if (!res.data.authenticated || res.data.user.role !== 'admin') {
+          navigate('/login');
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.error(err));
   }, [navigate]);
 
   const [accessoryData, setAccessoryData] = useState({
     accessoryName: '',
     accessoryPrice: '',
     accessoryDescription: '',
-    accessoryQuantity: '',
+    capacityUnits: '',
     accessoryColor: '',
     selectedCategory: null,
   });
+
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
 
@@ -46,9 +52,9 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
         accessoryName: accessory.accessoryName || '',
         accessoryPrice: accessory.accessoryPrice || '',
         accessoryDescription: accessory.accessoryDescription || '',
-        accessoryQuantity: accessory.accessoryQuantity || '',
+        capacityUnits: accessory.capacityUnits || '',
         accessoryColor: accessory.accessoryColor || '',
-        selectedCategory: accessory.categoryId,
+        selectedCategory: accessory.categoryId || null,
       });
     }
   }, [accessory]);
@@ -74,34 +80,65 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
   const handleCategoryChange = (event, newValue) => {
     setAccessoryData({ ...accessoryData, selectedCategory: newValue });
   };
+
+  const validateInputs = () => {
+    const {
+      accessoryName,
+      accessoryDescription,
+      accessoryColor,
+      accessoryPrice,
+      capacityUnits,
+      selectedCategory,
+    } = accessoryData;
+
+    if (
+      !accessoryName ||
+      !accessoryDescription ||
+      !accessoryColor ||
+      accessoryPrice === '' ||
+      capacityUnits === '' ||
+      !selectedCategory
+    ) {
+      setError('Please fill in all required fields.');
+      return false;
+    }
+
+    if (isNaN(accessoryPrice) || isNaN(capacityUnits)) {
+      setError('Price and Units must be valid numbers.');
+      return false;
+    }
+
+    if (Number(accessoryPrice) < 0 || Number(capacityUnits) < 0) {
+      setError('Price and Units must be non-negative.');
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async () => {
+    if (!validateInputs()) return;
+
     try {
-      // Basic validations
-      if (!accessoryData.accessoryName || !accessoryData.accessoryPrice || !accessoryData.selectedCategory) {
-        setError('Please fill in all required fields.');
-        return;
-      }
-
-      // Numeric validations
-      if (isNaN(accessoryData.accessoryPrice) || isNaN(accessoryData.accessoryQuantity)) {
-        setError('Price and quantity must be numeric values.');
-        return;
-      }
-
       const response = await fetch(`http://localhost:3001/api/accessory/${accessoryID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...accessoryData,
-          categoryId: accessoryData.selectedCategory ? accessoryData.selectedCategory.categoryId : null,
+          accessoryName: accessoryData.accessoryName,
+          accessoryDescription: accessoryData.accessoryDescription,
+          accessoryColor: accessoryData.accessoryColor,
+          accessoryPrice: Number(accessoryData.accessoryPrice),
+          capacityUnits: Number(accessoryData.capacityUnits),
+          categoryId: accessoryData.selectedCategory?.categoryId || null,
         }),
       });
+
       if (!response.ok) {
         throw new Error('Failed to update accessory');
       }
-      const data = await response.json();
+
       Swal.fire('Success!', 'Accessory updated successfully.', 'success');
       closeEvent();
       window.location.reload();
@@ -117,7 +154,6 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
       open={open}
       onClose={closeEvent}
       aria-labelledby="edit-accessory-modal-title"
-      aria-describedby="edit-accessory-modal-description"
       style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
     >
       <Box
@@ -133,21 +169,23 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
           p: 4,
         }}
       >
-        <IconButton style={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
+        <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} onClick={closeEvent}>
           <CloseIcon />
         </IconButton>
-        <Typography variant="h5" align="center" id="edit-accessory-modal-title">
+        <Typography variant="h5" align="center" gutterBottom>
           Update Accessory
         </Typography>
-        <Box height={20}></Box>
+
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Autocomplete
               value={accessoryData.selectedCategory}
               onChange={handleCategoryChange}
               options={categories}
-              getOptionLabel={(option) => option.categoryName}
-              renderInput={(params) => <TextField {...params} label="Category" variant="outlined" size="small" />}
+              getOptionLabel={(option) => option.categoryName || ''}
+              renderInput={(params) => (
+                <TextField {...params} label="Category" variant="outlined" size="small" fullWidth />
+              )}
             />
           </Grid>
           <Grid item xs={6}>
@@ -162,12 +200,33 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              label="Color"
+              variant="outlined"
+              size="small"
+              value={accessoryData.accessoryColor}
+              onChange={(e) => handleInputChange(e, 'accessoryColor')}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
               label="Price"
               variant="outlined"
               size="small"
               type="number"
               value={accessoryData.accessoryPrice}
               onChange={(e) => handleInputChange(e, 'accessoryPrice')}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Capacity in Units"
+              variant="outlined"
+              size="small"
+              type="number"
+              value={accessoryData.capacityUnits}
+              onChange={(e) => handleInputChange(e, 'capacityUnits')}
               fullWidth
             />
           </Grid>
@@ -180,28 +239,7 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               onChange={(e) => handleInputChange(e, 'accessoryDescription')}
               fullWidth
               multiline
-              rows={4}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Quantity"
-              variant="outlined"
-              size="small"
-              type="number"
-              value={accessoryData.accessoryQuantity}
-              onChange={(e) => handleInputChange(e, 'accessoryQuantity')}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Color"
-              variant="outlined"
-              size="small"
-              value={accessoryData.accessoryColor}
-              onChange={(e) => handleInputChange(e, 'accessoryColor')}
-              fullWidth
+              rows={3}
             />
           </Grid>
           {error && (
@@ -211,15 +249,12 @@ const EditAccessory = ({ closeEvent, open, accessoryID, accessory }) => {
               </Typography>
             </Grid>
           )}
-          <Grid item xs={12}>
-            <Typography variant="h5" align="center">
-              <Button variant="contained" onClick={handleSubmit}>
-                Update
-              </Button>
-            </Typography>
+          <Grid item xs={12} textAlign="center">
+            <Button variant="contained" onClick={handleSubmit}>
+              Update
+            </Button>
           </Grid>
         </Grid>
-        <Box sx={{ m: 2 }}></Box>
       </Box>
     </Modal>
   );
